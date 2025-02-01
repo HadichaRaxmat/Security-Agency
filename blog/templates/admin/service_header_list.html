@@ -1,0 +1,43 @@
+{% extends 'admin/index.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
+        <h3 class="card-title m-0">List of Service Headers</h3>
+        <a href="{% url 'service_header_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+            <i class="fas fa-plus"></i> Create New Service Header
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-heading"></i> Title</th>
+                    <th class="text-center"><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service_header in service_headers %}
+                <tr>
+                    <td>{{ service_header.id }}</td>
+                    <td>{{ service_header.title }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'service_header_update' service_header.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'service_header_delete' service_header.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">No data</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

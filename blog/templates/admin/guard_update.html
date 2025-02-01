@@ -1,0 +1,52 @@
+{% extends 'admin/index.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light text-dark">
+        <h3 class="card-title m-0">Update Guard</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Name</label>
+                <input type="text" name="name" value="{{ form.name.value|default:'' }}" class="form-control" id="id_name">
+                {% if form.name.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ form.name.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_status" class="form-label">Status</label>
+                <input type="text" name="status" value="{{ form.status.value|default:'' }}" class="form-control" id="id_status">
+                {% if form.status.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ form.status.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_image" class="form-label">Image</label>
+                <input type="file" name="image" class="form-control" id="id_image">
+                {% if form.image.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ form.image.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="fas fa-save"></i> Submit
+                </button>
+                <a href="{% url 'guard_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
