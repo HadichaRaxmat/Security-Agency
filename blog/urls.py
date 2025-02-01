@@ -30,6 +30,9 @@ urlpatterns = [
     path('guard/', guard_view),
     path('contact/', contact_view),
     path('about/', about_view),
+    path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
 
     path('dashboard/', admin_view, name='dashboard'),
     path('admin/list/', admin_list, name='admin_list'),
