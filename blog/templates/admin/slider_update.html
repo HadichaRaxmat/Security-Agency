@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'admin/index.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light text-dark">
+        <h3 class="card-title m-0">Edit Slider</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Поле Image -->
+            <div class="mb-3">
+                <label for="id_image" class="form-label">Slider Image</label>
+                {% if slider.image %}
+                    <div class="mb-2">
+                        <img src="{{ slider.image.url }}" alt="Current Image" class="rounded shadow-sm" width="150">
+                    </div>
+                {% endif %}
+                <input type="file" name="image" class="form-control" id="id_image">
+            </div>
+
+            <!-- Поле Title -->
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Title</label>
+                <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" id="id_title">
+            </div>
+
+            <!-- Поле Title Continue -->
+            <div class="mb-3">
+                <label for="id_title_continue" class="form-label">Title Continue</label>
+                <input type="text" name="title_continue" value="{{ form.title_continue.value|default:'' }}" class="form-control" id="id_title_continue">
+            </div>
+
+            <!-- Поле Text -->
+            <div class="mb-3">
+                <label for="id_text" class="form-label">Text</label>
+                <textarea name="text" class="form-control" id="id_text" rows="3">{{ form.text.value|default:'' }}</textarea>
+            </div>
+
+            <!-- Поле Last -->
+            <div class="mb-3">
+                <label for="id_last" class="form-label">Last</label>
+                <input type="text" name="last" value="{{ form.last.value|default:'' }}" class="form-control" id="id_last">
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="fas fa-save"></i> Save changes
+                </button>
+                <a href="{% url 'slider_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
