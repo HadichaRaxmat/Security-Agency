@@ -1,0 +1,53 @@
+{% extends 'admin/index.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
+        <h3 class="card-title m-0">List of About Sections</h3>
+        <a href="{% url 'about_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+            <i class="fas fa-plus"></i> Create New About
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-image"></i> Image</th>
+                    <th><i class="fas fa-heading"></i> Title</th>
+                    <th><i class="fas fa-text-width"></i> Text</th>
+                    <th class="text-center"><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for about in about_list %}
+                <tr>
+                    <td>{{ about.id }}</td>
+                    <td>
+                        {% if about.image %}
+                            <img src="{{ about.image.url }}" alt="About Image" style="max-width: 100px; max-height: 50px; object-fit: contain;">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                    <td>{{ about.title }}</td>
+                    <td>{{ about.text|slice:":100" }}{% if about.text|length > 100 %}...{% endif %}</td>
+                    <td class="text-center">
+                        <a href="{% url 'about_update' about.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'about_delete' about.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No data</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
