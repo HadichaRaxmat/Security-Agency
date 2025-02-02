@@ -12,8 +12,7 @@
             <!-- Поле Image -->
             <div class="mb-3">
                 <label for="id_image" class="form-label">Image</label>
-                <input type="file" name="image" value="{{ form.image.value|default:'' }}" class="form-control" id="id_image">
-                <!-- Ошибка для поля Image -->
+                <input type="file" name="image" class="form-control" id="id_image">
                 {% if form.image.errors %}
                     <div class="text-danger small mt-1">
                         {{ form.image.errors|join:", " }}
@@ -25,7 +24,6 @@
             <div class="mb-3">
                 <label for="id_title" class="form-label">Title</label>
                 <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" id="id_title">
-                <!-- Ошибка для поля Title -->
                 {% if form.title.errors %}
                     <div class="text-danger small mt-1">
                         {{ form.title.errors|join:", " }}
@@ -36,8 +34,7 @@
             <!-- Поле Text -->
             <div class="mb-3">
                 <label for="id_text" class="form-label">Text</label>
-                <input type="text" name="text" value="{{ form.text.value|default:'' }}" class="form-control" id="id_text">
-                <!-- Ошибка для поля Text -->
+                <textarea name="text" class="form-control" id="id_text" rows="3">{{ form.text.value|default:'' }}</textarea>
                 {% if form.text.errors %}
                     <div class="text-danger small mt-1">
                         {{ form.text.errors|join:", " }}
@@ -49,7 +46,6 @@
             <div class="mb-3">
                 <label for="id_last" class="form-label">Last</label>
                 <input type="text" name="last" value="{{ form.last.value|default:'' }}" class="form-control" id="id_last">
-                <!-- Ошибка для поля Last -->
                 {% if form.last.errors %}
                     <div class="text-danger small mt-1">
                         {{ form.last.errors|join:", " }}
@@ -69,3 +65,4 @@
     </div>
 </div>
 {% endblock %}
+

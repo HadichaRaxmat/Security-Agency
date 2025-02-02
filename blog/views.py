@@ -13,22 +13,127 @@ from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderFo
 
 def home_view(request):
     header = Header.objects.all()
+    contactus = ContactUs.objects.all()
+    slider = Slider.objects.all()
+    about = About.objects.all()
+    menu = [
+        {'menu': 'Home', 'url': '/'},
+        {'menu': 'About', 'url': '/about'},
+        {'menu': 'Services', 'url': '/service'},
+        {'menu': 'Guards', 'url': '/guard'},
+        {'menu': 'Contact Us', 'url': '/contact'}
+    ]
+    current_url = request.path
+
     d = {
-        'header': header
+        'header': header,
+        'contactus': contactus,
+        'menu': menu,
+        'slider': slider,
+        'about': about,
+        'current_url': current_url
     }
     return render(request, 'index.html', context=d)
 
 def about_view(request):
-    return render(request, 'about.html')
+    header = Header.objects.all()
+    contactus = ContactUs.objects.all()
+    menu = Menu.objects.all()
+    slider = Slider.objects.all()
+    about = About.objects.all()
+    menu = [
+        {'menu': 'Home', 'url': '/'},
+        {'menu': 'About', 'url': '/about'},
+        {'menu': 'Services', 'url': '/service'},
+        {'menu': 'Guards', 'url': '/guard'},
+        {'menu': 'Contact Us', 'url': '/contact'}
+    ]
+    current_url = request.path
+    d = {
+        'header': header,
+        'contactus': contactus,
+        'menu': menu,
+        'slider': slider,
+        'about': about,
+        'current_url': current_url
+
+    }
+    return render(request, 'about.html', context=d)
 
 def service_view(request):
-    return render(request, 'service.html')
+    header = Header.objects.all()
+    contactus = ContactUs.objects.all()
+    menu = Menu.objects.all()
+    slider = Slider.objects.all()
+    about = About.objects.all()
+    menu = [
+        {'menu': 'Home', 'url': '/'},
+        {'menu': 'About', 'url': '/about'},
+        {'menu': 'Services', 'url': '/service'},
+        {'menu': 'Guards', 'url': '/guard'},
+        {'menu': 'Contact Us', 'url': '/contact'}
+    ]
+    current_url = request.path
+    d = {
+        'header': header,
+        'contactus': contactus,
+        'menu': menu,
+        'slider': slider,
+        'about': about,
+        'current_url': current_url
+
+    }
+    return render(request, 'service.html', context=d)
 
 def guard_view(request):
-    return render(request, 'guard.html')
+    header = Header.objects.all()
+    contactus = ContactUs.objects.all()
+    menu = Menu.objects.all()
+    slider = Slider.objects.all()
+    about = About.objects.all()
+    menu = [
+        {'menu': 'Home', 'url': '/'},
+        {'menu': 'About', 'url': '/about'},
+        {'menu': 'Services', 'url': '/service'},
+        {'menu': 'Guards', 'url': '/guard'},
+        {'menu': 'Contact Us', 'url': '/contact'}
+    ]
+    current_url = request.path
+    d = {
+        'header': header,
+        'contactus': contactus,
+        'menu': menu,
+        'slider': slider,
+        'about': about,
+        'current_url': current_url
+
+    }
+    return render(request, 'guard.html', context=d)
 
 def contact_view(request):
-    return render(request, 'contact.html')
+    header = Header.objects.all()
+    contactus = ContactUs.objects.all()
+    menu = Menu.objects.all()
+    slider = Slider.objects.all()
+    about = About.objects.all()
+    menu = [
+        {'menu': 'Home', 'url': '/'},
+        {'menu': 'About', 'url': '/about'},
+        {'menu': 'Services', 'url': '/service'},
+        {'menu': 'Guards', 'url': '/guard'},
+        {'menu': 'Contact Us', 'url': '/contact'}
+    ]
+    current_url = request.path
+    d = {
+        'header': header,
+        'contactus': contactus,
+        'menu': menu,
+        'slider': slider,
+        'about': about,
+        'current_url': current_url
+
+    }
+    return render(request, 'contact.html', context=d)
 
 @login_required(login_url='/admin/')
 def admin_view(request):
@@ -298,9 +403,12 @@ def about_create(request):
         form = AboutForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('about_list')
+            return redirect('about_list')  # редирект на страницу со списком
+        else:
+            print(form.errors)  # Вывод ошибок формы для отладки
     else:
         form = AboutForm()
+
     return render(request, 'admin/about_create.html', {'form': form})
 
 
@@ -569,11 +677,11 @@ def contactus_create(request):
             return redirect('contactus_list')
     else:
         form = ContactUsForm()
-    return render(request, 'admin/contactus_create.html', {'form': form})
+    return render(request, 'admin/contact_us_create.html', {'form': form})
 
 def contactus_list(request):
     contactus_entries = ContactUs.objects.all()
-    return render(request, 'admin/contactus_list.html', {'contactus_entries': contactus_entries})
+    return render(request, 'admin/contact_us_list.html', {'contactus_entries': contactus_entries})
 
 def contactus_update(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
@@ -584,14 +692,14 @@ def contactus_update(request, pk):
             return redirect('contactus_list')
     else:
         form = ContactUsForm(instance=contactus_entry)
-    return render(request, 'admin/contactus_update.html', {'form': form, 'contactus_entry': contactus_entry})
+    return render(request, 'admin/contact_us_update.html', {'form': form, 'contactus_entry': contactus_entry})
 
 def contactus_delete(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
     if request.method == 'POST':
         contactus_entry.delete()
         return redirect('contactus_list')
-    return render(request, 'admin/contactus_delete.html', {'contactus_entry': contactus_entry})
+    return render(request, 'admin/contact_us_delete.html', {'contactus_entry': contactus_entry})
 
 
 def subscribe_create(request):

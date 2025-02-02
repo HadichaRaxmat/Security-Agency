@@ -58,14 +58,14 @@ class UserContact(models.Model):
 
 
 class Header(models.Model):
-    logo = models.CharField(max_length=20)
+    logo = models.CharField(max_length=100)
 
     def __str__(self):
         return self.logo
 
 
 class Menu(models.Model):
-    menu = models.CharField(max_length=20)
+    menu = models.CharField(max_length=100)
 
     def __str__(self):
         return self.menu
@@ -94,7 +94,7 @@ class Slider(models.Model):
 class About(models.Model):
     image = models.ImageField(upload_to='blog/slider_photos/', blank=True, null=True)
     title = models.CharField(max_length=100)
-    text = models.CharField(max_length=400)
+    text = models.CharField(max_length=1000)
     last = models.CharField(max_length=50)
 
     def __str__(self):
