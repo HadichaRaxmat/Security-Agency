@@ -130,6 +130,7 @@ class Client(models.Model):
 
 
 class Touch(models.Model):
+    image = models.ImageField(upload_to='blog/touch_photos/', blank=True, null=True)
     title = models.CharField(max_length=50)
     last = models.CharField(max_length=30)
 
