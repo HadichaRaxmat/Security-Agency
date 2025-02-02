@@ -16,6 +16,12 @@ def home_view(request):
     contactus = ContactUs.objects.all()
     slider = Slider.objects.all()
     about = About.objects.all()
+    serviceh = ServiceHeader.objects.all()
+    service = Service.objects.all()
+    client = Client.objects.all()
+    touch = Touch.objects.all()
+    team = Team.objects.all()
+    guard = Guard.objects.all()
     menu = [
         {'menu': 'Home', 'url': '/'},
         {'menu': 'About', 'url': '/about'},
@@ -31,7 +37,14 @@ def home_view(request):
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url
+        'current_url': current_url,
+        'serviceh': serviceh,
+        'service': service,
+        'client': client,
+        'touch': touch,
+        'team': team,
+        'guard': guard
+
     }
     return render(request, 'index.html', context=d)
 
@@ -134,6 +147,19 @@ def contact_view(request):
 
     }
     return render(request, 'contact.html', context=d)
+
+
+def user_contact_view(request):
+    if request.method == 'POST':
+        data = request.POST
+        contact = UserContact.objects.create(name=data['name'], email=data['email'], phone=data['phone'], message=data['message'])
+        contact.save()
+        return redirect('/')
+    return render(request, 'index.html')
+
+def contact_list_view(request):
+    user_contacts = UserContact.objects.all()
+    return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
 
 @login_required(login_url='/admin/')
 def admin_view(request):
@@ -538,12 +564,13 @@ def client_delete(request, pk):
 
 def touch_create(request):
     if request.method == 'POST':
-        form = TouchForm(request.POST)
+        form = TouchForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('touch_list')
     else:
         form = TouchForm()
+
     return render(request, 'admin/touch_create.html', {'form': form})
 
 def touch_list(request):
@@ -553,12 +580,13 @@ def touch_list(request):
 def touch_update(request, pk):
     touch = get_object_or_404(Touch, id=pk)
     if request.method == 'POST':
-        form = TouchForm(request.POST, instance=touch)
+        form = TouchForm(request.POST, request.FILES, instance=touch)
         if form.is_valid():
             form.save()
             return redirect('touch_list')
     else:
         form = TouchForm(instance=touch)
+
     return render(request, 'admin/touch_update.html', {'form': form, 'touch': touch})
 
 def touch_delete(request, pk):

@@ -152,7 +152,7 @@ class ClientForm(forms.ModelForm):
 class TouchForm(forms.ModelForm):
     class Meta:
         model = Touch
-        fields = ['title', 'last']
+        fields = ['title', 'last', 'image']
 
 
 class TeamForm(forms.ModelForm):
