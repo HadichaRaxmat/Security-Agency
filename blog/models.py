@@ -80,7 +80,7 @@ class HeaderTouch(models.Model):
 
 
 class Slider(models.Model):
-    image = models.ImageField(upload_to='blog/banner_photos/', blank=True, null=True)
+    image = models.ImageField(upload_to='banner_photos/', blank=True, null=True)
     title = models.CharField(max_length=100)
     title_continue = models.CharField(max_length=100)
     text = models.CharField(max_length=350)
@@ -92,7 +92,7 @@ class Slider(models.Model):
 
 
 class About(models.Model):
-    image = models.ImageField(upload_to='blog/slider_photos/', blank=True, null=True)
+    image = models.ImageField(upload_to='slider_photos/', blank=True, null=True)
     title = models.CharField(max_length=100)
     text = models.CharField(max_length=1000)
     last = models.CharField(max_length=50)
@@ -120,7 +120,7 @@ class Service(models.Model):
 
 
 class Client(models.Model):
-    image = models.ImageField(upload_to='blog/client_photos/', blank=True, null=True)
+    image = models.ImageField(upload_to='client_photos/', blank=True, null=True)
     name = models.CharField(max_length=50)
     title = models.CharField(max_length=200)
     text = models.CharField(max_length=400)
@@ -130,7 +130,7 @@ class Client(models.Model):
 
 
 class Touch(models.Model):
-    image = models.ImageField(upload_to='blog/touch_photos/', blank=True, null=True)
+    image = models.ImageField(upload_to='touch_photos/', blank=True, null=True)
     title = models.CharField(max_length=50)
     last = models.CharField(max_length=30)
 
@@ -151,7 +151,7 @@ class Team(models.Model):
 class Guard(models.Model):
     name = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='blog/guard_photos/', blank=True, null=True)
+    image = models.ImageField(upload_to='guard_photos/', blank=True, null=True)
 
     def __str__(self):
         return self.name
