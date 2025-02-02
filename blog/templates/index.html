@@ -218,20 +218,16 @@
                   <input name="name" type="text" id="name" placeholder="Full Name" />
                 </div>
                 <div>
-                  <input name=email type="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="EMAIL...*" required="">
+                  <input name="email" type="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="EMAIL...*" required="">
                 </div>
                 <div>
-                  <input name=phone type="text" id="phone" placeholder="PHONE NUMBER" required="">
+                  <input name="iphone" type="text" id="phone" placeholder="PHONE NUMBER" required="">
                 </div>
                 <div class="">
                   <input name="message" type="text" id="message" placeholder="Message" class="message_input" />
                 </div>
                 <div class="btn-box ">
-                  <button type="submit">
-                    {% for t in touch %}
-                      {{ t.last }}
-                    {% endfor %}
-                  </button>
+                  <button type="submit" id="form-submit" class="button">SEND</button>
                 </div>
               </div>
             </div>

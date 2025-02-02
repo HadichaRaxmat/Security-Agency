@@ -104,7 +104,10 @@ class AdminUserAuthenticationForm(AuthenticationForm):
 
         return cleaned_data
 
-
+class UserContactForm(forms.ModelForm):
+    class Meta:
+        model = UserContact
+        fields = ['name', 'email', 'phone', 'message']
 
 class HeaderForm(forms.ModelForm):
     class Meta:
