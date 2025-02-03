@@ -210,29 +210,31 @@
     <div class="">
       <div class="row">
         <div class="col-md-7 mx-auto">
-          <form id="contact" action="/contact/" method="post">
-            {% csrf_token %}
-            <div class="contact_form-container">
-              <div>
+            <form action="{{ contact_url }}" method="post">
+              {% csrf_token %}
+              <div class="contact_form-container">
                 <div>
-                  <input name="name" type="text" id="name" placeholder="Full Name" />
-                </div>
-                <div>
-                  <input name="email" type="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="EMAIL...*" required="">
-                </div>
-                <div>
-                  <input name="iphone" type="text" id="phone" placeholder="PHONE NUMBER" required="">
-                </div>
-                <div class="">
-                  <input name="message" type="text" id="message" placeholder="Message" class="message_input" />
-                </div>
-                <div class="btn-box ">
-                  <button type="submit" id="form-submit" class="button">SEND</button>
+                  <div>
+                    <input name="name" type="text" placeholder="Full Name" />
+                  </div>
+                  <div>
+                    <input name="email" type="email" placeholder="Email " />
+                  </div>
+                  <div>
+                    <input name="phone" type="text" placeholder="Phone Number" />
+                  </div>
+                  <div class="">
+                    <input name="message" type="text" placeholder="Message" class="message_input" />
+                  </div>
+                  <div class="btn-box ">
+                    <button type="submit">
+                      Send
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
       </div>
     </div>
   </div>

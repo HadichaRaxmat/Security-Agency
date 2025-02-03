@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
@@ -22,6 +23,9 @@ def home_view(request):
     touch = Touch.objects.all()
     team = Team.objects.all()
     guard = Guard.objects.all()
+    contact_url = reverse('contact')
+    info = Info.objects.all()
+    subscribe = Subscribe.objects.all()
     menu = [
         {'menu': 'Home', 'url': '/'},
         {'menu': 'About', 'url': '/about'},
@@ -43,7 +47,10 @@ def home_view(request):
         'client': client,
         'touch': touch,
         'team': team,
-        'guard': guard
+        'guard': guard,
+        'contact_url': contact_url,
+        'info': info,
+        'subscribe': subscribe
 
     }
     return render(request, 'index.html', context=d)
@@ -54,6 +61,8 @@ def about_view(request):
     menu = Menu.objects.all()
     slider = Slider.objects.all()
     about = About.objects.all()
+    info = Info.objects.all()
+    subscribe = Subscribe.objects.all()
     menu = [
         {'menu': 'Home', 'url': '/'},
         {'menu': 'About', 'url': '/about'},
@@ -68,7 +77,9 @@ def about_view(request):
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url
+        'current_url': current_url,
+        'info': info,
+        'subscribe': subscribe
 
     }
     return render(request, 'about.html', context=d)
@@ -98,6 +109,7 @@ def service_view(request):
     }
     return render(request, 'service.html', context=d)
 
+
 def guard_view(request):
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
@@ -124,6 +136,11 @@ def guard_view(request):
     return render(request, 'guard.html', context=d)
 
 def contact_view(request):
+    if request.method == 'POST':
+        data = request.POST
+        contact = UserContact.objects.create(name=data['name'], email=data['email'], phone=data['phone'], message=data['message'])
+        contact.save()
+        return redirect('/')
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
     menu = Menu.objects.all()
@@ -149,17 +166,6 @@ def contact_view(request):
     return render(request, 'contact.html', context=d)
 
 
-def user_contact_view(request):
-    if request.method == 'POST':
-        data = request.POST
-        contact = UserContact.objects.create(name=data['name'], email=data['email'], phone=data['phone'], message=data['message'])
-        contact.save()
-        return redirect('/')
-    return render(request, 'index.html')
-
-def contact_list_view(request):
-    user_contacts = UserContact.objects.all()
-    return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
 
 @login_required(login_url='/admin/')
 def admin_view(request):
@@ -796,34 +802,34 @@ def footer_delete(request, pk):
     return render(request, 'admin/footer_delete.html', {'footer': footer})
 
 
-def usercontact_create(request):
+def user_contact_create(request):
     if request.method == 'POST':
         form = UserContactForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('usercontact_list')
+            return redirect('user_contact_list')
     else:
         form = UserContactForm()
     return render(request, 'admin/user_contact_create.html', {'form': form})
 
-def usercontact_list(request):
-    usercontacts = UserContact.objects.all()
-    return render(request, 'admin/user_contact_list.html', {'usercontacts': usercontacts})
+def user_contact_list(request):
+    user_contacts = UserContact.objects.all()
+    return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
 
-def usercontact_update(request, pk):
-    usercontact = get_object_or_404(UserContact, id=pk)
+def user_contact_update(request, pk):
+    user_contact = get_object_or_404(UserContact, id=pk)
     if request.method == 'POST':
-        form = UserContactForm(request.POST, instance=usercontact)
+        form = UserContactForm(request.POST, instance=user_contact)
         if form.is_valid():
             form.save()
-            return redirect('usercontact_list')
+            return redirect('user_contact_list')
     else:
-        form = UserContactForm(instance=usercontact)
-    return render(request, 'admin/user_contact_update.html', {'form': form, 'usercontact': usercontact})
+        form = UserContactForm(instance=user_contact)
+    return render(request, 'admin/user_contact_update.html', {'form': form, 'user_contact': user_contact})
 
-def usercontact_delete(request, pk):
-    usercontact = get_object_or_404(UserContact, id=pk)
+def user_contact_delete(request, pk):
+    user_contact = get_object_or_404(UserContact, id=pk)
     if request.method == 'POST':
-        usercontact.delete()
-        return redirect('usercontact_list')
-    return render(request, 'admin/user_contact_delete.html', {'usercontact': usercontact})
+        user_contact.delete()
+        return redirect('user_contact_list')
+    return render(request, 'admin/user_contact_delete.html', {'user_contact': user_contact})

@@ -28,7 +28,7 @@ urlpatterns = [
     path('', home_view, name="home"),
     path('service/', service_view),
     path('guard/', guard_view),
-    path('contact/', contact_view),
+    path('contact/', contact_view, name='contact'),
     path('about/', about_view),
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
@@ -115,8 +115,8 @@ urlpatterns = [
     path('footer/update/<int:pk>/', views.footer_update, name='footer_update'),
     path('footer/delete/<int:pk>/', views.footer_delete, name='footer_delete'),
 
-    path('user-contact/create/', views.usercontact_create, name='usercontact_create'),
-    path('user-contact/list/', views.usercontact_list, name='usercontact_list'),
-    path('user-contact/update/<int:pk>/', views.usercontact_update, name='usercontact_update'),
-    path('user-contact/delete/<int:pk>/', views.usercontact_delete, name='usercontact_delete'),
+    path('user-contact/create/', views.user_contact_create, name='user_contact_create'),
+    path('user-contact/list/', views.user_contact_list, name='user_contact_list'),
+    path('user-contact/update/<int:pk>/', views.user_contact_update, name='user_contact_update'),
+    path('user-contact/delete/<int:pk>/', views.user_contact_delete, name='user_contact_delete'),
 ]

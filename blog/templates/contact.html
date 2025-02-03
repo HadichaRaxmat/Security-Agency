@@ -30,20 +30,21 @@
       <div class="">
         <div class="row">
           <div class="col-md-7 mx-auto">
-            <form action="#">
+            <form action="{% url 'contact' %}" method="post">
+              {% csrf_token %}
               <div class="contact_form-container">
                 <div>
                   <div>
-                    <input type="text" placeholder="Full Name" />
+                    <input name="name" type="text" placeholder="Full Name" />
                   </div>
                   <div>
-                    <input type="email" placeholder="Email " />
+                    <input name="email" type="email" placeholder="Email " />
                   </div>
                   <div>
-                    <input type="text" placeholder="Phone Number" />
+                    <input name="phone" type="text" placeholder="Phone Number" />
                   </div>
                   <div class="">
-                    <input type="text" placeholder="Message" class="message_input" />
+                    <input name="message" type="text" placeholder="Message" class="message_input" />
                   </div>
                   <div class="btn-box ">
                     <button type="submit">
