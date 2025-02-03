@@ -4,9 +4,11 @@
   <div class="hero_area">
   <!-- header section strats -->
   <div class="hero_bg_box">
+    {% for s in slider %}
     <div class="img-box">
-      <img src="{% static 'images/hero-bg.jpg' %}" alt="">
+      <img src="{{ s.image.url }}" alt="">
     </div>
+    {% endfor %}
   </div>
 
   {% include 'header.html' %}
@@ -14,44 +16,48 @@
 
 
   <!-- slider section -->
-  <section class=" slider_section ">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        {% for s in slider %}
-        <div class="carousel-item active">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-7">
-                <div class="detail-box">
-                  <h1>
-                    {{ s.title }} <br>
-                    <span>
-                      {{ s.title_continue }}
-                    </span>
-                  </h1>
-                  <p>
-                    {{ s.text }}
-                  </p>
-                  <div class="btn-box">
-                    <a href="" class="btn-1"> {{ s.last }} </a>
-                    <a href="" class="btn-2">Get A Quote</a>
-                  </div>
+<section class="slider_section">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      {% for s in slider %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-7">
+              <div class="detail-box">
+                <h1>
+                  {{ s.title }} <br>
+                  <span>
+                    {{ s.title_continue }}
+                  </span>
+                </h1>
+                <p>
+                  {{ s.text }}
+                </p>
+                <div class="btn-box">
+                  <a href="" class="btn-1"> {{ s.last }} </a>
+                  <a href="" class="btn-2">Get A Quote</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {% endfor %}
       </div>
-      <div class="container idicator_container">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-      </div>
+      {% endfor %}
     </div>
-  </section>
+
+    <!-- Indicators -->
+    <div class="container idicator_container">
+      <ol class="carousel-indicators">
+        {% for s in slider %}
+        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
+
+
   <!-- end slider section -->
   </div>
 
@@ -155,10 +161,10 @@
     </div>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
+        {% for c in client %}
         <div class="carousel-item active">
           <div class="box">
             <div class="img-box">
-              {% for c in client %}
               <img src="{{ c.image.url }}" alt="">
             </div>
             <div class="detail-box">
@@ -168,10 +174,10 @@
               <p>
                 {{ c.text }}
               </p>
-              {% endfor %}
             </div>
           </div>
         </div>
+        {% endfor %}
       </div>
       <div class="carousel_btn-box">
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

@@ -66,7 +66,7 @@ class Header(models.Model):
 
 class Menu(models.Model):
     menu = models.CharField(max_length=100)
-    url = models.URLField()
+    url = models.CharField(max_length=500)
 
     def __str__(self):
         return self.menu
