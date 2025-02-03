@@ -104,6 +104,7 @@
     </div>
     {% endfor %}
     <div class="row">
+      {% for s in service %}
       <div class="col-md-4">
         <div class="box ">
           <div class="img-box">
@@ -123,7 +124,6 @@
             </svg>
           </div>
           <div class="detail-box">
-            {% for s in service %}
             <h6>
               {{ s.title }}
             </h6>
@@ -133,10 +133,10 @@
             <a href="">
               {{ s.last }}
             </a>
-            {% endfor %}
           </div>
         </div>
       </div>
+      {% endfor %}
     </div>
   </div>
   </section>
@@ -257,8 +257,8 @@
       {% endfor %}
     </div>
     <div class="row">
+      {% for g in guard %}
       <div class="col-md-4 col-sm-6 mx-auto ">
-        {% for g in guard %}
         <div class="box">
           <div class="img-box">
             <img src="{{ g.image.url }}" alt="">
@@ -272,8 +272,8 @@
             </h6>
           </div>
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
     <div class="btn-box">
       {% for t in touch %}
