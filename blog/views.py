@@ -27,22 +27,14 @@ def home_view(request):
     info = Info.objects.all()
     subscribe = Subscribe.objects.all()
     footer = Footer.objects.all()
-    menu = [
-        {'menu': 'Home', 'url': '/'},
-        {'menu': 'About', 'url': '/about'},
-        {'menu': 'Services', 'url': '/service'},
-        {'menu': 'Guards', 'url': '/guard'},
-        {'menu': 'Contact Us', 'url': '/contact'}
-    ]
+    menu = Menu.objects.all()
     current_url = request.path
-
     d = {
         'header': header,
         'contactus': contactus,
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url,
         'serviceh': serviceh,
         'service': service,
         'client': client,
@@ -52,8 +44,8 @@ def home_view(request):
         'contact_url': contact_url,
         'info': info,
         'subscribe': subscribe,
-        'footer': footer
-
+        'footer': footer,
+        'current_url': current_url,
     }
     return render(request, 'index.html', context=d)
 
@@ -65,23 +57,14 @@ def about_view(request):
     about = About.objects.all()
     info = Info.objects.all()
     subscribe = Subscribe.objects.all()
-    menu = [
-        {'menu': 'Home', 'url': '/'},
-        {'menu': 'About', 'url': '/about'},
-        {'menu': 'Services', 'url': '/service'},
-        {'menu': 'Guards', 'url': '/guard'},
-        {'menu': 'Contact Us', 'url': '/contact'}
-    ]
-    current_url = request.path
     d = {
         'header': header,
         'contactus': contactus,
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url,
         'info': info,
-        'subscribe': subscribe
+        'subscribe': subscribe,
 
     }
     return render(request, 'about.html', context=d)
@@ -92,22 +75,12 @@ def service_view(request):
     menu = Menu.objects.all()
     slider = Slider.objects.all()
     about = About.objects.all()
-    menu = [
-        {'menu': 'Home', 'url': '/'},
-        {'menu': 'About', 'url': '/about'},
-        {'menu': 'Services', 'url': '/service'},
-        {'menu': 'Guards', 'url': '/guard'},
-        {'menu': 'Contact Us', 'url': '/contact'}
-    ]
-    current_url = request.path
     d = {
         'header': header,
         'contactus': contactus,
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url
-
     }
     return render(request, 'service.html', context=d)
 
