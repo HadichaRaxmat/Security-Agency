@@ -5,47 +5,28 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
-        {% for i in info %}
+        {% if info|length > 0 %}
         <div class="info_logo">
           <a class="navbar-brand" href="info#">
             <span>
-              {{ i.title }}
+              {{ info.0.title }}
             </span>
           </a>
           <p>
-            {{ i.text }}
+            {{ info.0.text }}
           </p>
         </div>
-        {% endfor %}
+        {% endif %}
       </div>
       <div class="col-md-3">
-        <div class="info_links">
-          <h5>
-            Useful Link
-          </h5>
-          <ul>
-            <li>
-              <a href="">
-                dolor sit amet, consectetur
-              </a>
-            </li>
-            <li>
-              <a href="">
-                magna aliqua. Ut enim ad
-              </a>
-            </li>
-            <li>
-              <a href="">
-                minim veniam,
-              </a>
-            </li>
-            <li>
-              <a href="">
-                quisdotempor incididunt r
-              </a>
-            </li>
-          </ul>
-        </div>
+        {% if info|length > 1 %}  <!-- Проверяем, есть ли второй элемент -->
+          <div class="info_logo">
+            <a class="navbar-brand" href="info#">
+              <span>{{ info.1.title }}</span> <!-- Второй элемент -->
+            </a>
+            <p>{{ info.1.text }}</p>
+          </div>
+        {% endif %}
       </div>
       <div class="col-md-3">
         <div class="info_info">
@@ -112,8 +93,10 @@
   <!-- footer section -->
   <footer class="container-fluid footer_section">
     <p>
-      &copy; <span id="currentYear"></span> All Rights Reserved. Design by
+      {% for f in footer %}
+      &copy; <span id="currentYear"></span> {{ f.info }}
       <a href="https://html.design/">Free Html Templates</a>
+      {% endfor %}
     </p>
   </footer>
   <!-- footer section -->
