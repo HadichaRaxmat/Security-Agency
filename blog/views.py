@@ -26,6 +26,7 @@ def home_view(request):
     contact_url = reverse('contact')
     info = Info.objects.all()
     subscribe = Subscribe.objects.all()
+    footer = Footer.objects.all()
     menu = [
         {'menu': 'Home', 'url': '/'},
         {'menu': 'About', 'url': '/about'},
@@ -50,7 +51,8 @@ def home_view(request):
         'guard': guard,
         'contact_url': contact_url,
         'info': info,
-        'subscribe': subscribe
+        'subscribe': subscribe,
+        'footer': footer
 
     }
     return render(request, 'index.html', context=d)
