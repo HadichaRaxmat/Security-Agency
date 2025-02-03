@@ -53,7 +53,6 @@ def about_view(request):
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
     menu = Menu.objects.all()
-    slider = Slider.objects.all()
     about = About.objects.all()
     info = Info.objects.all()
     subscribe = Subscribe.objects.all()
@@ -61,7 +60,6 @@ def about_view(request):
         'header': header,
         'contactus': contactus,
         'menu': menu,
-        'slider': slider,
         'about': about,
         'info': info,
         'subscribe': subscribe,
@@ -75,12 +73,23 @@ def service_view(request):
     menu = Menu.objects.all()
     slider = Slider.objects.all()
     about = About.objects.all()
+    serviceh = ServiceHeader.objects.all()
+    service = Service.objects.all()
+    footer = Footer.objects.all()
+    info = Info.objects.all()
+    subscribe = Subscribe.objects.all()
     d = {
         'header': header,
         'contactus': contactus,
         'menu': menu,
         'slider': slider,
         'about': about,
+        'serviceh': serviceh,
+        'service': service,
+        'footer': footer,
+        'info': info,
+        'subscribe': subscribe
+
     }
     return render(request, 'service.html', context=d)
 
@@ -91,13 +100,11 @@ def guard_view(request):
     menu = Menu.objects.all()
     slider = Slider.objects.all()
     about = About.objects.all()
-    menu = [
-        {'menu': 'Home', 'url': '/'},
-        {'menu': 'About', 'url': '/about'},
-        {'menu': 'Services', 'url': '/service'},
-        {'menu': 'Guards', 'url': '/guard'},
-        {'menu': 'Contact Us', 'url': '/contact'}
-    ]
+    footer = Footer.objects.all()
+    info = Info.objects.all()
+    subscribe = Subscribe.objects.all()
+    team = Team.objects.all()
+    guard = Guard.objects.all()
     current_url = request.path
     d = {
         'header': header,
@@ -105,7 +112,12 @@ def guard_view(request):
         'menu': menu,
         'slider': slider,
         'about': about,
-        'current_url': current_url
+        'current_url': current_url,
+        'footer': footer,
+        'info': info,
+        'subscribe': subscribe,
+        'team': team,
+        'guard': guard,
 
     }
     return render(request, 'guard.html', context=d)
@@ -119,22 +131,15 @@ def contact_view(request):
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
     menu = Menu.objects.all()
-    slider = Slider.objects.all()
-    about = About.objects.all()
-    menu = [
-        {'menu': 'Home', 'url': '/'},
-        {'menu': 'About', 'url': '/about'},
-        {'menu': 'Services', 'url': '/service'},
-        {'menu': 'Guards', 'url': '/guard'},
-        {'menu': 'Contact Us', 'url': '/contact'}
-    ]
+    info = Info.objects.all()
+    subscribe = Subscribe.objects.all()
     current_url = request.path
     d = {
         'header': header,
         'contactus': contactus,
         'menu': menu,
-        'slider': slider,
-        'about': about,
+        'info': info,
+        'subscribe': subscribe,
         'current_url': current_url
 
     }
