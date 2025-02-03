@@ -119,7 +119,7 @@ class HeaderForm(forms.ModelForm):
 class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
-        fields = ['menu']
+        fields = ['menu', 'url']
 
 
 class SliderForm(forms.ModelForm):
