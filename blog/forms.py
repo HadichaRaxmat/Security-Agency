@@ -123,13 +123,9 @@ class MenuForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["menu"].widget = forms.Select(choices=Menu.MENU_CHOICES, attrs={"class": "form-control"})
+        self.fields["menu"].widget = forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"})
+        self.fields["is_active"].widget = forms.CheckboxInput(attrs={"class": "form-check-input"})
 
-    def clean_menu(self):
-        menu = self.cleaned_data.get('menu')
-        if Menu.objects.filter(menu=menu).exists():
-            raise forms.ValidationError("This menu item already exists.")
-        return menu
 
 
 class SliderForm(forms.ModelForm):
