@@ -4,7 +4,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from . import views
 from .views import (home_view, service_view, guard_view, contact_view, about_view, header_list, header_create,
-                    header_delete, header_update, menu_delete, menu_update, menu_list, menu_create, slider_delete,
+                    header_delete, header_update, menu_update, menu_list, menu_add, slider_delete,
                     slider_update, slider_list, slider_create, about_list, about_create, about_update, about_delete,
                     admin_list, admin_create, admin_update, admin_delete, admin_logout, admin_view)
 
@@ -50,10 +50,11 @@ urlpatterns = [
     path('header/update/<int:pk>/', header_update, name='header_update'), #update
     path('header/delete/<int:pk>/', header_delete, name='header_delete'), #delete
     #menu
-    path('menu/create/', menu_create, name='menu_create'), #create
+    path('menu/add/', menu_add, name='menu_add'), #create
     path('menu/list/', menu_list, name='menu_list'), # Header list
     path('menu/update/<int:pk>/', menu_update, name='menu_update'), #update
-    path('menu/delete/<int:pk>/', menu_delete, name='menu_delete'), #delete
+    path('menu/delete/<int:pk>/', views.menu_delete, name='menu_delete'), #delete
+    path('menu/visibility/<int:pk>/', views.menu_toggle_visibility, name='menu_toggle_visibility'),
     # slider
     path('slider/create/', slider_create, name='slider_create'),
     path('slider/list/', slider_list, name='slider_list'),

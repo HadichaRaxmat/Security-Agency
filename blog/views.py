@@ -340,34 +340,37 @@ def header_delete(request, pk):
     return render(request, 'admin/header_delete.html', {'header': header})
 
 
-
-def menu_create(request):
-    if request.method == 'POST':
-        form = MenuForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('menu_list')
-    else:
-        form = MenuForm()
-        return render(request, 'admin/menu_create.html', {'form': form})
-
-
 def menu_list(request):
     menu = Menu.objects.all()
     return render(request, 'admin/menu_list.html', {'menu': menu})
 
 
+def menu_add(request):
+    if request.method == "POST":
+        form = MenuForm(request.POST)
+        if form.is_valid():
+            menu_instance = form.save()
+            url = menu_instance.get_url()
+            return redirect("menu_list")
+    else:
+        form = MenuForm()
+
+    return render(request, "admin/menu_add.html", {"form": form})
+
+
 def menu_update(request, pk):
-    menu = get_object_or_404(Menu, id=pk)
-    if request.method == 'POST':
+    menu = get_object_or_404(Menu, pk=pk)
+
+    if request.method == "POST":
         form = MenuForm(request.POST, instance=menu)
+
         if form.is_valid():
             form.save()
-            return redirect('menu_list')
+            return redirect("menu_list")
     else:
         form = MenuForm(instance=menu)
-    return render(request, 'admin/menu_update.html', {'form': form, 'menu': menu})
 
+    return render(request, "admin/menu_update.html", {"form": form})
 
 def menu_delete(request, pk):
     menu = get_object_or_404(Menu, id=pk)
@@ -376,6 +379,11 @@ def menu_delete(request, pk):
         return redirect('menu_list')
     return render(request, 'admin/menu_delete.html', {'menu': menu})
 
+def menu_toggle_visibility(request, pk):
+    menu = get_object_or_404(Menu, pk=pk)
+    menu.is_active = not menu.is_active
+    menu.save()
+    return redirect('menu_list')
 
 def slider_create(request):
     if request.method == 'POST':
