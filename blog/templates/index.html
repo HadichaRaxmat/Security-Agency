@@ -216,7 +216,7 @@
     <div class="">
       <div class="row">
         <div class="col-md-7 mx-auto">
-            <form action="{{ contact_url }}" method="post">
+            <form id="contactForm" action="{% url 'contact' %}" method="post">
               {% csrf_token %}
               <div class="contact_form-container">
                 <div>
@@ -240,11 +240,14 @@
                 </div>
               </div>
             </form>
+            <!-- Место для отображения сообщения об успешной отправке -->
+            <div id="message-status" style="display: none; margin-top: 20px; color: green;"></div>
           </div>
       </div>
     </div>
   </div>
   </section>
+  <script src="{% static 'js/contact.js' %}"></script>
 
   <!-- end contact section -->
 
