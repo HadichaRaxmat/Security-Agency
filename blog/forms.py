@@ -119,7 +119,17 @@ class HeaderForm(forms.ModelForm):
 class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
-        fields = ['menu', 'url']
+        fields = ["menu", "is_active"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["menu"].widget = forms.Select(choices=Menu.MENU_CHOICES, attrs={"class": "form-control"})
+
+    def clean_menu(self):
+        menu = self.cleaned_data.get('menu')
+        if Menu.objects.filter(menu=menu).exists():
+            raise forms.ValidationError("This menu item already exists.")
+        return menu
 
 
 class SliderForm(forms.ModelForm):
