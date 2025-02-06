@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
+from django.core.exceptions import ValidationError
 
 
 
@@ -65,11 +66,29 @@ class Header(models.Model):
 
 
 class Menu(models.Model):
-    menu = models.CharField(max_length=100)
-    url = models.CharField(max_length=500)
+    MENU_CHOICES = [
+        ("HOME", "HOME"),
+        ("SERVICES", "SERVICES"),
+        ("GUARDS", "GUARDS"),
+        ("CONTACT US", "CONTACT US"),
+        ("ABOUT", "ABOUT"),
+    ]
+
+    menu = models.CharField(max_length=100, choices=MENU_CHOICES, unique=True)
+    is_active = models.BooleanField(default=True)
+
+    def get_url(self):
+        menu_urls = {
+            "HOME": "/",
+            "SERVICES": "/service/",
+            "GUARDS": "/guard/",
+            "CONTACT US": "/contact/",
+            "ABOUT": "/about/",
+        }
+        return menu_urls.get(self.menu, "#")
 
     def __str__(self):
-        return self.menu
+        return dict(self.MENU_CHOICES).get(self.menu, "Unknown")
 
 
 
