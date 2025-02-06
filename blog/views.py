@@ -372,6 +372,9 @@ def menu_update(request, pk):
 
     return render(request, "admin/menu_update.html", {"form": form})
 
+
+
+
 def menu_delete(request, pk):
     menu = get_object_or_404(Menu, id=pk)
     if request.method == 'POST':
