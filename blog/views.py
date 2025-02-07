@@ -350,23 +350,23 @@ def menu_add(request):
         form = MenuForm(request.POST)
         if form.is_valid():
             menu_instance = form.save()
-            url = menu_instance.get_url()
+            menu_instance.get_url()
             return redirect("menu_list")
     else:
         form = MenuForm()
-
+        print(form)
     return render(request, "admin/menu_add.html", {"form": form})
 
 
 def menu_update(request, pk):
     menu = get_object_or_404(Menu, pk=pk)
-
     if request.method == "POST":
         form = MenuForm(request.POST, instance=menu)
+        if  form.errors:
+            return render(request, "admin/menu_update.html", {'text': form.errors})
+        form.save()
+        return redirect("menu_list")
 
-        if form.is_valid():
-            form.save()
-            return redirect("menu_list")
     else:
         form = MenuForm(instance=menu)
 
