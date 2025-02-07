@@ -14,7 +14,8 @@
             <thead class="thead-light">
                 <tr>
                     <th><i class="fas fa-hashtag"></i> ID</th>
-                    <th><i class="fas fa-heading"></i> Menu</th>
+                    <th><i class="fas fa-heading"></i> Menu (System Name)</th>
+                    <th><i class="fas fa-heading"></i> Title</th>
                     <th class="text-center"><i class="fas fa-cogs"></i> Actions</th>
                     <th class="text-center"><i class="fas fa-eye"></i> Visibility</th>
                 </tr>
@@ -23,7 +24,8 @@
                 {% for m in menu %}
                 <tr>
                     <td>{{ m.id }}</td>
-                    <td>{{ m.menu|truncatewords:5 }}</td>
+                    <td>{{ m.menu }}</td>
+                    <td>{{ m.title|truncatewords:5 }}</td>
                     <td class="text-center">
                         <!-- Кнопка для редактирования названия меню -->
                         <a href="{% url 'menu_update' m.id %}" class="btn btn-sm btn-outline-info" title="Edit">
@@ -44,7 +46,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="text-center text-muted">No data available</td>
+                    <td colspan="5" class="text-center text-muted">No data available</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -52,6 +54,8 @@
     </div>
 </div>
 {% endblock %}
+
+
 
 
 
