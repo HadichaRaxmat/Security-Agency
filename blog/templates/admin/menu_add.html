@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark">
-        <h3 class="card-title m-0">Edit Menu</h3>
+        <h3 class="card-title m-0">Add Menu</h3>
     </div>
     <div class="card-body">
         <form method="POST" enctype="multipart/form-data">
@@ -17,6 +17,12 @@
                         <option value="{{ choice_value }}" {% if form.menu.value == choice_value %}selected{% endif %}>{{ choice_label }}</option>
                     {% endfor %}
                 </select>
+            </div>
+
+            <!-- Поле для заголовка меню -->
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Title</label>
+                <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" id="id_title">
             </div>
 
             <!-- Статус активности -->
