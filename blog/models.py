@@ -74,6 +74,7 @@ class Menu(models.Model):
     ]
 
     menu = models.CharField(max_length=100, choices=MENU_CHOICES, unique=True)
+    title = models.CharField(max_length=100, default="")
     is_active = models.BooleanField(default=True)
 
     def get_url(self):
@@ -87,7 +88,8 @@ class Menu(models.Model):
         return menu_urls.get(self.menu, "#")
 
     def __str__(self):
-        return dict(self.MENU_CHOICES).get(self.menu, "Unknown")
+        return self.title or dict(self.MENU_CHOICES).get(self.menu, "Unknown")
+
 
 
 
