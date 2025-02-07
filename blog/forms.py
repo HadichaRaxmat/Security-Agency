@@ -119,11 +119,12 @@ class HeaderForm(forms.ModelForm):
 class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
-        fields = ["menu", "is_active"]
+        fields = ["title", "menu", "is_active"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["menu"].widget = forms.TextInput(attrs={"class": "form-control", "readonly": "readonly"})
+        self.fields["title"].widget = forms.TextInput(attrs={"class": "form-control"})
         self.fields["is_active"].widget = forms.CheckboxInput(attrs={"class": "form-check-input"})
 
 
