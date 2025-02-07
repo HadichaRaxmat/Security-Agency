@@ -9,19 +9,25 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="mb-3">
-                <label for="id_menu" class="form-label">Menu</label>
-                <input type="text" name="menu" value="{{ form.menu.value|default:'' }}" class="form-control" id="id_menu">
+            <div>
+                {{ text }}
             </div>
 
-            <!-- Скрытое поле для URL -->
-            <input type="hidden" name="url" value="{{ form.url.value }}">
+            <div class="mb-3">
+                <label for="id_menu" class="form-label">Menu (System Name)</label>
+                <input type="text" name="menu" value="{{ form.menu.value|default:'' }}" class="form-control" id="id_menu" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Menu Title</label>
+                <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" id="id_title">
+            </div>
 
             <div class="mb-3">
                 <label for="id_is_active" class="form-label">Active</label>
                 <select name="is_active" class="form-control" id="id_is_active">
-                    <option value="True" {% if form.is_active.value == True %}selected{% endif %}>Active</option>
-                    <option value="False" {% if form.is_active.value == False %}selected{% endif %}>Inactive</option>
+                    <option value="True" {% if form.is_active.value %}selected{% endif %}>Active</option>
+                    <option value="False" {% if not form.is_active.value %}selected{% endif %}>Inactive</option>
                 </select>
             </div>
 
