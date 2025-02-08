@@ -28,9 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function showFlashMessage(text, color) {
+    function showFlashMessage(text) {
         flashMessage.textContent = text;
-        flashMessage.style.backgroundColor = color;
+        flashMessage.style.color = 'white'; // Белый текст
+        flashMessage.style.backgroundColor = 'transparent'; // Прозрачный фон
         flashMessage.style.display = 'block';
 
         setTimeout(() => {
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             flashMessage.classList.remove('hide');
         }, 3500);
     }
+
 
     function getCookie(name) {
         let cookieValue = null;
