@@ -6,16 +6,18 @@
         <h3 class="card-title m-0">Create New Header</h3>
     </div>
     <div class="card-body">
-        <form method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'header_create' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             <!-- Поле Logo -->
             <div class="mb-3">
                 <label for="id_logo" class="form-label">Logo</label>
-                <input type="text" name="logo" value="{{ form.logo.value|default:'' }}" class="form-control" id="id_logo">
-                <!-- Ошибка для поля Logo -->
+                <input type="text" name="logo" value="{{ form.logo.value|default:'' }}"
+                       class="form-control {% if form.logo.errors %}is-invalid{% endif %}"
+                       id="id_logo" aria-describedby="logoHelp">
+
                 {% if form.logo.errors %}
-                    <div class="text-danger small mt-1">
+                    <div class="invalid-feedback">
                         {{ form.logo.errors|join:", " }}
                     </div>
                 {% endif %}

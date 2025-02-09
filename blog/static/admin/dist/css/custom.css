@@ -9,3 +9,23 @@
     font-size: 16px;
     padding: 5px;
 }
+
+
+.popup {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-size: 18px;
+  text-align: center;
+  z-index: 10000;
+}
+
+.popup-content {
+  font-weight: bold;
+}
