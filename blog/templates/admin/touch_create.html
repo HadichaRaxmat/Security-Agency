@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New Touch</h3>
     </div>
     <div class="card-body">
-        <form method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'touch_create' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="id_title" class="form-label">Title</label>
