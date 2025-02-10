@@ -6,11 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
+CustomUser = get_user_model()
 from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs, \
     Subscribe, Footer, UserContact, CustomUser
 from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm, TouchForm, \
     TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm, AdminUserCreationForm,
-                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm)
+                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm, AdminUserUpdateForm)
 
 
 def home_view(request):
@@ -152,10 +153,17 @@ def contact_view(request):
 def admin_view(request):
     return render(request, 'admin/index.html')
 
+
 @login_required(login_url='/admin/')
 def admin_list(request):
-    users = CustomUser.objects.filter(is_staff=True)
+
+    if request.user.is_superuser:
+        users = CustomUser.objects.filter(is_staff=True)
+    else:
+        users = CustomUser.objects.filter(is_staff=True, is_admin=False, is_superuser=False)
+
     return render(request, 'admin/admin_list.html', {'users': users})
+
 
 @login_required(login_url='/admin/')
 def admin_create(request):
@@ -181,39 +189,36 @@ def admin_create(request):
 
 @login_required(login_url='/admin/')
 def admin_update(request, user_id):
-    CustomUser = get_user_model()
-    user = get_object_or_404(CustomUser, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id, is_admin=True)
 
     if not request.user.is_superuser:
-        messages.error(request, "You are not authorized to edit admin users.")
-        return redirect('admin_list')
+        return JsonResponse({"error": "You are not authorized to edit admin users."}, status=403)
 
     if request.method == 'POST':
-        form = AdminUserCreationForm(request.POST, instance=user)
+        form = AdminUserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, "Admin details updated successfully.")
-            return redirect('admin_list')
-    else:
-        form = AdminUserCreationForm(instance=user)
+            return JsonResponse({"success": "Admin details updated successfully.", "redirect": "/admin/list/"})
 
-    return render(request, 'admin/admin_update.html', {'form': form})
+    else:
+        form = AdminUserUpdateForm(instance=user)
+
+    return render(request, 'admin/admin_update.html', {'form': form, 'user': user})
+
 
 
 @login_required(login_url='/admin/')
 def admin_delete(request, user_id):
-    CustomUser = get_user_model()
-    user = get_object_or_404(CustomUser, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id, is_admin=True)
 
     if not request.user.is_superuser:
-        messages.error(request, "You are not authorized to delete admin users.")
-        return redirect('admin_list')
+        return JsonResponse({"error": "You are not authorized to delete admin users."}, status=403)
 
     if request.method == 'POST':
         user.delete()
-        messages.success(request, "Admin user deleted successfully.")
-        return redirect('admin_list')
-    return render(request, 'admin/admin_delete.html', {'admin': user})
+        return JsonResponse({"success": "Admin user deleted successfully.", "redirect": "/admin/list/"})
+
+    return render(request, 'admin/admin_delete.html', {'user': user})
 
 
 def admin_login(request):
@@ -275,8 +280,9 @@ def logout_view(request):
 
 
 def users_list(request):
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.filter(is_staff=False, is_superuser=False)
     return render(request, 'admin/users.html', {'users': users})
+
 
 def user_update(request, pk):
     user = get_object_or_404(CustomUser, id=pk)

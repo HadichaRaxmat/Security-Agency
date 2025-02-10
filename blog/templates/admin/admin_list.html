@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
+                    <td>{{ admin.email }}</td>
                     <td>
                         {% if user.is_superuser %}
                             <span class="badge badge-success">Superuser</span>
@@ -33,12 +33,12 @@
                             <span class="badge badge-info">Admin</span>
                         {% endif %}
                     </td>
-                    <td>{{ user.avatar }}</td>
+                    <td>{{ admin.avatar.url }}</td>
                     <td class="text-center">
-                        <a href="{% url 'admin_update' user.pk %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin_update' user.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'admin_delete' user.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin_delete' user.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

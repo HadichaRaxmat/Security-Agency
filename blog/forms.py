@@ -80,6 +80,29 @@ class AdminUserCreationForm(UserCreationForm):
         return user
 
 
+class AdminUserUpdateForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password (optional)'}),
+        required=False,
+        label="New Password"
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if self.cleaned_data['password']:
+            user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+
+
+
+
+
 class AdminUserAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
         label="Username or Email",
