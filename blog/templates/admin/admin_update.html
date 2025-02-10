@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Edit Admin</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'admin_update' %}" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'admin_update' admin.id %}" enctype="multipart/form-data" class="ajax-form">
             {% csrf_token %}
 
             <!-- Поле для username -->

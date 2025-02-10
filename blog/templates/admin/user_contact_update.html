@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Update User Contact</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'user_contact_update' %}" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'user_contact_update' user_contact.id %}" enctype="multipart/form-data" class="ajax-form">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="id_name" class="form-label">Name</label>

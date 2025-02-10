@@ -8,7 +8,7 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete Subscribe ID: {{ subscribe.id }}?</h5>
         <div class="d-flex justify-content-between">
-            <form method="POST" action="{% url 'subscribe_delete' header.id %}" class="ajax-form d-flex justify-content-between">
+            <form method="POST" action="{% url 'subscribe_delete' subscribe.id %}" class="ajax-form d-flex justify-content-between">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>

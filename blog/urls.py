@@ -112,9 +112,10 @@ urlpatterns = [
     path('subscribe/delete/<int:pk>/', views.subscribe_delete, name='subscribe_delete'),
 
     path('footer/create/', views.footer_create, name='footer_create'),
-    path('footer/list', views.footer_list, name='footer_list'),
+    path('footer/list/', views.footer_list, name='footer_list'),
     path('footer/update/<int:pk>/', views.footer_update, name='footer_update'),
     path('footer/delete/<int:pk>/', views.footer_delete, name='footer_delete'),
+    path('footer/bulk-delete/', views.footer_bulk_delete, name='footer_bulk_delete'),
 
     path('user-contact/create/', views.user_contact_create, name='user_contact_create'),
     path('user-contact/list/', views.user_contact_list, name='user_contact_list'),
