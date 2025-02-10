@@ -17,11 +17,9 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, username=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_admin', True)
-
+        extra_fields.setdefault('is_active', True)  # Добавляем
         if not username:
             raise ValueError("Superuser must have a username.")
-
         return self.create_user(email, password, username, **extra_fields)
 
 
@@ -38,13 +36,14 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         if self.is_superuser and not self.is_staff:
-            raise ValueError("Superuser must have is_staff=True.")
+            raise ValidationError("Superuser must have is_staff=True.")
         if not self.is_active and self.is_superuser:
-            raise ValueError("Superuser cannot be deactivated.")
+            raise ValidationError("Superuser cannot be deactivated.")
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email
+
 
 class UserContact(models.Model):
     name = models.CharField(max_length=30)
