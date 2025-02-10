@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
@@ -359,7 +360,7 @@ def menu_add(request):
 
 
 def menu_update(request, pk):
-    menu = get_object_or_404(Menu, pk=pk)
+    menu = get_object_or_404(Menu, id=pk)
     if request.method == "POST":
         form = MenuForm(request.POST, instance=menu)
         if  form.errors:
@@ -370,7 +371,7 @@ def menu_update(request, pk):
     else:
         form = MenuForm(instance=menu)
 
-    return render(request, "admin/menu_update.html", {"form": form})
+    return render(request, "admin/menu_update.html", {"form": form, 'menu': menu})
 
 
 
@@ -758,9 +759,8 @@ def subscribe_delete(request, pk):
         return redirect('subscribe_list')
     return render(request, 'admin/subscribe_delete.html', {'subscribe': subscribe})
 
-
 def footer_create(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = FooterForm(request.POST)
         if form.is_valid():
             form.save()
@@ -769,27 +769,46 @@ def footer_create(request):
         form = FooterForm()
     return render(request, 'admin/footer_create.html', {'form': form})
 
+
 def footer_list(request):
     footers = Footer.objects.all()
     return render(request, 'admin/footer_list.html', {'footers': footers})
 
+
 def footer_update(request, pk):
     footer = get_object_or_404(Footer, id=pk)
-    if request.method == 'POST':
+
+    if request.method == "POST":
         form = FooterForm(request.POST, instance=footer)
         if form.is_valid():
             form.save()
             return redirect('footer_list')
     else:
         form = FooterForm(instance=footer)
+
     return render(request, 'admin/footer_update.html', {'form': form, 'footer': footer})
+
 
 def footer_delete(request, pk):
     footer = get_object_or_404(Footer, id=pk)
+
     if request.method == 'POST':
         footer.delete()
         return redirect('footer_list')
+
     return render(request, 'admin/footer_delete.html', {'footer': footer})
+
+
+def footer_bulk_delete(request):
+    if request.method == 'POST':
+        selected_footers = request.POST.getlist('selected_footers')
+        if selected_footers:
+            Footer.objects.filter(id__in=selected_footers).delete()
+            messages.success(request, 'Selected footers deleted successfully!')
+        else:
+            messages.error(request, 'No footers selected for deletion.')
+
+    return redirect('footer_list')
 
 
 def user_contact_create(request):

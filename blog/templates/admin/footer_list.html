@@ -9,35 +9,43 @@
         </a>
     </div>
     <div class="card-body">
-        <table class="table table-bordered table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th><i class="fas fa-hashtag"></i> ID</th>
-                    <th><i class="fas fa-info-circle"></i> Footer Information</th>
-                    <th><i class="fas fa-cogs"></i> Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for footer in footers %}
-                <tr>
-                    <td>{{ footer.id }}</td>
-                    <td>{{ footer.info }}</td>
-                    <td class="text-center">
-                        <a href="{% url 'footer_update' footer.id %}" class="btn btn-sm btn-outline-info update-btn" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="{% url 'footer_delete' footer.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="text-center text-muted">No data</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <form id="bulk-delete-form" action="{% url 'footer_bulk_delete' %}" method="POST">
+            {% csrf_token %}
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th><input type="checkbox" id="select-all"> <i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-info-circle"></i> Footer Information</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for footer in footers %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_footers" value="{{ footer.id }}" class="footer-checkbox">
+                            {{ footer.id }}
+                        </td>
+                        <td>{{ footer.info }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'footer_update' footer.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'footer_delete' footer.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No data</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-danger btn-sm" id="bulk-delete-btn" disabled>Delete Selected</button>
+        </form>
     </div>
 </div>
+
 {% endblock %}
