@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Загрузка новой страницы через AJAX
+    // Функция для динамической загрузки контента страницы через AJAX
     function loadPage(url) {
         fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
             .then(response => response.text())
@@ -22,15 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(html, "text/html");
                 let newContent = doc.querySelector(".content-wrapper").innerHTML;
-                document.querySelector(".content-wrapper").innerHTML = newContent;
-                history.pushState(null, "", url); // Изменение истории
 
-                updateActiveMenu();  // Обновляем активное меню
-                bindAjaxForms();  // Обновляем обработчики форм
-                bindDeleteButtons(); // Обновляем обработчики удаления
-                bindUpdateButtons(); // Обновляем обработчики кнопок обновления
+                // Заменяем контент страницы динамически
+                document.querySelector(".content-wrapper").innerHTML = newContent;
+
+                // Обновляем URL в адресной строке браузера без перезагрузки страницы
+                history.pushState({ path: url }, "", url);
+
+                // Вызываем функции для обновления меню, привязки форм и т.д.
+                updateActiveMenu();
+                bindAjaxForms();
+                bindDeleteButtons();
+                bindUpdateButtons();
             })
-            .catch(error => console.error("Ошибка загрузки страницы:", error));
+            .catch(error => console.error("Ошибка при загрузке страницы:", error));
     }
 
     // Обработчик переходов по ссылкам с использованием AJAX
@@ -46,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadPage(location.href); // Обработчик кнопок назад/вперед
     });
 
-    // Обработчики для динамических форм
     function bindAjaxForms() {
         document.querySelectorAll("form.ajax-form").forEach(form => {
             form.addEventListener("submit", function (event) {
@@ -67,14 +71,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     let newContent = doc.querySelector(".content-wrapper").innerHTML;
                     document.querySelector(".content-wrapper").innerHTML = newContent;
                     updateActiveMenu();  // Обновление меню после отправки формы
-                    bindAjaxForms();  // Повторное привязывание обработчиков форм
+                    bindAjaxForms();     // Повторное привязывание обработчиков форм
                     bindDeleteButtons(); // Обновление кнопок удаления
                     bindUpdateButtons(); // Обновление кнопок обновления
+
+                    // Если у формы задан атрибут data-redirect, обновляем URL в адресной строке
+                    let redirectUrl = form.getAttribute("data-redirect");
+                    if (redirectUrl) {
+                        history.pushState({ path: redirectUrl }, "", redirectUrl);
+                    }
                 })
                 .catch(error => console.error("Ошибка при отправке формы:", error));
             });
         });
     }
+
 
     // Обработчики для кнопок удаления
     function bindDeleteButtons() {
