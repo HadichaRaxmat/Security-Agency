@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Update Subscribe</h3>
     </div>
     <div class="card-body">
-        <form method="POST" action="{% url 'subscribe_update' subscribe.id %}" enctype="multipart/form-data" class="ajax-form">
+        <form method="POST" action="{% url 'subscribe_update' subscribe.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'subscribe_list' %}">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="id_title" class="form-label">Title</label>

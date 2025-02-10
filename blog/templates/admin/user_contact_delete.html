@@ -8,7 +8,7 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete User Contact ID: {{ user_contact.id }}?</h5>
         <div class="d-flex justify-content-between">
-            <form method="POST" action="{% url 'user_contact_delete' user_contact.id %}" class="ajax-form d-flex justify-content-between">
+            <form method="POST" action="{% url 'user_contact_delete' user_contact.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'user_contact_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>

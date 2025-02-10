@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New About</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'about_create' %}" method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'about_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'about_list' %}">
             {% csrf_token %}
 
             <!-- Поле Image -->
