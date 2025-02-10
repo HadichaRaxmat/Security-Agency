@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New Guard</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'guard_create' %}" method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'guard_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'guard_list' %}">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="id_name" class="form-label">Name</label>

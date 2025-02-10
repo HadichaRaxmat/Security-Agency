@@ -19,7 +19,7 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete Admin: {{ admin.username }} (Email: {{ admin.email }})?</h5>
         <div class="d-flex justify-content-between mt-5">
-            <form method="POST" action="{% url 'admin_delete' admin.id %}" class="ajax-form d-flex justify-content-between">
+            <form method="POST" action="{% url 'admin_delete' admin.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'admin_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> Yes, Delete

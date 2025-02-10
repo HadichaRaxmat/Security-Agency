@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Add Menu</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'menu_add' %}" method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'menu_add' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'menu_list' %}">
             {% csrf_token %}
 
             <!-- Поле для выбора меню из доступных вариантов -->

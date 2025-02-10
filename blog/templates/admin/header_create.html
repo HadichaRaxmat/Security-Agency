@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New Header</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'header_create' %}" method="POST" enctype="multipart/form-data">
+        <form class="ajax-form" action="{% url 'header_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'header_list' %}">
             {% csrf_token %}
 
             <!-- Поле Logo -->
