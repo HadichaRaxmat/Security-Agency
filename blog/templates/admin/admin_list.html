@@ -15,8 +15,11 @@
                     <th><i class="fas fa-hashtag"></i> ID</th>
                     <th><i class="fas fa-user"></i> Username</th>
                     <th><i class="fas fa-envelope"></i> Email</th>
+                    <th><i class="fas fa-user"></i> First Name</th>
+                    <th><i class="fas fa-user"></i> Last Name</th>
+                    <th><i class="fas fa-user-shield"></i> Role</th>
                     <th><i class="fas fa-user-shield"></i> Status</th>
-                    <th><i class="fas fa-user-shield"></i> Avatar</th>
+                    <th><i class="fas fa-image"></i> Avatar</th>
                     <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
             </thead>
@@ -25,15 +28,34 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.username }}</td>
-                    <td>{{ admin.email }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.get_role_display }}</td>
                     <td>
-                        {% if user.is_superuser %}
+                        {% if user.role == "superuser" %}
                             <span class="badge badge-success">Superuser</span>
-                        {% else %}
+                        {% elif user.role == "admin_manager" %}
+                            <span class="badge badge-primary">Admin Manager</span>
+                        {% elif user.role == "admin" %}
                             <span class="badge badge-info">Admin</span>
+                        {% elif user.role == "moderator" %}
+                            <span class="badge badge-warning">Moderator</span>
+                        {% elif user.role == "editor" %}
+                            <span class="badge badge-secondary">Editor</span>
+                        {% elif user.role == "support" %}
+                            <span class="badge badge-dark">Support</span>
+                        {% else %}
+                            <span class="badge badge-light">Unknown</span>
                         {% endif %}
                     </td>
-                    <td>{{ admin.avatar.url }}</td>
+                    <td>
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Avatar" class="img-thumbnail" style="width: 50px; height: 50px;">
+                        {% else %}
+                            <span class="text-muted">No Avatar</span>
+                        {% endif %}
+                    </td>
                     <td class="text-center">
                         <a href="{% url 'admin_update' user.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
@@ -45,7 +67,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="text-center text-muted">No admins available</td>
+                    <td colspan="9" class="text-center text-muted">No admins available</td>
                 </tr>
                 {% endfor %}
             </tbody>

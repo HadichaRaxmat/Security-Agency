@@ -58,12 +58,14 @@
               </p>
             </a>
               <ul class="nav nav-treeview">
+                  {% if request.user.is_superuser %}
                   <li class="nav-item">
                     <a href="{% url 'admin_list' %}" class="nav-link ajax-link">
                       <i class="nav-icon fas fa-table"></i>
                       <p>Admin</p>
                     </a>
                   </li>
+                  {% endif %}
                   <li class="nav-item">
                     <a href="{% url 'users' %}" class="nav-link ajax-link">
                       <i class="nav-icon fas fa-table"></i>

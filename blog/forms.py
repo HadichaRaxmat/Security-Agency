@@ -66,18 +66,25 @@ class AdminUserCreationForm(UserCreationForm):
         widget=forms.TextInput(attrs={'placeholder': 'Enter last name'}),
         label="Last Name"
     )
+    role = forms.ChoiceField(
+        choices=CustomUser.ROLE_CHOICES,
+        label="Role",
+        required=True
+    )
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        fields = ['username', 'email', 'first_name', 'last_name', 'role', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_staff = True
-        user.is_admin = True
+        user.is_admin = user.role in ['admin', 'admin_manager', 'superuser']
+
         if commit:
             user.save()
         return user
+
 
 
 class AdminUserUpdateForm(forms.ModelForm):
@@ -115,17 +122,28 @@ class AdminUserAuthenticationForm(AuthenticationForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        username_or_email = cleaned_data.get('username')
+        identifier = cleaned_data.get('username')
         password = cleaned_data.get('password')
 
-        if username_or_email and password:
-            user = authenticate(username=username_or_email, password=password)
-            if user is None:
+        if identifier and password:
+            user = None
+
+            if CustomUser.objects.filter(email=identifier).exists():
+                user = CustomUser.objects.get(email=identifier)
+            elif CustomUser.objects.filter(username=identifier).exists():
+                user = CustomUser.objects.get(username=identifier)
+
+            if user:
+                user = authenticate(username=user.email, password=password)
+                if user is None:
+                    raise forms.ValidationError("Invalid credentials.")
+                if not (user.is_staff or user.is_superuser):
+                    raise forms.ValidationError("You do not have permission to access the admin panel.")
+            else:
                 raise forms.ValidationError("Invalid credentials.")
-            if not (user.is_staff or user.is_superuser):
-                raise forms.ValidationError("You do not have permission to access the admin panel.")
 
         return cleaned_data
+
 
 class UserContactForm(forms.ModelForm):
     class Meta:
