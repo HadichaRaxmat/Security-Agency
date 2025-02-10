@@ -9,8 +9,49 @@
         <form class="ajax-form" action="{% url 'admin_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'admin_list' %}">
             {% csrf_token %}
 
-            <!-- Отображение полей формы -->
-            {{ form.as_p }}
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="id_email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="id_username" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_first_name" class="form-label">First Name</label>
+                <input type="text" name="first_name" class="form-control" id="id_first_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_last_name" class="form-label">Last Name</label>
+                <input type="text" name="last_name" class="form-control" id="id_last_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Password</label>
+                <input type="password" name="password1" class="form-control" id="id_password1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                <input type="password" name="password2" class="form-control" id="id_password2" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_role" class="form-label">Role</label>
+                <select name="role" class="form-control" id="id_role" required>
+                    {% if request.user.role == "superuser" %}
+                        <option value="admin_manager">Admin Manager</option>
+                    {% endif %}
+                    <option value="admin">Admin</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="editor">Editor</option>
+                    <option value="support">Support</option>
+                </select>
+            </div>
+
             {% if form.errors %}
             <div class="alert alert-danger">
                 <ul>
@@ -33,3 +74,4 @@
     </div>
 </div>
 {% endblock %}
+

@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 
 
@@ -17,17 +16,35 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, username=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)  # Добавляем
+        extra_fields.setdefault('is_active', True)
+
+        if 'role' not in extra_fields:
+            extra_fields['role'] = 'superuser'
+
         if not username:
             raise ValueError("Superuser must have a username.")
+
         return self.create_user(email, password, username, **extra_fields)
 
 
 class CustomUser(AbstractUser):
+    ROLE_CHOICES = [
+        ('superuser', 'Superuser'),
+        ('admin_manager', 'Admin Manager'),
+        ('moderator', 'Moderator'),
+        ('editor', 'Editor'),
+        ('support', 'Support'),
+        ('admin', 'Admin'),
+    ]
+
     avatar = models.ImageField(upload_to='avatar_photos/', null=True, blank=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='admin')
+
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -42,7 +59,8 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.email
+        return f"{self.email} ({self.role})"
+
 
 
 class UserContact(models.Model):

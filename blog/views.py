@@ -156,18 +156,18 @@ def admin_view(request):
 
 @login_required(login_url='/admin/')
 def admin_list(request):
+    if not request.user.is_superuser:
+        return redirect('dashboard')
 
-    if request.user.is_superuser:
-        users = CustomUser.objects.filter(is_staff=True)
-    else:
-        users = CustomUser.objects.filter(is_staff=True, is_admin=False, is_superuser=False)
-
+    users = CustomUser.objects.filter(is_staff=True)
     return render(request, 'admin/admin_list.html', {'users': users})
 
 
 @login_required(login_url='/admin/')
 def admin_create(request):
-    if not request.user.is_superuser:
+    print(f"Superuser: {request.user.is_superuser}, Role: {getattr(request.user, 'role', 'No role')}")
+
+    if request.user.role not in ['superuser', 'admin_manager']:
         messages.error(request, "You do not have permission to create an admin.")
         return redirect('dashboard')
 
@@ -178,13 +178,26 @@ def admin_create(request):
             user.is_staff = True
             user.is_admin = True
             user.save()
-            messages.success(request, f"Admin {user.email} created successfully.")
+            
+            allowed_roles = ['admin', 'moderator', 'editor', 'support']
+            if request.user.role == 'superuser':
+                allowed_roles.append('admin_manager')
+
+            role = request.POST.get('role', 'admin')
+            if role not in allowed_roles:
+                messages.error(request, "You do not have permission to assign this role.")
+                return redirect('admin_create')
+
+            user.role = role
+            user.save()
+            messages.success(request, f"Admin {user.email} ({user.get_role_display()}) created successfully.")
             return redirect('admin_list')
 
     else:
         form = AdminUserCreationForm()
 
     return render(request, 'admin/admin_create.html', {'form': form})
+
 
 
 @login_required(login_url='/admin/')

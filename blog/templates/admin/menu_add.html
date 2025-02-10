@@ -9,7 +9,6 @@
         <form class="ajax-form" action="{% url 'menu_add' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'menu_list' %}">
             {% csrf_token %}
 
-            <!-- Поле для выбора меню из доступных вариантов -->
             <div class="mb-3">
                 <label for="id_menu" class="form-label">Menu</label>
                 <select name="menu" class="form-control" id="id_menu">
@@ -19,13 +18,13 @@
                 </select>
             </div>
 
-            <!-- Поле для заголовка меню -->
+
             <div class="mb-3">
                 <label for="id_title" class="form-label">Title</label>
                 <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" id="id_title">
             </div>
 
-            <!-- Статус активности -->
+
             <div class="mb-3 form-check">
                 <input type="checkbox" name="is_active" {% if form.is_active.value %}checked{% endif %} class="form-check-input" id="id_is_active">
                 <label class="form-check-label" for="id_is_active">Active</label>
