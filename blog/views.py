@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.template.defaultfilters import first
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -11,7 +12,8 @@ from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client,
     Subscribe, Footer, UserContact, CustomUser
 from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm, TouchForm, \
     TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm, AdminUserCreationForm,
-                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm, AdminUserUpdateForm)
+                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm, AdminUserUpdateForm,
+                    AvatarUpdateForm, AdminProfileUpdateForm)
 
 
 def home_view(request):
@@ -152,6 +154,27 @@ def contact_view(request):
 @login_required(login_url='/admin/')
 def admin_view(request):
     return render(request, 'admin/index.html')
+
+
+@login_required(login_url='/admin/')
+def admin_profile(request):
+    profile = request.user
+
+    if request.method == "POST":
+        if request.user.is_superuser:
+            form = AdminProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        else:
+            form = AvatarUpdateForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect("admin_profile")
+    else:
+        form = AvatarUpdateForm(instance=profile) if not request.user.is_superuser else AdminProfileUpdateForm(instance=profile)
+
+    return render(request, 'admin/admin_profile.html', {'form': form})
+
 
 
 @login_required(login_url='/admin/')
