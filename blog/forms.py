@@ -145,6 +145,18 @@ class AdminUserAuthenticationForm(AuthenticationForm):
         return cleaned_data
 
 
+class AvatarUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['avatar']
+
+
+class AdminProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'avatar']
+
+
 class UserContactForm(forms.ModelForm):
     class Meta:
         model = UserContact
