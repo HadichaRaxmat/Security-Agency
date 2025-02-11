@@ -13,10 +13,14 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'admin/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+            {% if request.user.avatar %}
+                <img src="{{ request.user.avatar.url }}" class="img-circle elevation-2" alt="User Avatar">
+            {% else %}
+                <img src="{% static 'admin/dist/img/avatar.png' %}" class="img-circle elevation-2" alt="Default Avatar">
+            {% endif %}
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="{% url 'admin_profile' %}" class="d-block">{{ request.user.username|default:request.user.email }}</a>
         </div>
       </div>
 
