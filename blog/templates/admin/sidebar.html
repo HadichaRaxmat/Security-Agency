@@ -20,7 +20,9 @@
             {% endif %}
         </div>
         <div class="info">
-          <a href="{% url 'admin_profile' %}" class="d-block">{{ request.user.username|default:request.user.email }}</a>
+            <a href="{% url 'admin_profile' %}" class="d-block user-profile-link">
+                <span class="user-name">{{ request.user.username|default:request.user.email }}</span>
+            </a>
         </div>
       </div>
 

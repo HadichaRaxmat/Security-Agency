@@ -169,11 +169,21 @@ def admin_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully!")
+
+            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                return render(request, "admin/admin_profile_partial.html", {"request": request})
+
             return redirect("admin_profile")
     else:
         form = AvatarUpdateForm(instance=profile) if not request.user.is_superuser else AdminProfileUpdateForm(instance=profile)
 
     return render(request, 'admin/admin_profile.html', {'form': form})
+
+
+@login_required(login_url='/admin/')
+def admin_profile_partial(request):
+    """Обновляет часть профиля без лишнего HTML"""
+    return render(request, "admin/admin_profile_partial.html", {"request": request})
 
 
 
