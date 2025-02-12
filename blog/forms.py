@@ -107,10 +107,7 @@ class AdminUserUpdateForm(forms.ModelForm):
         return user
 
 
-
-
-
-class AdminUserAuthenticationForm(AuthenticationForm):
+class AdminUserAuthenticationForm(forms.Form):  # Заменили AuthenticationForm на forms.Form
     username = forms.CharField(
         label="Username or Email",
         widget=forms.TextInput(attrs={'placeholder': 'Enter your username or email'})
@@ -125,22 +122,23 @@ class AdminUserAuthenticationForm(AuthenticationForm):
         identifier = cleaned_data.get('username')
         password = cleaned_data.get('password')
 
-        if identifier and password:
-            user = None
+        if not identifier or not password:
+            raise forms.ValidationError("Invalid credentials.")
 
-            if CustomUser.objects.filter(email=identifier).exists():
-                user = CustomUser.objects.get(email=identifier)
-            elif CustomUser.objects.filter(username=identifier).exists():
-                user = CustomUser.objects.get(username=identifier)
+        user = None
+        if CustomUser.objects.filter(email=identifier).exists():
+            user = CustomUser.objects.get(email=identifier)
+        elif CustomUser.objects.filter(username=identifier).exists():
+            user = CustomUser.objects.get(username=identifier)
 
-            if user:
-                user = authenticate(username=user.email, password=password)
-                if user is None:
-                    raise forms.ValidationError("Invalid credentials.")
-                if not (user.is_staff or user.is_superuser):
-                    raise forms.ValidationError("You do not have permission to access the admin panel.")
-            else:
+        if user:
+            authenticated_user = authenticate(username=user.email, password=password)
+            if authenticated_user is None:
                 raise forms.ValidationError("Invalid credentials.")
+            elif not (authenticated_user.is_staff or authenticated_user.is_superuser):
+                raise forms.ValidationError("You do not have permission to access the admin panel.")
+        else:
+            raise forms.ValidationError("Invalid credentials.")
 
         return cleaned_data
 
