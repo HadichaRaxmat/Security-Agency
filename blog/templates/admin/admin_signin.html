@@ -102,8 +102,13 @@
         <h3 class="login-title">Administrator Login</h3>
         <form method="post">
             {% csrf_token %}
-
-            <!-- Отображение полей формы с кастомным стилем -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mt-3">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}" style="color: #333;">Username</label>
                 {{ form.username }}
@@ -112,16 +117,6 @@
                 <label for="{{ form.password.id_for_label }}" style="color: #333;">Password</label>
                 {{ form.password }}
             </div>
-
-            {% if form.errors %}
-                <div class="alert alert-danger mt-3">
-                    <ul>
-                        {% for field, errors in form.errors.items %}
-                            <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
 
             <button type="submit" class="btn login-button">
                 <i class="fas fa-sign-in-alt"></i> Login
