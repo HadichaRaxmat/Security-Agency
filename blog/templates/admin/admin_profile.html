@@ -5,29 +5,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Profile</title>
-    <link rel="stylesheet" href="{% static 'admin/dist/css/adminlte.min.css' %}">
-    <script src="{% static 'admin/dist/js/admin_profile.js' %}"></script>
+
+    <!-- Подключение стилей -->
+    <link rel="stylesheet" href="{% static 'admin/dist/css/admin_profile.css' %}">
+
+    <!-- FontAwesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Подключение JS -->
+    <script src="{% static 'admin/dist/js/admin_profile.js' %}" defer></script>
 </head>
 <body>
-    <div class="content-wrapper">
-        <section class="content-header">
-            <h1>Account</h1>
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-secondary" onclick="goBack()">← Back</button>
-                <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <!-- Кнопка "Назад" -->
+            <div class="back-button">
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Назад
+                </a>
             </div>
-        </section>
+            <!-- Аватар -->
+            <div class="profile-avatar">
+                <label for="avatar-upload" class="avatar-upload-label">
+                    {% if request.user.avatar and request.user.avatar.url %}
+                        <img id="avatar-preview" src="{{ request.user.avatar.url }}" class="avatar-img" alt="Avatar">
+                    {% else %}
+                        <img id="avatar-preview" src="{% static 'admin/dist/img/avatar.png' %}" class="avatar-img" alt="Default Avatar">
+                    {% endif %}
+                    <i class="fa fa-camera upload-icon"></i>
+                </label>
+            </div>
 
-        <!-- Контейнер для AJAX-обновления -->
-        <section id="profile-content" class="content">
-            {% include "admin/admin_profile_partial.html" %}
-        </section>
+            <!-- Данные профиля -->
+            <form method="POST" action="{% url 'admin_profile' %}" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
 
+                <div class="input-group">
+                    <label><i class="fa fa-envelope"></i> Email</label>
+                    <input type="email" name="email" class="editable" value="{{ request.user.email }}" readonly>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fa fa-user"></i> Имя</label>
+                    <input type="text" name="first_name" class="editable" value="{{ request.user.first_name }}" readonly>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fa fa-user"></i> Фамилия</label>
+                    <input type="text" name="last_name" class="editable" value="{{ request.user.last_name }}" readonly>
+                </div>
+
+                <!-- Поле загрузки аватара -->
+                <div class="input-group d-none" id="avatar-upload-container">
+                    <label><i class="fa fa-camera"></i> Загрузить новый аватар</label>
+                    <input type="file" name="avatar" id="avatar-upload" accept="image/*">
+                </div>
+
+                <!-- Кнопки -->
+                <div class="button-group">
+                    <button type="button" id="edit-btn" class="btn btn-warning">
+                        <i class="fa fa-edit"></i> Редактировать
+                    </button>
+                    <button type="submit" id="save-btn" class="btn btn-primary d-none">
+                        <i class="fa fa-save"></i> Сохранить
+                    </button>
+                    <button type="button" id="cancel-btn" class="btn btn-secondary d-none">
+                        <i class="fa fa-times"></i> Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
-
-
-
-
-
