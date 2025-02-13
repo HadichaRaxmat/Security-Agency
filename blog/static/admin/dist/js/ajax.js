@@ -22,20 +22,21 @@ function loadPage(url) {
             let doc = parser.parseFromString(html, "text/html");
             let newContent = doc.querySelector(".content-wrapper").innerHTML;
 
-            // Обновляем контент без перезагрузки страницы
             document.querySelector(".content-wrapper").innerHTML = newContent;
-
-            // Обновляем URL в адресной строке
             history.pushState({ path: url }, "", url);
 
-            // Перепривязываем обработчики после загрузки новой страницы
+            // 🔹 Вызов обновления меню
             updateActiveMenu();
             bindAjaxForms();
             bindDeleteButtons();
             bindUpdateButtons();
+
+            // 🔥 Добавляем событие AJAX-завершения
+            document.dispatchEvent(new Event("ajaxComplete"));
         })
         .catch(error => console.error("Ошибка при загрузке страницы:", error));
 }
+
 
 // Обработчик кнопок "назад/вперёд" в браузере
 window.addEventListener("popstate", function () {

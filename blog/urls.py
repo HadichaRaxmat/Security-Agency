@@ -36,7 +36,6 @@ urlpatterns = [
 
     path('dashboard/', admin_view, name='dashboard'),
     path('admin/profile/', views.admin_profile, name='admin_profile'),
-    path("admin/profile/partial/", views.admin_profile_partial, name="admin_profile_partial"),
     path('admin/list/', admin_list, name='admin_list'),
     path('admin/create/', admin_create, name='admin_create'),
     path('admin/update/<int:user_id>/', admin_update, name='admin_update'),

@@ -181,13 +181,6 @@ def admin_profile(request):
 
 
 @login_required(login_url='/admin/')
-def admin_profile_partial(request):
-    """Обновляет часть профиля без лишнего HTML"""
-    return render(request, "admin/admin_profile_partial.html", {"request": request})
-
-
-
-@login_required(login_url='/admin/')
 def admin_list(request):
     if not request.user.is_superuser:
         return redirect('dashboard')
