@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {  
+document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('contactForm');
     const flashMessage = document.getElementById('flash-message'); // Элемент для отображения статуса
 

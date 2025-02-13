@@ -1,18 +1,20 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.template.defaultfilters import first
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
+
 CustomUser = get_user_model()
 from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs, \
     Subscribe, Footer, UserContact, CustomUser
 from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm, TouchForm, \
-    TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm, AdminUserCreationForm,
-                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm, AdminUserUpdateForm,
+                    TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm,
+                    AdminUserCreationForm,
+                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm,
+                    AdminUserUpdateForm,
                     AvatarUpdateForm, AdminProfileUpdateForm)
 
 
@@ -53,6 +55,7 @@ def home_view(request):
     }
     return render(request, 'index.html', context=d)
 
+
 def about_view(request):
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
@@ -70,6 +73,7 @@ def about_view(request):
 
     }
     return render(request, 'about.html', context=d)
+
 
 def service_view(request):
     header = Header.objects.all()
@@ -126,10 +130,12 @@ def guard_view(request):
     }
     return render(request, 'guard.html', context=d)
 
+
 def contact_view(request):
     if request.method == 'POST':
         data = request.POST
-        contact = UserContact.objects.create(name=data['name'], email=data['email'], phone=data['phone'], message=data['message'])
+        contact = UserContact.objects.create(name=data['name'], email=data['email'], phone=data['phone'],
+                                             message=data['message'])
         contact.save()
         return redirect('/')
     header = Header.objects.all()
@@ -150,7 +156,6 @@ def contact_view(request):
     return render(request, 'contact.html', context=d)
 
 
-
 @login_required(login_url='/admin/')
 def admin_view(request):
     return render(request, 'admin/index.html')
@@ -168,14 +173,11 @@ def admin_profile(request):
 
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated successfully!")
-
-            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-                return render(request, "admin/admin_profile_partial.html", {"request": request})
-
+            messages.success(request, "Профиль успешно обновлён!")
             return redirect("admin_profile")
+
     else:
-        form = AvatarUpdateForm(instance=profile) if not request.user.is_superuser else AdminProfileUpdateForm(instance=profile)
+        form = AdminProfileUpdateForm(instance=profile) if request.user.is_superuser else AvatarUpdateForm(instance=profile)
 
     return render(request, 'admin/admin_profile.html', {'form': form})
 
@@ -204,7 +206,7 @@ def admin_create(request):
             user.is_staff = True
             user.is_admin = True
             user.save()
-            
+
             allowed_roles = ['admin', 'moderator', 'editor', 'support']
             if request.user.role == 'superuser':
                 allowed_roles.append('admin_manager')
@@ -225,7 +227,6 @@ def admin_create(request):
     return render(request, 'admin/admin_create.html', {'form': form})
 
 
-
 @login_required(login_url='/admin/')
 def admin_update(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id, is_admin=True)
@@ -243,7 +244,6 @@ def admin_update(request, user_id):
         form = AdminUserUpdateForm(instance=user)
 
     return render(request, 'admin/admin_update.html', {'form': form, 'user': user})
-
 
 
 @login_required(login_url='/admin/')
@@ -335,14 +335,12 @@ def user_update(request, pk):
     return render(request, 'admin/user_update.html', {'form': form, 'user': user})
 
 
-
 def user_delete(request, pk):
     user = get_object_or_404(CustomUser, id=pk)
     if request.method == 'POST':
         user.delete()
         return redirect('users')
     return render(request, 'admin/user_delete.html', {'user': user})
-
 
 
 def header_create(request):
@@ -362,7 +360,6 @@ def header_create(request):
 def header_list(request):
     header = Header.objects.all()
     return render(request, 'admin/header_list.html', {'header': header})
-
 
 
 def header_update(request, pk):
@@ -408,7 +405,7 @@ def menu_update(request, pk):
     menu = get_object_or_404(Menu, id=pk)
     if request.method == "POST":
         form = MenuForm(request.POST, instance=menu)
-        if  form.errors:
+        if form.errors:
             return render(request, "admin/menu_update.html", {'text': form.errors})
         form.save()
         return redirect("menu_list")
@@ -419,7 +416,6 @@ def menu_update(request, pk):
     return render(request, "admin/menu_update.html", {"form": form, 'menu': menu})
 
 
-
 def menu_delete(request, pk):
     menu = get_object_or_404(Menu, id=pk)
     if request.method == 'POST':
@@ -427,11 +423,13 @@ def menu_delete(request, pk):
         return redirect('menu_list')
     return render(request, 'admin/menu_delete.html', {'menu': menu})
 
+
 def menu_toggle_visibility(request, pk):
     menu = get_object_or_404(Menu, pk=pk)
     menu.is_active = not menu.is_active
     menu.save()
     return redirect('menu_list')
+
 
 def slider_create(request):
     if request.method == 'POST':
@@ -443,9 +441,11 @@ def slider_create(request):
         form = SliderForm()
     return render(request, 'admin/slider_create.html', {'form': form})
 
+
 def slider_list(request):
     sliders = Slider.objects.all()
     return render(request, 'admin/slider_list.html', {'sliders': sliders})
+
 
 def slider_update(request, pk):
     slider = get_object_or_404(Slider, id=pk)
@@ -457,6 +457,7 @@ def slider_update(request, pk):
     else:
         form = SliderForm(instance=slider)
     return render(request, 'admin/slider_update.html', {'form': form, 'slider': slider})
+
 
 def slider_delete(request, pk):
     slider = get_object_or_404(Slider, id=pk)
@@ -515,9 +516,11 @@ def service_header_create(request):
         form = ServiceHeaderForm()
     return render(request, 'admin/service_header_create.html', {'form': form})
 
+
 def service_header_list(request):
     service_headers = ServiceHeader.objects.all()
     return render(request, 'admin/service_header_list.html', {'service_headers': service_headers})
+
 
 def service_header_update(request, pk):
     service_header = get_object_or_404(ServiceHeader, id=pk)
@@ -529,6 +532,7 @@ def service_header_update(request, pk):
     else:
         form = ServiceHeaderForm(instance=service_header)
     return render(request, 'admin/service_header_update.html', {'form': form, 'service_header': service_header})
+
 
 def service_header_delete(request, pk):
     service_header = get_object_or_404(ServiceHeader, id=pk)
@@ -548,9 +552,11 @@ def service_create(request):
         form = ServiceForm()
     return render(request, 'admin/service_create.html', {'form': form})
 
+
 def service_list(request):
     services = Service.objects.all()
     return render(request, 'admin/service_list.html', {'services': services})
+
 
 def service_update(request, pk):
     service = get_object_or_404(Service, id=pk)
@@ -562,6 +568,7 @@ def service_update(request, pk):
     else:
         form = ServiceForm(instance=service)
     return render(request, 'admin/service_update.html', {'form': form, 'service': service})
+
 
 def service_delete(request, pk):
     service = get_object_or_404(Service, id=pk)
@@ -581,9 +588,11 @@ def client_create(request):
         form = ClientForm()
     return render(request, 'admin/client_create.html', {'form': form})
 
+
 def client_list(request):
     clients = Client.objects.all()
     return render(request, 'admin/client_list.html', {'clients': clients})
+
 
 def client_update(request, pk):
     client = get_object_or_404(Client, id=pk)
@@ -595,6 +604,7 @@ def client_update(request, pk):
     else:
         form = ClientForm(instance=client)
     return render(request, 'admin/client_update.html', {'form': form, 'client': client})
+
 
 def client_delete(request, pk):
     client = get_object_or_404(Client, id=pk)
@@ -615,9 +625,11 @@ def touch_create(request):
 
     return render(request, 'admin/touch_create.html', {'form': form})
 
+
 def touch_list(request):
     touches = Touch.objects.all()
     return render(request, 'admin/touch_list.html', {'touches': touches})
+
 
 def touch_update(request, pk):
     touch = get_object_or_404(Touch, id=pk)
@@ -630,6 +642,7 @@ def touch_update(request, pk):
         form = TouchForm(instance=touch)
 
     return render(request, 'admin/touch_update.html', {'form': form, 'touch': touch})
+
 
 def touch_delete(request, pk):
     touch = get_object_or_404(Touch, id=pk)
@@ -649,9 +662,11 @@ def team_create(request):
         form = TeamForm()
     return render(request, 'admin/team_create.html', {'form': form})
 
+
 def team_list(request):
     teams = Team.objects.all()
     return render(request, 'admin/team_list.html', {'teams': teams})
+
 
 def team_update(request, pk):
     team = get_object_or_404(Team, id=pk)
@@ -663,6 +678,7 @@ def team_update(request, pk):
     else:
         form = TeamForm(instance=team)
     return render(request, 'admin/team_update.html', {'form': form, 'team': team})
+
 
 def team_delete(request, pk):
     team = get_object_or_404(Team, id=pk)
@@ -682,9 +698,11 @@ def guard_create(request):
         form = GuardForm()
     return render(request, 'admin/guard_create.html', {'form': form})
 
+
 def guard_list(request):
     guards = Guard.objects.all()
     return render(request, 'admin/guard_list.html', {'guards': guards})
+
 
 def guard_update(request, pk):
     guard = get_object_or_404(Guard, id=pk)
@@ -696,6 +714,7 @@ def guard_update(request, pk):
     else:
         form = GuardForm(instance=guard)
     return render(request, 'admin/guard_update.html', {'form': form, 'guard': guard})
+
 
 def guard_delete(request, pk):
     guard = get_object_or_404(Guard, id=pk)
@@ -715,9 +734,11 @@ def info_create(request):
         form = InfoForm()
     return render(request, 'admin/info_create.html', {'form': form})
 
+
 def info_list(request):
     infos = Info.objects.all()
     return render(request, 'admin/info_list.html', {'infos': infos})
+
 
 def info_update(request, pk):
     info = get_object_or_404(Info, id=pk)
@@ -730,13 +751,13 @@ def info_update(request, pk):
         form = InfoForm(instance=info)
     return render(request, 'admin/info_update.html', {'form': form, 'info': info})
 
+
 def info_delete(request, pk):
     info = get_object_or_404(Info, id=pk)
     if request.method == 'POST':
         info.delete()
         return redirect('info_list')
     return render(request, 'admin/info_delete.html', {'info': info})
-
 
 
 def contactus_create(request):
@@ -749,9 +770,11 @@ def contactus_create(request):
         form = ContactUsForm()
     return render(request, 'admin/contact_us_create.html', {'form': form})
 
+
 def contactus_list(request):
     contactus_entries = ContactUs.objects.all()
     return render(request, 'admin/contact_us_list.html', {'contactus_entries': contactus_entries})
+
 
 def contactus_update(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
@@ -763,6 +786,7 @@ def contactus_update(request, pk):
     else:
         form = ContactUsForm(instance=contactus_entry)
     return render(request, 'admin/contact_us_update.html', {'form': form, 'contactus_entry': contactus_entry})
+
 
 def contactus_delete(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
@@ -782,9 +806,11 @@ def subscribe_create(request):
         form = SubscribeForm()
     return render(request, 'admin/subscribe_create.html', {'form': form})
 
+
 def subscribe_list(request):
     subscribes = Subscribe.objects.all()
     return render(request, 'admin/subscribe_list.html', {'subscribes': subscribes})
+
 
 def subscribe_update(request, pk):
     subscribe = get_object_or_404(Subscribe, id=pk)
@@ -797,12 +823,14 @@ def subscribe_update(request, pk):
         form = SubscribeForm(instance=subscribe)
     return render(request, 'admin/subscribe_update.html', {'form': form, 'subscribe': subscribe})
 
+
 def subscribe_delete(request, pk):
     subscribe = get_object_or_404(Subscribe, id=pk)
     if request.method == 'POST':
         subscribe.delete()
         return redirect('subscribe_list')
     return render(request, 'admin/subscribe_delete.html', {'subscribe': subscribe})
+
 
 def footer_create(request):
     if request.method == "POST":
@@ -866,9 +894,11 @@ def user_contact_create(request):
         form = UserContactForm()
     return render(request, 'admin/user_contact_create.html', {'form': form})
 
+
 def user_contact_list(request):
     user_contacts = UserContact.objects.all()
     return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
+
 
 def user_contact_update(request, pk):
     user_contact = get_object_or_404(UserContact, id=pk)
@@ -880,6 +910,7 @@ def user_contact_update(request, pk):
     else:
         form = UserContactForm(instance=user_contact)
     return render(request, 'admin/user_contact_update.html', {'form': form, 'user_contact': user_contact})
+
 
 def user_contact_delete(request, pk):
     user_contact = get_object_or_404(UserContact, id=pk)
