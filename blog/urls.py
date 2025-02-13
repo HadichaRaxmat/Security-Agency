@@ -45,6 +45,8 @@ urlpatterns = [
     path('users/', views.users_list, name='users'),
     path('user/update/<int:pk>/', views.user_update, name='user_update'),
     path('user/delete/<int:pk>/', views.user_delete, name='user_delete'),
+    path('user/signup/', views.signup_view, name='signup'),
+    path('user_login', views.login_view, name='login'),
     # Header
     path('header/create/', header_create, name='header_create'), #create
     path('header/list/', header_list, name='header_list'), # Header list
