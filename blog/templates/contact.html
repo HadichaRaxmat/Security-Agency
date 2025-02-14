@@ -1,8 +1,8 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 
 <body class="sub_page">
   <div class="hero_area">
-    <!-- header section strats -->
     <div class="hero_bg_box">
       <div class="img-box">
         <img src="{% static 'images/hero-bg.jpg' %}" alt="">
@@ -10,62 +10,65 @@
     </div>
 
     {% include 'header.html' %}
-    <!-- end header section -->
   </div>
 
-  <!-- contact section -->
+  <!-- Проверяем авторизацию -->
+  {% if not user.is_authenticated %}
+  <div id="loginModal" class="modal" style="display: block;">  <!-- Теперь по умолчанию открыто -->
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Вход</h2>
+          <p>Для отправки формы войдите в аккаунт. Это поможет нам связаться с вами быстрее!</p>
+          <form id="loginForm" method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              <input type="text" name="username" placeholder="Логин" required>
+              <input type="password" name="password" placeholder="Пароль" required>
+              <button type="submit" class="login-btn">Войти</button>
+          </form>
+      </div>
+  </div>
+  {% endif %}
 
+
+  <input type="hidden" id="isAuthenticated" value="{{ user.is_authenticated|lower }}">
+
+  <!-- Contact Section -->
   <section class="contact_section layout_padding">
     <div class="contact_bg_box">
-        <div class="img-box">
-            <img src="{% static 'images/contact-bg.jpg' %}" alt="">
-        </div>
+      <div class="img-box">
+        <img src="{% static 'images/contact-bg.jpg' %}" alt="">
+      </div>
     </div>
+
     <div class="container">
-        <div class="heading_container heading_center">
-            <h2>Get In Touch</h2>
+      <div class="heading_container heading_center">
+        <h2>Get In Touch</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-md-7 mx-auto">
+          <form id="contactForm" action="{% url 'contact' %}" method="post">
+              {% csrf_token %}
+              <div class="contact_form-container">
+                  <div>
+                      <input name="name" type="text" placeholder="Full Name" required/>
+                      <input name="email" type="email" placeholder="Email" required/>
+                      <input name="phone" type="text" placeholder="Phone Number" required/>
+                      <input name="message" placeholder="Message" class="message_input" required/>
+                      <button type="submit">Send</button>
+                  </div>
+              </div>
+          </form>
+          <div id="flash-message" class="flash-message" style="display: none;"></div>
         </div>
-        <div class="">
-            <div class="row">
-                <div class="col-md-7 mx-auto">
-                    <form id="contactForm" action="{% url 'contact' %}" method="post">
-                        {% csrf_token %}
-                        <div class="contact_form-container">
-                            <div>
-                                <div>
-                                    <input name="name" type="text" placeholder="Full Name" />
-                                </div>
-                                <div>
-                                    <input name="email" type="email" placeholder="Email" />
-                                </div>
-                                <div>
-                                    <input name="phone" type="text" placeholder="Phone Number" />
-                                </div>
-                                <div>
-                                    <input name="message" type="text" placeholder="Message" class="message_input" />
-                                </div>
-                                <div class="btn-box">
-                                    <button type="submit">
-                                        Send
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="flash-message" class="flash-message" style="display: none;"></div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</section>
-  <script src="{% static 'js/contact.js' %}"></script>
+  </section>
 
-
-  <!-- end contact section -->
-
-{% include 'footer.html' %}
-
+  {% include 'footer.html' %}
 </body>
 
-
+<!-- Скрипты -->
+<script src="{% static 'js/contact.js' %}" defer></script>
+<script src="{% static 'js/login.js' %}" defer></script>
 
