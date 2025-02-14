@@ -113,7 +113,7 @@ def guard_view(request):
     subscribe = Subscribe.objects.all()
     team = Team.objects.all()
     guard = Guard.objects.all()
-    current_url = request.path
+    current_url = request.path,
     d = {
         'header': header,
         'contactus': contactus,
@@ -131,6 +131,7 @@ def guard_view(request):
     return render(request, 'guard.html', context=d)
 
 
+
 def contact_view(request):
     if request.method == 'POST':
         data = request.POST
@@ -138,6 +139,8 @@ def contact_view(request):
                                              message=data['message'])
         contact.save()
         return redirect('/')
+
+    footer = Footer.objects.all()
     header = Header.objects.all()
     contactus = ContactUs.objects.all()
     menu = Menu.objects.all()
@@ -150,7 +153,8 @@ def contact_view(request):
         'menu': menu,
         'info': info,
         'subscribe': subscribe,
-        'current_url': current_url
+        'current_url': current_url,
+        'footer': footer
 
     }
     return render(request, 'contact.html', context=d)
