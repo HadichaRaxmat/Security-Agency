@@ -77,6 +77,16 @@
                         </li>
                     {% endif %}
                 {% endfor %}
+                <!-- Если пользователь авторизован, показываем logout -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'logout' %}">Выйти</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{% url 'login' %}">Войти</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         </nav>

@@ -12,22 +12,54 @@
     {% include 'header.html' %}
   </div>
 
-  <!-- Проверяем авторизацию -->
-  {% if not user.is_authenticated %}
-  <div id="loginModal" class="modal" style="display: block;">  <!-- Теперь по умолчанию открыто -->
-      <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>Вход</h2>
-          <p>Для отправки формы войдите в аккаунт. Это поможет нам связаться с вами быстрее!</p>
-          <form id="loginForm" method="POST" action="{% url 'login' %}">
-              {% csrf_token %}
-              <input type="text" name="username" placeholder="Логин" required>
-              <input type="password" name="password" placeholder="Пароль" required>
-              <button type="submit" class="login-btn">Войти</button>
-          </form>
-      </div>
-  </div>
-  {% endif %}
+<!-- Проверяем авторизацию -->
+{% if not user.is_authenticated %}
+<div id="loginModal" class="modal" style="display: block;">  <!-- Теперь по умолчанию открыто -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Вход</h2>
+        <p>Для отправки формы войдите в аккаунт. Это поможет нам связаться с вами быстрее!</p>
+        <form id="loginForm" method="POST" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <input type="hidden" name="login_form" value="1">  <!-- Добавлено -->
+            <input type="email" name="username" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        {% if login_errors %}
+            <p style="color: red;">{{ login_errors }}</p>
+        {% endif %}
+        <p>Нет аккаунта? <a href="#" class="register-link">Зарегистрироваться</a></p>
+    </div>
+</div>
+
+<!-- Модальное окно регистрации -->
+<div id="registerModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Регистрация</h2>
+        <p>Создайте аккаунт, чтобы отправлять форму и получать ответы быстрее!</p>
+        <form id="registerForm" method="POST" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <input type="hidden" name="register_form" value="1">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password1" placeholder="Пароль" required>
+            <input type="password" name="password2" placeholder="Повторите пароль" required> <!-- исправлено -->
+            <button type="submit" class="register-btn">Зарегистрироваться</button>
+        </form>
+        {% if register_errors %}
+            <ul style="color: red;">
+                {% for field, errors in register_errors.items %}
+                    {% for error in errors %}
+                        <li>{{ field|title }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p>Уже есть аккаунт? <a href="#" id="showLogin">Войти</a></p>
+    </div>
+</div>
+{% endif %}
 
 
   <input type="hidden" id="isAuthenticated" value="{{ user.is_authenticated|lower }}">
