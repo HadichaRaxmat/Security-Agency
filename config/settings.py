@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-@87@4(p6#i!ts5sz)*73($1z8*+mm3f%o&v3)1k4_%%j-i3oym
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SESSION_COOKIE_AGE = 1800
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "guarder"]
 
 AUTHENTICATION_BACKENDS = [
     'blog.authentication_backends.EmailOrUsernameBackend',
@@ -82,16 +86,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'guarder',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': 'postgres',
+        'PORT': '5432',
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -127,14 +134,16 @@ USE_TZ = True
 AUTH_USER_MODEL = 'blog.CustomUser'
 
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login/'
 LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR /  'blog' / 'static' /'staticfiles'
+
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'blog' / 'media'

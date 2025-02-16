@@ -1,0 +1,96 @@
+title: AdminLTE v3.2 Documentation
+version: v3.2
+description: AdminLTE v3.2 Documentation
+
+baseurl: /docs/3.2
+url: https://adminlte.io
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+navigation:
+  - title: Installation
+    url: index.header
+    icon: fas fa-microchip
+  - title: Dependencies & Plugins
+    url: dependencies.header
+    icon: fas fa-handshake
+  - title: Layout
+    url: layout.header
+    icon: fas fa-copy
+  - title: Components
+    icon: fas fa-th
+    url: components
+    subitems:
+      - title: Main Header
+        url: components/main-header.header
+      - title: Main Sidebar
+        url: components/main-sidebar.header
+      - title: Control Sidebar
+        url: components/control-sidebar.header
+      - title: Card
+        url: components/cards.header
+      - title: Small-/ Info-Box
+        url: components/boxes.header
+      - title: Direct Chat
+        url: components/direct-chat.header
+      - title: Timeline
+        url: components/timeline.header
+      - title: Ribbons
+        url: components/ribbons.header
+      - title: Miscellaneous
+        url: components/miscellaneous.header
+      - title: Plugins
+        url: components/plugins.header
+  - title: JavaScript
+    icon: fas fa-code
+    url: javascript
+    subitems:
+      - title: Layout
+        url: javascript/layout.header
+      - title: Push Menu
+        url: javascript/push-menu.header
+      - title: Treeview
+        url: javascript/treeview.header
+      - title: Card Widget
+        url: javascript/card-widget.header
+      - title: CardRefresh
+        url: javascript/card-refresh.header
+      - title: Control Sidebar
+        url: javascript/control-sidebar.header
+      - title: Direct Chat
+        url: javascript/direct-chat.header
+      - title: Todo List
+        url: javascript/todo-list.header
+      - title: Toasts
+        url: javascript/toasts.header
+      - title: Sidebar Search
+        url: javascript/sidebar-search.header
+      - title: Expandable Tables
+        url: javascript/expandable-tables.header
+      - title: IFrame
+        url: javascript/iframe.header
+      - title: Navbar Search
+        url: javascript/navbar-search.header
+  - title: Browser Support
+    url: browser-support.header
+    icon: fab fa-chrome
+  - title: Implementations
+    url: implementations.header
+    icon: fas fa-bookmark
+  - title: Additional Styles
+    url: additional-styles.header
+    icon: fas fa-mortar-pestle
+  - title: Upgrade Guide
+    url: upgrade-guide.header
+    icon: fas fa-hand-point-up
+  - title: Contributing Guide
+    url: how-to-contribute.header
+    icon: fas fa-hands-helping
+  - title: FAQ
+    url: faq.header
+    icon: fas fa-question-circle
+  - title: License
+    url: license.header
+    icon: fas fa-file-contract

@@ -11,7 +11,6 @@
                 <tr>
                     <th><i class="fas fa-hashtag"></i> ID</th>
                     <th><i class="fas fa-paragraph"></i> Email</th>
-                    <th><i class="fas fa-paragraph"></i> Password</th>
                     <th class="text-center"><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
             </thead>
@@ -20,7 +19,6 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.password }}</td>
                     <td class="text-center">
                         <a href="{% url 'user_update' user.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>

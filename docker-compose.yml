@@ -1,0 +1,61 @@
+services:
+  web:
+    build: .
+    container_name: django_guarder
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py shell -c \"
+             from blog.models import CustomUser;
+             if not CustomUser.objects.filter(email='a@email.com').exists():
+                 CustomUser.objects.create_superuser('a@email.com', 'admin', 'admin')
+             \" &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DEBUG=True
+      - DATABASE_NAME=guarder
+      - DATABASE_USER=admin
+      - DATABASE_PASSWORD=admin
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_guarder
+    restart: always
+    environment:
+      POSTGRES_DB: guarder
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_guarder
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8100:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+
+
+#   docker-compose down
+#   docker system prune -a
+#   docker-compose up --build
+
+#   docker-compose down -v  # Удалит все данные БД
+#   docker-compose up -d
