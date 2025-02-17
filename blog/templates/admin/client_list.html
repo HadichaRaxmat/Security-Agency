@@ -33,7 +33,7 @@
                     </td>
                     <td>{{ client.name }}</td>
                     <td>{{ client.title }}</td>
-                    <td>{{ client.text }}</td>
+                    <td>{{ client.text|truncatewords:10 }}</td>
                     <td class="text-center">
                         <a href="{% url 'client_update' client.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
