@@ -12,6 +12,7 @@ from rest_framework import status, permissions
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import UserContactSerializer
 from rest_framework.permissions import AllowAny
+
 CustomUser = get_user_model()
 from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs, \
     Subscribe, Footer, UserContact, CustomUser, HeaderTouch
@@ -207,7 +208,6 @@ def contact_view(request):
     return render(request, 'contact.html', context=d)
 
 
-
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationUserForm(request.POST)
@@ -260,7 +260,8 @@ def admin_profile(request):
             return redirect("admin_profile")
 
     else:
-        form = AdminProfileUpdateForm(instance=profile) if request.user.is_superuser else AvatarUpdateForm(instance=profile)
+        form = AdminProfileUpdateForm(instance=profile) if request.user.is_superuser else AvatarUpdateForm(
+            instance=profile)
 
     return render(request, 'admin/admin_profile.html', {'form': form})
 
@@ -365,12 +366,12 @@ def admin_logout(request):
     return redirect('admin_login')
 
 
-
 def logout_view(request):
     logout(request)
     return redirect('/')
 
 
+@login_required(login_url='/admin/')
 def users_list(request):
     users = CustomUser.objects.filter(is_staff=False, is_superuser=False)
     return render(request, 'admin/users.html', {'users': users})
@@ -595,6 +596,7 @@ def service_header_delete(request, pk):
     return render(request, 'admin/service_header_delete.html', {'service_header': service_header})
 
 
+@login_required(login_url='/admin/')
 def service_create(request):
     if request.method == 'POST':
         form = ServiceForm(request.POST)
@@ -606,11 +608,13 @@ def service_create(request):
     return render(request, 'admin/service_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def service_list(request):
     services = Service.objects.all()
     return render(request, 'admin/service_list.html', {'services': services})
 
 
+@login_required(login_url='/admin/')
 def service_update(request, pk):
     service = get_object_or_404(Service, id=pk)
     if request.method == 'POST':
@@ -623,6 +627,7 @@ def service_update(request, pk):
     return render(request, 'admin/service_update.html', {'form': form, 'service': service})
 
 
+@login_required(login_url='/admin/')
 def service_delete(request, pk):
     service = get_object_or_404(Service, id=pk)
     if request.method == 'POST':
@@ -631,6 +636,7 @@ def service_delete(request, pk):
     return render(request, 'admin/service_delete.html', {'service': service})
 
 
+@login_required(login_url='/admin/')
 def client_create(request):
     if request.method == 'POST':
         form = ClientForm(request.POST, request.FILES)
@@ -642,11 +648,13 @@ def client_create(request):
     return render(request, 'admin/client_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def client_list(request):
     clients = Client.objects.all()
     return render(request, 'admin/client_list.html', {'clients': clients})
 
 
+@login_required(login_url='/admin/')
 def client_update(request, pk):
     client = get_object_or_404(Client, id=pk)
     if request.method == 'POST':
@@ -659,6 +667,7 @@ def client_update(request, pk):
     return render(request, 'admin/client_update.html', {'form': form, 'client': client})
 
 
+@login_required(login_url='/admin/')
 def client_delete(request, pk):
     client = get_object_or_404(Client, id=pk)
     if request.method == 'POST':
@@ -667,6 +676,7 @@ def client_delete(request, pk):
     return render(request, 'admin/client_delete.html', {'client': client})
 
 
+@login_required(login_url='/admin/')
 def touch_create(request):
     if request.method == 'POST':
         form = TouchForm(request.POST, request.FILES)
@@ -679,11 +689,13 @@ def touch_create(request):
     return render(request, 'admin/touch_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def touch_list(request):
     touches = Touch.objects.all()
     return render(request, 'admin/touch_list.html', {'touches': touches})
 
 
+@login_required(login_url='/admin/')
 def touch_update(request, pk):
     touch = get_object_or_404(Touch, id=pk)
     if request.method == 'POST':
@@ -697,6 +709,7 @@ def touch_update(request, pk):
     return render(request, 'admin/touch_update.html', {'form': form, 'touch': touch})
 
 
+@login_required(login_url='/admin/')
 def touch_delete(request, pk):
     touch = get_object_or_404(Touch, id=pk)
     if request.method == 'POST':
@@ -705,6 +718,7 @@ def touch_delete(request, pk):
     return render(request, 'admin/touch_delete.html', {'touch': touch})
 
 
+@login_required(login_url='/admin/')
 def team_create(request):
     if request.method == 'POST':
         form = TeamForm(request.POST)
@@ -716,11 +730,13 @@ def team_create(request):
     return render(request, 'admin/team_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def team_list(request):
     teams = Team.objects.all()
     return render(request, 'admin/team_list.html', {'teams': teams})
 
 
+@login_required(login_url='/admin/')
 def team_update(request, pk):
     team = get_object_or_404(Team, id=pk)
     if request.method == 'POST':
@@ -733,6 +749,7 @@ def team_update(request, pk):
     return render(request, 'admin/team_update.html', {'form': form, 'team': team})
 
 
+@login_required(login_url='/admin/')
 def team_delete(request, pk):
     team = get_object_or_404(Team, id=pk)
     if request.method == 'POST':
@@ -741,6 +758,7 @@ def team_delete(request, pk):
     return render(request, 'admin/team_delete.html', {'team': team})
 
 
+@login_required(login_url='/admin/')
 def guard_create(request):
     if request.method == 'POST':
         form = GuardForm(request.POST, request.FILES)
@@ -752,11 +770,13 @@ def guard_create(request):
     return render(request, 'admin/guard_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def guard_list(request):
     guards = Guard.objects.all()
     return render(request, 'admin/guard_list.html', {'guards': guards})
 
 
+@login_required(login_url='/admin/')
 def guard_update(request, pk):
     guard = get_object_or_404(Guard, id=pk)
     if request.method == 'POST':
@@ -769,6 +789,7 @@ def guard_update(request, pk):
     return render(request, 'admin/guard_update.html', {'form': form, 'guard': guard})
 
 
+@login_required(login_url='/admin/')
 def guard_delete(request, pk):
     guard = get_object_or_404(Guard, id=pk)
     if request.method == 'POST':
@@ -777,6 +798,7 @@ def guard_delete(request, pk):
     return render(request, 'admin/guard_delete.html', {'guard': guard})
 
 
+@login_required(login_url='/admin/')
 def info_create(request):
     if request.method == 'POST':
         form = InfoForm(request.POST)
@@ -788,11 +810,13 @@ def info_create(request):
     return render(request, 'admin/info_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def info_list(request):
     infos = Info.objects.all()
     return render(request, 'admin/info_list.html', {'infos': infos})
 
 
+@login_required(login_url='/admin/')
 def info_update(request, pk):
     info = get_object_or_404(Info, id=pk)
     if request.method == 'POST':
@@ -805,6 +829,7 @@ def info_update(request, pk):
     return render(request, 'admin/info_update.html', {'form': form, 'info': info})
 
 
+@login_required(login_url='/admin/')
 def info_delete(request, pk):
     info = get_object_or_404(Info, id=pk)
     if request.method == 'POST':
@@ -813,6 +838,7 @@ def info_delete(request, pk):
     return render(request, 'admin/info_delete.html', {'info': info})
 
 
+@login_required(login_url='/admin/')
 def contactus_create(request):
     if request.method == 'POST':
         form = ContactUsForm(request.POST)
@@ -824,11 +850,13 @@ def contactus_create(request):
     return render(request, 'admin/contact_us_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def contactus_list(request):
     contactus_entries = ContactUs.objects.all()
     return render(request, 'admin/contact_us_list.html', {'contactus_entries': contactus_entries})
 
 
+@login_required(login_url='/admin/')
 def contactus_update(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
     if request.method == 'POST':
@@ -841,6 +869,7 @@ def contactus_update(request, pk):
     return render(request, 'admin/contact_us_update.html', {'form': form, 'contactus_entry': contactus_entry})
 
 
+@login_required(login_url='/admin/')
 def contactus_delete(request, pk):
     contactus_entry = get_object_or_404(ContactUs, id=pk)
     if request.method == 'POST':
@@ -849,6 +878,7 @@ def contactus_delete(request, pk):
     return render(request, 'admin/contact_us_delete.html', {'contactus_entry': contactus_entry})
 
 
+@login_required(login_url='/admin/')
 def subscribe_create(request):
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
@@ -860,11 +890,13 @@ def subscribe_create(request):
     return render(request, 'admin/subscribe_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def subscribe_list(request):
     subscribes = Subscribe.objects.all()
     return render(request, 'admin/subscribe_list.html', {'subscribes': subscribes})
 
 
+@login_required(login_url='/admin/')
 def subscribe_update(request, pk):
     subscribe = get_object_or_404(Subscribe, id=pk)
     if request.method == 'POST':
@@ -877,6 +909,7 @@ def subscribe_update(request, pk):
     return render(request, 'admin/subscribe_update.html', {'form': form, 'subscribe': subscribe})
 
 
+@login_required(login_url='/admin/')
 def subscribe_delete(request, pk):
     subscribe = get_object_or_404(Subscribe, id=pk)
     if request.method == 'POST':
@@ -885,6 +918,7 @@ def subscribe_delete(request, pk):
     return render(request, 'admin/subscribe_delete.html', {'subscribe': subscribe})
 
 
+@login_required(login_url='/admin/')
 def footer_create(request):
     if request.method == "POST":
         form = FooterForm(request.POST)
@@ -896,11 +930,13 @@ def footer_create(request):
     return render(request, 'admin/footer_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def footer_list(request):
     footers = Footer.objects.all()
     return render(request, 'admin/footer_list.html', {'footers': footers})
 
 
+@login_required(login_url='/admin/')
 def footer_update(request, pk):
     footer = get_object_or_404(Footer, id=pk)
 
@@ -915,6 +951,7 @@ def footer_update(request, pk):
     return render(request, 'admin/footer_update.html', {'form': form, 'footer': footer})
 
 
+@login_required(login_url='/admin/')
 def footer_delete(request, pk):
     footer = get_object_or_404(Footer, id=pk)
 
@@ -925,6 +962,7 @@ def footer_delete(request, pk):
     return render(request, 'admin/footer_delete.html', {'footer': footer})
 
 
+@login_required(login_url='/admin/')
 def footer_bulk_delete(request):
     if request.method == 'POST':
         selected_footers = request.POST.getlist('selected_footers')
@@ -937,6 +975,7 @@ def footer_bulk_delete(request):
     return redirect('footer_list')
 
 
+@login_required(login_url='/admin/')
 def user_contact_create(request):
     if request.method == 'POST':
         form = UserContactForm(request.POST)
@@ -948,11 +987,13 @@ def user_contact_create(request):
     return render(request, 'admin/user_contact_create.html', {'form': form})
 
 
+@login_required(login_url='/admin/')
 def user_contact_list(request):
     user_contacts = UserContact.objects.all()
     return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
 
 
+@login_required(login_url='/admin/')
 def user_contact_update(request, pk):
     user_contact = get_object_or_404(UserContact, id=pk)
     if request.method == 'POST':
@@ -965,13 +1006,13 @@ def user_contact_update(request, pk):
     return render(request, 'admin/user_contact_update.html', {'form': form, 'user_contact': user_contact})
 
 
+@login_required(login_url='/admin/')
 def user_contact_delete(request, pk):
     user_contact = get_object_or_404(UserContact, id=pk)
     if request.method == 'POST':
         user_contact.delete()
         return redirect('user_contact_list')
     return render(request, 'admin/user_contact_delete.html', {'user_contact': user_contact})
-
 
 
 # API
@@ -1050,7 +1091,6 @@ class UserContactDetailAPIView(APIView):
 
         contact.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 from .serializers import HeaderSerializer
@@ -1132,8 +1172,8 @@ class HeaderDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import MenuSerializer
+
 
 class MenuListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1162,6 +1202,7 @@ class MenuListAPIView(APIView):
 
 class MenuDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Обновить пункт меню",
         request_body=MenuSerializer,
@@ -1210,11 +1251,12 @@ class MenuDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import SliderSerializer
+
 
 class SliderListAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Retrieve a list of all sliders",
         responses={200: SliderSerializer(many=True)},
@@ -1288,11 +1330,12 @@ class SliderDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import AboutSerializer
+
 
 class AboutListAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Retrieve a list of all About entries",
         responses={200: AboutSerializer(many=True)},
@@ -1317,6 +1360,7 @@ class AboutListAPIView(APIView):
 
 class AboutDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Update an About entry",
         request_body=AboutSerializer,
@@ -1365,11 +1409,12 @@ class AboutDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import ServiceHeaderSerializer
+
 
 class ServiceHeaderListAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Retrieve a list of all Service Headers",
         responses={200: ServiceHeaderSerializer(many=True)},
@@ -1443,8 +1488,8 @@ class ServiceHeaderDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import ServiceSerializer
+
 
 class ServiceListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1473,6 +1518,7 @@ class ServiceListAPIView(APIView):
 
 class ServiceDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Update a Service",
         request_body=ServiceSerializer,
@@ -1521,8 +1567,8 @@ class ServiceDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import ClientSerializer
+
 
 class ClientListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1551,6 +1597,7 @@ class ClientListAPIView(APIView):
 
 class ClientDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Update a Client",
         request_body=ClientSerializer,
@@ -1601,6 +1648,7 @@ class ClientDetailAPIView(APIView):
 
 from .serializers import TouchSerializer
 
+
 class TouchListAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -1628,6 +1676,7 @@ class TouchListAPIView(APIView):
 
 class TouchDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Update a Touch item",
         request_body=TouchSerializer,
@@ -1676,8 +1725,8 @@ class TouchDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import TeamSerializer
+
 
 class TeamListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1755,8 +1804,8 @@ class TeamDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import GuardSerializer
+
 
 class GuardListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1834,8 +1883,8 @@ class GuardDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import InfoSerializer
+
 
 class InfoListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -1915,6 +1964,7 @@ class InfoDetailAPIView(APIView):
 
 from .serializers import ContactUsSerializer
 
+
 class ContactUsListAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -1991,11 +2041,12 @@ class ContactUsDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import SubscribeSerializer
+
 
 class SubscribeListAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Retrieve a list of all Subscribe records",
         responses={200: SubscribeSerializer(many=True)},
@@ -2069,11 +2120,12 @@ class SubscribeDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import FooterSerializer
+
 
 class FooterListAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Retrieve a list of all Footer records",
         responses={200: FooterSerializer(many=True)},
@@ -2098,6 +2150,7 @@ class FooterListAPIView(APIView):
 
 class FooterDetailAPIView(APIView):
     permission_classes = [AllowAny]
+
     @swagger_auto_schema(
         operation_description="Update a Footer record",
         request_body=FooterSerializer,
@@ -2146,8 +2199,8 @@ class FooterDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 from .serializers import HeaderTouchSerializer
+
 
 class HeaderTouchListAPIView(APIView):
     permission_classes = [AllowAny]
@@ -2223,16 +2276,3 @@ class HeaderTouchDetailAPIView(APIView):
 
         touch.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-
-
-
-
-
-
-
-
-
