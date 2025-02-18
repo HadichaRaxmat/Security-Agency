@@ -29,7 +29,7 @@ SESSION_COOKIE_AGE = 1800
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "guarder"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "guarder", "example"]
 
 AUTHENTICATION_BACKENDS = [
     'blog.authentication_backends.EmailOrUsernameBackend',
