@@ -3,8 +3,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from . import views
-from .views import (home_view, service_view, guard_view, contact_view, about_view, header_list, header_create,
-                    header_delete, header_update, menu_update, menu_list, menu_add, slider_delete,
+from .views import (home_view, service_view, guard_view, contact_view, about_view,
+                     menu_update, menu_list, menu_add, slider_delete,
                     slider_update, slider_list, slider_create, about_list, about_create, about_update, about_delete,
                     admin_list, admin_create, admin_update, admin_delete, admin_logout, admin_view)
 
@@ -46,10 +46,10 @@ urlpatterns = [
     path('signin/', views.signin_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     # Header
-    path('header/create/', header_create, name='header_create'), #create
-    path('header/list/', header_list, name='header_list'), # Header list
-    path('header/update/<int:pk>/', header_update, name='header_update'), #update
-    path('header/delete/<int:pk>/', header_delete, name='header_delete'), #delete
+    path('header/list', views.HeaderListView.as_view(), name='header_list'),
+    path('header/create/', views.HeaderCreateView.as_view(), name='header_create'),
+    path('header/update/<int:pk>/', views.HeaderUpdateView.as_view(), name='header_update'),
+    path('header/delete/<int:pk>/', views.HeaderDeleteView.as_view(), name='header_delete'),
     #menu
     path('menu/add/', menu_add, name='menu_add'), #create
     path('menu/list/', menu_list, name='menu_list'), # Header list

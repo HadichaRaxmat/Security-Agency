@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from rest_framework.reverse import reverse_lazy
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
@@ -23,6 +25,7 @@ from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderFo
                     CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm,
                     AdminUserUpdateForm,
                     AvatarUpdateForm, AdminProfileUpdateForm)
+
 
 
 def home_view(request):
@@ -398,44 +401,31 @@ def user_delete(request, pk):
     return render(request, 'admin/user_delete.html', {'user': user})
 
 
-def header_create(request):
-    if request.method == 'POST':
-        form = HeaderForm(request.POST, request.FILES)
-        if form.is_valid():
-            if Header.objects.exists():
-                form.add_error('logo', 'Только один логотип может быть добавлен.')
-                return render(request, 'admin/header_create.html', {'form': form})
-            form.save()
-            return redirect('header_list')
-    else:
-        form = HeaderForm()
-    return render(request, 'admin/header_create.html', {'form': form})
+class HeaderListView(ListView):
+   model = Header
+   template_name = 'admin/header_list.html'
+   context_object_name = 'headers'
 
 
-def header_list(request):
-    header = Header.objects.all()
-    return render(request, 'admin/header_list.html', {'header': header})
+class HeaderCreateView(CreateView):
+   model = Header
+   form_class = HeaderForm
+   template_name = 'admin/header_create.html'
+   success_url = reverse_lazy('header_list')
 
 
-def header_update(request, pk):
-    header = get_object_or_404(Header, id=pk)
-    if request.method == 'POST':
-        form = HeaderForm(request.POST, instance=header)
-        if form.is_valid():
-            form.save()
-            return redirect('header_list')
-    else:
-        form = HeaderForm(instance=header)
-    return render(request, 'admin/header_update.html', {'form': form, 'header': header})
+class HeaderUpdateView(UpdateView):
+   model = Header
+   form_class = HeaderForm
+   template_name = 'admin/header_update.html'
+   success_url = reverse_lazy('header_list')
 
 
-def header_delete(request, pk):
-    header = get_object_or_404(Header, id=pk)
+class HeaderDeleteView(DeleteView):
+   model = Header
+   template_name = 'admin/header_delete.html'
+   success_url = reverse_lazy('header_list')
 
-    if request.method == 'POST':
-        header.delete()
-        return redirect('header_list')
-    return render(request, 'admin/header_delete.html', {'header': header})
 
 
 def menu_list(request):
