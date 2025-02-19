@@ -1,0 +1,70 @@
+/* Основные стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Затемнение */
+}
+
+/* Фоновое видео */
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* Растягивает видео на весь экран */
+    z-index: -1; /* Отправляет видео на задний план */
+}
+
+/* Контейнер логина */
+.login-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Форма входа */
+.login-card {
+    background: rgba(255, 255, 255, 0.2); /* Полупрозрачный эффект */
+    border-radius: 12px;
+    backdrop-filter: blur(10px); /* Размытие */
+}
+
+/* Заголовок */
+.login-title {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Поля ввода */
+.form-control {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Кнопка входа */
+.login-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
