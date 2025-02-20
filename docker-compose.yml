@@ -2,8 +2,6 @@ services:
   web:
     build: .
     container_name: django_guarder
-    extra_hosts:
-      - "guarder:127.0.0.1"
     command: >
       sh -c "python manage.py migrate &&
              python manage.py shell -c \"
@@ -61,4 +59,4 @@ volumes:
 
 #   docker-compose down -v  # Удалит все данные БД
 #   docker-compose up -d
-#   docker-compose restart
+#   docker-compose  restart

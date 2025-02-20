@@ -80,6 +80,7 @@ TEMPLATES = [
                 'blog.context_processors.model_count',
                 'blog.context_processors.active_users_count',
                 'blog.context_processors.completed_requests_percentage',
+                'blog.context_processors.notifications',
             ],
         },
     },
@@ -92,14 +93,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'guarder',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME', 'guarder'),
+        'USER': os.getenv('DATABASE_USER', 'admin'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'admin'),
+        'HOST': os.getenv('DATABASE_HOST', 'postgres'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 

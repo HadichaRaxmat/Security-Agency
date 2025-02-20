@@ -60,7 +60,6 @@ class CustomUser(AbstractUser):
         return f"{self.email} ({self.role})"
 
 
-
 class UserContact(models.Model):
     STATUS_CHOICES = [
         ('unread', 'Unread'),
@@ -75,6 +74,8 @@ class UserContact(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_status_display()})"
+
+
 
 
 

@@ -122,7 +122,7 @@ urlpatterns = [
     path('user-contact/list/', views.user_contact_list, name='user_contact_list'),
     path('user-contact/update/<int:pk>/', views.user_contact_update, name='user_contact_update'),
     path('user-contact/delete/<int:pk>/', views.user_contact_delete, name='user_contact_delete'),
-    path('user-contact/read/<int:contact_id>/', views.mark_as_read, name='mark_as_read'),
+    path('user-contact/<int:contact_id>/read/', views.mark_as_read, name='mark_as_read'),
 
 
 
