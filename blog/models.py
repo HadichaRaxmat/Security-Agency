@@ -62,13 +62,19 @@ class CustomUser(AbstractUser):
 
 
 class UserContact(models.Model):
+    STATUS_CHOICES = [
+        ('unread', 'Unread'),
+        ('read', 'Read'),
+    ]
+
     name = models.CharField(max_length=30)
     email = models.EmailField()
     phone = models.CharField(max_length=25)
     message = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_status_display()})"
 
 
 

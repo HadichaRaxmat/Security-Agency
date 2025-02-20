@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
@@ -16,14 +15,12 @@ from .serializers import UserContactSerializer
 from rest_framework.permissions import AllowAny
 
 CustomUser = get_user_model()
-from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs, \
-    Subscribe, Footer, UserContact, CustomUser, HeaderTouch
-from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm, TouchForm, \
+from .models import (Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs,
+                     Subscribe, Footer, UserContact, CustomUser, HeaderTouch)
+from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm, TouchForm,
                     TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm,
-                    AdminUserCreationForm,
-                    CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm,
-                    AdminUserUpdateForm,
-                    AvatarUpdateForm, AdminProfileUpdateForm)
+                    AdminUserCreationForm, CustomUserCreationUserForm, AdminUserAuthenticationForm, CustomAuthenticationForm,
+                    AdminUserUpdateForm, AvatarUpdateForm, AdminProfileUpdateForm)
 
 
 
@@ -866,7 +863,22 @@ def user_contact_create(request):
 @login_required(login_url='/admin/')
 def user_contact_list(request):
     user_contacts = UserContact.objects.all()
-    return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
+    unread_contacts = UserContact.objects.filter(status='unread').order_by('-id')  # Только непрочитанные
+    read_contacts = UserContact.objects.filter(status='read').order_by('-id')  # Только прочитанные
+
+    return render(request, 'admin/user_contact_list.html', {
+        'unread_contacts': unread_contacts,
+        'read_contacts': read_contacts,
+        'user_contacts': user_contacts
+    })
+
+
+@login_required(login_url='/admin/')
+def mark_as_read(request, contact_id):
+    contact = get_object_or_404(UserContact, id=contact_id)
+    contact.status = 'read'
+    contact.save()
+    return redirect('user_contact_list')
 
 
 @login_required(login_url='/admin/')

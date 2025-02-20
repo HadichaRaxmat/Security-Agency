@@ -24,6 +24,16 @@
                 <label for="id_message" class="form-label">Message</label>
                 <textarea name="message" class="form-control" id="id_message">{{ form.message.value|default:'' }}</textarea>
             </div>
+
+            <!-- Добавляем поле для изменения статуса -->
+            <div class="mb-3">
+                <label for="id_status" class="form-label">Status</label>
+                <select name="status" class="form-control" id="id_status">
+                    <option value="unread" {% if form.status.value == "unread" %}selected{% endif %}>Unread</option>
+                    <option value="read" {% if form.status.value == "read" %}selected{% endif %}>Read</option>
+                </select>
+            </div>
+
             <div class="d-flex justify-content-between mt-4">
                 <button type="submit" class="btn btn-success btn-sm">
                     <i class="fas fa-save"></i> Submit
@@ -36,3 +46,4 @@
     </div>
 </div>
 {% endblock %}
+

@@ -32,9 +32,9 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{ model_count }}</h3>
 
-                <p>New Orders</p>
+                <p>Tables</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -47,9 +47,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>{{ completed_requests_percentage }}<sup style="font-size: 20px">%</sup></h3>
 
-                <p>Bounce Rate</p>
+                <p>Completed requests</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -76,9 +76,9 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3>{{ active_users }}</h3>
 
-                <p>Unique Visitors</p>
+                <p>Active Users</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
