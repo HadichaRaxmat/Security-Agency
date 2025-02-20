@@ -6,7 +6,7 @@ from . import views
 from .views import (home_view, service_view, guard_view, contact_view, about_view,
                      menu_update, menu_list, menu_add, slider_delete,
                     slider_update, slider_list, slider_create, about_list, about_create, about_update, about_delete,
-                    admin_list, admin_create, admin_update, admin_delete, admin_logout, admin_view)
+                    admin_list, admin_create, admin_update, admin_delete, admin_logout)
 
 
 schema_view = get_schema_view(
@@ -31,7 +31,7 @@ urlpatterns = [
     path('contact/', contact_view, name='contact'),
     path('about/', about_view),
 
-    path('dashboard/', admin_view, name='dashboard'),
+    path('dashboard/', views.admin_view, name='dashboard'),
     path('admin/profile/', views.admin_profile, name='admin_profile'),
     path('admin/list/', admin_list, name='admin_list'),
     path('admin/create/', admin_create, name='admin_create'),
