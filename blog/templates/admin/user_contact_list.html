@@ -16,6 +16,7 @@
                     <th><i class="fas fa-user"></i> Name</th>
                     <th><i class="fas fa-envelope"></i> Email</th>
                     <th><i class="fas fa-phone"></i> Phone</th>
+                    <th><i class="fas fa-phone"></i> Message</th>
                     <th><i class="fas fa-eye"></i> Status</th>  <!-- Добавлена колонка -->
                     <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
@@ -27,6 +28,7 @@
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{{ contact.phone }}</td>
+                    <td>{{ contact.message }}</td>
                     <td>
                         {% if contact.status == 'read' %}
                             <span class="badge badge-success">Read</span>
@@ -58,4 +60,3 @@
     </div>
 </div>
 {% endblock %}
-

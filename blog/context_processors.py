@@ -43,3 +43,13 @@ def completed_requests_percentage(request):
 
     percentage = (total_requests / total_users * 100) if total_users > 0 else 0
     return {'completed_requests_percentage': round(percentage, 1)}
+
+
+def notifications(request):
+    unread_count = UserContact.objects.filter(status='unread').count()
+    unread_contacts = UserContact.objects.filter(status='unread')
+
+    return {
+        'unread_count': unread_count,
+        'unread_contacts': unread_contacts
+    }

@@ -860,20 +860,7 @@ def user_contact_create(request):
     return render(request, 'admin/user_contact_create.html', {'form': form})
 
 
-@login_required(login_url='/admin/')
-def user_contact_list(request):
-    user_contacts = UserContact.objects.all()
-    unread_contacts = UserContact.objects.filter(status='unread').order_by('-id')  # Только непрочитанные
-    read_contacts = UserContact.objects.filter(status='read').order_by('-id')  # Только прочитанные
 
-    return render(request, 'admin/user_contact_list.html', {
-        'unread_contacts': unread_contacts,
-        'read_contacts': read_contacts,
-        'user_contacts': user_contacts
-    })
-
-
-@login_required(login_url='/admin/')
 def mark_as_read(request, contact_id):
     contact = get_object_or_404(UserContact, id=contact_id)
     contact.status = 'read'
@@ -882,16 +869,24 @@ def mark_as_read(request, contact_id):
 
 
 @login_required(login_url='/admin/')
+def user_contact_list(request):
+    user_contacts = UserContact.objects.all()
+    return render(request, 'admin/user_contact_list.html', {'user_contacts': user_contacts})
+
+
 def user_contact_update(request, pk):
-    user_contact = get_object_or_404(UserContact, id=pk)
-    if request.method == 'POST':
-        form = UserContactForm(request.POST, instance=user_contact)
+    contact = get_object_or_404(UserContact, pk=pk)  # Получаем объект из БД
+
+    if request.method == "POST":
+        form = UserContactForm(request.POST, instance=contact)
         if form.is_valid():
             form.save()
             return redirect('user_contact_list')
     else:
-        form = UserContactForm(instance=user_contact)
-    return render(request, 'admin/user_contact_update.html', {'form': form, 'user_contact': user_contact})
+        form = UserContactForm(instance=contact)  # Загружаем форму с текущими данными
+
+    return render(request, 'admin/user_contact_update.html', {'form': form, 'user_contact': contact})
+
 
 
 @login_required(login_url='/admin/')

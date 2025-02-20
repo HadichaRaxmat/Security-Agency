@@ -8,32 +8,40 @@
     <div class="card-body">
         <form method="POST" action="{% url 'user_contact_update' user_contact.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'user_contact_list' %}">
             {% csrf_token %}
+
+            <!-- Name -->
             <div class="mb-3">
                 <label for="id_name" class="form-label">Name</label>
-                <input type="text" name="name" value="{{ form.name.value|default:'' }}" class="form-control" id="id_name">
-            </div>
-            <div class="mb-3">
-                <label for="id_email" class="form-label">Email</label>
-                <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" id="id_email">
-            </div>
-            <div class="mb-3">
-                <label for="id_phone" class="form-label">Phone</label>
-                <input type="text" name="phone" value="{{ form.phone.value|default:'' }}" class="form-control" id="id_phone">
-            </div>
-            <div class="mb-3">
-                <label for="id_message" class="form-label">Message</label>
-                <textarea name="message" class="form-control" id="id_message">{{ form.message.value|default:'' }}</textarea>
+                <input type="text" name="name" value="{{ form.instance.name|default:'' }}" class="form-control" id="id_name">
             </div>
 
-            <!-- Добавляем поле для изменения статуса -->
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" name="email" value="{{ form.instance.email|default:'' }}" class="form-control" id="id_email">
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+                <label for="id_phone" class="form-label">Phone</label>
+                <input type="text" name="phone" value="{{ form.instance.phone|default:'' }}" class="form-control" id="id_phone">
+            </div>
+
+            <!-- Message -->
+            <div class="mb-3">
+                <label for="id_message" class="form-label">Message</label>
+                <textarea name="message" class="form-control" id="id_message">{{ form.instance.message|default:'' }}</textarea>
+            </div>
+
+            <!-- Status -->
             <div class="mb-3">
                 <label for="id_status" class="form-label">Status</label>
                 <select name="status" class="form-control" id="id_status">
-                    <option value="unread" {% if form.status.value == "unread" %}selected{% endif %}>Unread</option>
-                    <option value="read" {% if form.status.value == "read" %}selected{% endif %}>Read</option>
+                    <option value="unread" {% if form.instance.status == "unread" %}selected{% endif %}>Unread</option>
+                    <option value="read" {% if form.instance.status == "read" %}selected{% endif %}>Read</option>
                 </select>
             </div>
-
+            <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
                 <button type="submit" class="btn btn-success btn-sm">
                     <i class="fas fa-save"></i> Submit
