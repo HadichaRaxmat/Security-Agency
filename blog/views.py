@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
@@ -11,7 +10,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from rest_framework.reverse import reverse_lazy
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import UserContactSerializer
 from rest_framework.permissions import AllowAny
@@ -28,188 +27,78 @@ from .forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderFo
 
 
 
-def home_view(request):
-    header = Header.objects.all()
-    contactus = ContactUs.objects.all()
-    slider = Slider.objects.all()
-    about = About.objects.all()
-    serviceh = ServiceHeader.objects.all()
-    service = Service.objects.all()
-    client = Client.objects.all()
-    touch = Touch.objects.all()
-    team = Team.objects.all()
-    guard = Guard.objects.all()
-    contact_url = reverse('contact')
-    info = Info.objects.all()
-    subscribe = Subscribe.objects.all()
-    footer = Footer.objects.all()
-    menu = Menu.objects.all()
-    current_url = request.path
-    d = {
-        'header': header,
-        'contactus': contactus,
-        'menu': menu,
-        'slider': slider,
-        'about': about,
-        'serviceh': serviceh,
-        'service': service,
-        'client': client,
-        'touch': touch,
-        'team': team,
-        'guard': guard,
-        'contact_url': contact_url,
-        'info': info,
-        'subscribe': subscribe,
-        'footer': footer,
-        'current_url': current_url,
-    }
-    return render(request, 'index.html', context=d)
 
+@login_required(login_url='/admin/')
+def admin_view(request):
+    return render(request, 'admin/index.html')
+
+
+
+def home_view(request):
+    return render(request, "index.html")
 
 def about_view(request):
-    header = Header.objects.all()
-    contactus = ContactUs.objects.all()
-    menu = Menu.objects.all()
-    about = About.objects.all()
-    info = Info.objects.all()
-    subscribe = Subscribe.objects.all()
-    footer = Footer.objects.all()
-    d = {
-        'header': header,
-        'contactus': contactus,
-        'menu': menu,
-        'about': about,
-        'info': info,
-        'subscribe': subscribe,
-        'footer': footer
-
-    }
-    return render(request, 'about.html', context=d)
-
+    return render(request, "about.html")
 
 def service_view(request):
-    header = Header.objects.all()
-    contactus = ContactUs.objects.all()
-    menu = Menu.objects.all()
-    slider = Slider.objects.all()
-    about = About.objects.all()
-    serviceh = ServiceHeader.objects.all()
-    service = Service.objects.all()
-    footer = Footer.objects.all()
-    info = Info.objects.all()
-    subscribe = Subscribe.objects.all()
-    d = {
-        'header': header,
-        'contactus': contactus,
-        'menu': menu,
-        'slider': slider,
-        'about': about,
-        'serviceh': serviceh,
-        'service': service,
-        'footer': footer,
-        'info': info,
-        'subscribe': subscribe
-
-    }
-    return render(request, 'service.html', context=d)
-
+    return render(request, "service.html")
 
 def guard_view(request):
-    header = Header.objects.all()
-    contactus = ContactUs.objects.all()
-    menu = Menu.objects.all()
-    slider = Slider.objects.all()
-    about = About.objects.all()
-    footer = Footer.objects.all()
-    info = Info.objects.all()
-    subscribe = Subscribe.objects.all()
-    team = Team.objects.all()
-    guard = Guard.objects.all()
-    current_url = request.path,
-    d = {
-        'header': header,
-        'contactus': contactus,
-        'menu': menu,
-        'slider': slider,
-        'about': about,
-        'current_url': current_url,
-        'footer': footer,
-        'info': info,
-        'subscribe': subscribe,
-        'team': team,
-        'guard': guard,
-
-    }
-    return render(request, 'guard.html', context=d)
+    return render(request, "guard.html")
 
 
 def contact_view(request):
     login_errors = None
     register_errors = None
 
-    if request.method == 'POST':
+    if request.method == "POST":
         data = request.POST
 
         # 1. ЛОГИН
-        if 'login_form' in data:
+        if "login_form" in data:
             form = CustomAuthenticationForm(data=request.POST)
             if form.is_valid():
                 user = authenticate(
                     request,
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password']
+                    username=form.cleaned_data["username"],
+                    password=form.cleaned_data["password"]
                 )
                 if user:
                     login(request, user)
-                    return redirect('contact')
+                    return redirect("contact")
                 else:
                     login_errors = "Неверный email или пароль"
             else:
                 login_errors = "Ошибка входа. Проверьте данные."
 
         # 2. РЕГИСТРАЦИЯ
-        elif 'register_form' in data:
+        elif "register_form" in data:
             form = CustomUserCreationUserForm(request.POST)
             if form.is_valid():
                 user = form.save()
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')  # Добавил backend
-                return redirect('contact')
+                login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+                return redirect("contact")
             else:
-                register_errors = "Ошибка регистрации. Проверьте данные."  # Теперь ошибки отображаются аналогично логину
+                register_errors = "Ошибка регистрации. Проверьте данные."
 
         # 3. ФОРМА ОБРАТНОЙ СВЯЗИ
         else:
             UserContact.objects.create(
-                name=data['name'],
-                email=data['email'],
-                phone=data['phone'],
-                message=data['message']
+                name=data["name"],
+                email=data["email"],
+                phone=data["phone"],
+                message=data["message"]
             )
-            return redirect('/')
+            return redirect("/")
 
-    footer = Footer.objects.all()
-    header = Header.objects.all()
-    contactus = ContactUs.objects.all()
-    menu = Menu.objects.all()
-    info = Info.objects.all()
-    subscribe = Subscribe.objects.all()
-    current_url = request.path
+    return render(request, "contact.html", {
+        "login_errors": login_errors,
+        "register_errors": register_errors,
+        "form": CustomUserCreationUserForm(),
+        "login_form": CustomAuthenticationForm(),
+    })
 
-    d = {
-        'header': header,
-        'contactus': contactus,
-        'menu': menu,
-        'info': info,
-        'subscribe': subscribe,
-        'current_url': current_url,
-        'footer': footer,
-        'login_errors': login_errors,
-        'register_errors': register_errors,
-        'form': CustomUserCreationUserForm(),  # Добавил форму регистрации
-        'login_form': CustomAuthenticationForm()  # Добавил форму логина
-    }
 
-    return render(request, 'contact.html', context=d)
 
 
 def signup_view(request):
@@ -242,10 +131,6 @@ def signin_view(request):
 
     return render(request, 'signin.html', {'form': form})
 
-
-@login_required(login_url='/admin/')
-def admin_view(request):
-    return render(request, 'admin/index.html')
 
 
 @login_required(login_url='/admin/')
