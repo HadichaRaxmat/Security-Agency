@@ -255,4 +255,4 @@ class FooterForm(forms.ModelForm):
 class UserContactForm(forms.ModelForm):
     class Meta:
         model = UserContact
-        fields = ['name', 'email', 'phone', 'message']
+        fields = ['name', 'email', 'phone', 'message', 'status']

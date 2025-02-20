@@ -1,10 +1,19 @@
 from django.contrib.auth import get_user_model
 from django.apps import apps
+from datetime import timedelta
+from django.utils.timezone import now
 from django.urls import reverse
 CustomUser = get_user_model()
+from .models import CustomUser, UserContact
 
 def user_count(request):
-    return {'user_count': CustomUser.objects.count()}
+    return {'user_count': CustomUser.objects.filter(is_staff=False, is_superuser=False).count()}
+
+
+from .utils import count_imported_models
+
+def model_count(request):
+    return count_imported_models()
 
 
 
@@ -19,3 +28,18 @@ def global_context(request):
     context["current_url"] = request.path
 
     return context
+
+
+def active_users_count(request):
+    last_24_hours = now() - timedelta(hours=24)
+    active_users = CustomUser.objects.filter(last_login__gte=last_24_hours, is_staff=False, is_superuser=False).count()
+    return {'active_users': active_users}
+
+
+
+def completed_requests_percentage(request):
+    total_users = CustomUser.objects.filter(is_staff=False, is_superuser=False).count()
+    total_requests = UserContact.objects.count()
+
+    percentage = (total_requests / total_users * 100) if total_users > 0 else 0
+    return {'completed_requests_percentage': round(percentage, 1)}
