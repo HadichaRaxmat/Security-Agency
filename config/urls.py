@@ -17,10 +17,10 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path,include
-from blog import views
+from blog.services import auth_service
 
 urlpatterns = [
-    path('admin/', views.admin_login, name='admin_login'),
+    path('admin/', auth_service.AdminLoginView, name='admin_login'),
     path('', include('blog.urls'))
 ]
 
