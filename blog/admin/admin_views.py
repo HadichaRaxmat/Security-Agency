@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib import messages
-from forms import AdminUserCreationForm, AdminUserUpdateForm
+from blog.admin.forms import AdminUserCreationForm, AdminUserUpdateForm
 from blog.services.admin_service import AdminService
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -12,7 +12,7 @@ from blog.forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHead
                     TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm, CustomUserCreationUserForm)
 from blog.models import (Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs,
                      Subscribe, Footer, UserContact, CustomUser)
-
+from blog.services.user_service import UserService
 
 
 @login_required(login_url='/admin/')
@@ -23,7 +23,7 @@ def admin_view(request):
 
 class AdminProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'admin/admin_profile.html'
-    success_url = reverse_lazy('admin_profile')
+    success_url = reverse_lazy('admin:admin_profile')
 
     def get_object(self):
         return self.request.user
@@ -56,7 +56,7 @@ class AdminListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class AdminCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = AdminUserCreationForm
     template_name = 'admin/admin_create.html'
-    success_url = reverse_lazy('admin_list')
+    success_url = reverse_lazy('admin:admin_list')
 
     def test_func(self):
         return self.request.user.role in ['superuser', 'admin_manager']
@@ -79,7 +79,7 @@ class AdminUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CustomUser
     form_class = AdminUserUpdateForm
     template_name = 'admin/admin_update.html'
-    success_url = reverse_lazy('admin_list')
+    success_url = reverse_lazy('admin:admin_list')
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -97,7 +97,7 @@ class AdminUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class AdminDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CustomUser
     template_name = 'admin/admin_delete.html'
-    success_url = reverse_lazy('admin_list')
+    success_url = reverse_lazy('admin:admin_list')
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -127,7 +127,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserCreationUserForm
     template_name = 'admin/user_update.html'
-    success_url = reverse_lazy('users')
+    success_url = reverse_lazy('admin:users')
     login_url = '/admin/'
 
     def form_valid(self, form):
@@ -139,7 +139,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
     template_name = 'admin/user_delete.html'
-    success_url = reverse_lazy('users')
+    success_url = reverse_lazy('admin:users')
     login_url = '/admin/'
 
     def delete(self, request, *args, **kwargs):
@@ -158,20 +158,20 @@ class HeaderCreateView(CreateView):
    model = Header
    form_class = HeaderForm
    template_name = 'admin/header_create.html'
-   success_url = reverse_lazy('header_list')
+   success_url = reverse_lazy('admin:header_list')
 
 
 class HeaderUpdateView(UpdateView):
    model = Header
    form_class = HeaderForm
    template_name = 'admin/header_update.html'
-   success_url = reverse_lazy('header_list')
+   success_url = reverse_lazy('admin:header_list')
 
 
 class HeaderDeleteView(DeleteView):
    model = Header
    template_name = 'admin/header_delete.html'
-   success_url = reverse_lazy('header_list')
+   success_url = reverse_lazy('admin:header_list')
 
 
 class MenuListView(ListView):
@@ -185,7 +185,7 @@ class MenuAddView(CreateView):
     model = Menu
     form_class = MenuForm
     template_name = 'admin/menu_add.html'
-    success_url = reverse_lazy('menu_list')
+    success_url = reverse_lazy('admin:menu_list')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -196,13 +196,13 @@ class MenuUpdateView(UpdateView):
     model = Menu
     form_class = MenuForm
     template_name = 'admin/menu_create.html'
-    success_url = reverse_lazy('menu_list')
+    success_url = reverse_lazy('admin:menu_list')
 
 
 class MenuDeleteView(DeleteView):
     model = Menu
     template_name = 'admin/menu_delete.html'
-    success_url = reverse_lazy('admin_list')
+    success_url = reverse_lazy('admin:admin_list')
 
 
 def menu_toggle_visibility(request, pk):
@@ -216,7 +216,7 @@ class SliderCreateView(CreateView):
     model = Slider
     form_class = SliderForm
     template_name = 'admin/slider_create.html'
-    success_url = reverse_lazy('slider_list')
+    success_url = reverse_lazy('admin:slider_list')
 
 
 class SliderListView(ListView):
@@ -229,7 +229,7 @@ class SliderUpdateView(UpdateView):
     model = Slider
     form_class = SliderForm
     template_name = 'admin/slider_update.html'
-    success_url = reverse_lazy('slider_list')
+    success_url = reverse_lazy('admin:slider_list')
 
 class SliderDeleteView(DeleteView):
     model = Slider
@@ -240,7 +240,7 @@ class AboutCreateView(CreateView):
     model = About
     form_class = AboutForm
     template_name = 'admin/about_create.html'
-    success_url = reverse_lazy('about_list')
+    success_url = reverse_lazy('admin:about_list')
 
 class AboutListView(ListView):
     model = About
@@ -251,19 +251,19 @@ class AboutUpdateView(UpdateView):
     model = About
     form_class = AboutForm
     template_name = 'admin/about_update.html'
-    success_url = reverse_lazy('about_list')
+    success_url = reverse_lazy('admin:about_list')
 
 
 class AboutDeleteView(DeleteView):
     model = About
     template_name = 'admin/about_delete.html'
-    success_url = reverse_lazy('about_list')
+    success_url = reverse_lazy('admin:about_list')
 
 class ServiceHeaderCreateView(LoginRequiredMixin, CreateView):
     model = ServiceHeader
     form_class = ServiceHeaderForm
     template_name = 'admin/service_header_create.html'
-    success_url = reverse_lazy('service_header_list')
+    success_url = reverse_lazy('admin:service_header_list')
     login_url = '/admin/'
 
 
@@ -277,14 +277,14 @@ class ServiceHeaderUpdateView(LoginRequiredMixin, UpdateView):
     model = ServiceHeader
     form_class = ServiceHeaderForm
     template_name = 'admin/service_header_update.html'
-    success_url = reverse_lazy('service_header_list')
+    success_url = reverse_lazy('admin:service_header_list')
     login_url = '/admin/'
 
 
 class ServiceHeaderDeleteView(LoginRequiredMixin, DeleteView):
     model = ServiceHeader
     template_name = 'admin/service_header_delete.html'
-    success_url = reverse_lazy('servie_header_list')
+    success_url = reverse_lazy('admin:servie_header_list')
     login_url = '/admin/'
 
 
@@ -292,7 +292,7 @@ class ServiceCreateView(LoginRequiredMixin, CreateView):
     model = Service
     form_class = ServiceForm
     template_name = 'admin/service_create.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('admin:service_list')
     login_url = '/admin/'
 
 class ServiceListView(LoginRequiredMixin, ListView):
@@ -306,14 +306,14 @@ class ServiceUpdateView(LoginRequiredMixin, UpdateView):
     model = Service
     form_class = ServiceForm
     template_name = 'admin/service_update.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('admin:service_list')
     login_url = '/admin/'
 
 
 class ServiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Service
     template_name = 'admin/service_delete.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('admin:service_list')
     login_url = '/admin/'
 
 
@@ -334,14 +334,14 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     template_name = 'admin/client_update.html'
-    success_url = reverse_lazy('client_list')
+    success_url = reverse_lazy('admin:client_list')
     login_url = '/admin/'
 
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     template_name = 'admin/client_delete.html'
-    success_url = reverse_lazy('client_list')
+    success_url = reverse_lazy('admin:client_list')
     login_url = '/admin/'
 
 
@@ -349,7 +349,7 @@ class TouchCreateView(LoginRequiredMixin, CreateView):
     model = Touch
     form_class = TouchForm
     template_name = 'admin/touch_create.html'
-    success_url = reverse_lazy('touch_list')
+    success_url = reverse_lazy('admin:touch_list')
 
 
 class TouchListView(LoginRequiredMixin, ListView):
@@ -362,14 +362,14 @@ class TouchUpdateVIew(LoginRequiredMixin, UpdateView):
     model = Touch
     form_class = TouchForm
     template_name = 'admin/touch_update.html'
-    success_url = reverse_lazy('touch_list')
+    success_url = reverse_lazy('admin:touch_list')
     login_url = '/admin/'
 
 
 class TouchDeleteView(LoginRequiredMixin, DeleteView):
     model = Touch
     template_name = 'admin/touch_delete.html'
-    success_url = reverse_lazy('touch_list')
+    success_url = reverse_lazy('admin:touch_list')
     login_url = '/admin/'
 
 
@@ -377,7 +377,7 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = 'admin/team_create.html'
-    success_url = reverse_lazy('team_list')
+    success_url = reverse_lazy('admin:team_list')
     login_url = '/admin/'
 
 
@@ -392,14 +392,14 @@ class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = Team
     form_class = TeamForm
     template_name = 'admin/team_update.html'
-    success_url = reverse_lazy('team_list')
+    success_url = reverse_lazy('admin:team_list')
     login_url = '/admin/'
 
 
 class TeamDeleteVIew(LoginRequiredMixin, DeleteView):
     model = Team
     template_name = 'admin/team_delete.html'
-    success_url = reverse_lazy('team_list')
+    success_url = reverse_lazy('admin:team_list')
     login_url = '/admin/'
 
 
@@ -407,7 +407,7 @@ class GuardCreateView(LoginRequiredMixin, CreateView):
     model = Guard
     form_class = GuardForm
     template_name = 'admin/guard_create.html'
-    success_url = reverse_lazy('guard_list')
+    success_url = reverse_lazy('admin:guard_list')
     login_url = '/admin/'
 
 
@@ -421,14 +421,14 @@ class GuardUpdateView(LoginRequiredMixin, UpdateView):
     model = Guard
     form_class = GuardForm
     template_name = 'admin/guard_update.html'
-    success_url = reverse_lazy('guard_list')
+    success_url = reverse_lazy('admin:guard_list')
     login_url = '/admin/'
 
 
 class GuardDeleteView(LoginRequiredMixin, DeleteView):
     model = Guard
     template_name = 'admin/guard_delete.html'
-    success_url = reverse_lazy('guard_list')
+    success_url = reverse_lazy('admin:guard_list')
     login_url = '/admin/'
 
 
@@ -436,7 +436,7 @@ class InfoCreateView(LoginRequiredMixin, CreateView):
     model = Info
     form_class = InfoForm
     template_name = 'admin/info_create.html'
-    success_url = reverse_lazy('info_list')
+    success_url = reverse_lazy('admin:info_list')
     login_url = '/admin/'
 
 class InfoListView(LoginRequiredMixin, ListView):
@@ -450,14 +450,14 @@ class InfoUpdateView(LoginRequiredMixin, UpdateView):
     model = Info
     form_class = InfoForm
     template_name = 'admin/info_update.html'
-    success_url = reverse_lazy('info_list')
+    success_url = reverse_lazy('admin:info_list')
     login_url = '/admin/'
 
 
 class InfoDeleteView(LoginRequiredMixin, DeleteView):
     model = Info
     template_name = 'admin/info_delete.html'
-    success_url = reverse_lazy('info_list')
+    success_url = reverse_lazy('admin:info_list')
     login_url = '/admin/'
 
 
@@ -465,7 +465,7 @@ class ContactusCreateView(LoginRequiredMixin, CreateView):
     model = ContactUs
     form_class = ContactUsForm
     template_name = 'admin/contact_us_create.html'
-    success_url = reverse_lazy('contactus_list')
+    success_url = reverse_lazy('admin:contactus_list')
     login_url = '/admin/'
 
 
@@ -480,13 +480,13 @@ class ContactusUpdateView(LoginRequiredMixin, UpdateView):
     model = ContactUs
     form_class = ContactUsForm
     template_name = 'admin/contact_us_update.html'
-    success_url = reverse_lazy('contactus_list')
+    success_url = reverse_lazy('admin:contactus_list')
     login_url = '/admin/'
 
 class ContactusDeleteView(LoginRequiredMixin, DeleteView):
     model = ContactUs
     template_name = 'admin/contact_us_delete'
-    success_url = reverse_lazy('contactus_list')
+    success_url = reverse_lazy('admin:contactus_list')
     login_url = '/admin/'
 
 
@@ -494,7 +494,7 @@ class SubscribeCreateView(LoginRequiredMixin, CreateView):
     model = Subscribe
     form_class = SubscribeForm
     template_name = 'admin/subscribe_create'
-    success_url = reverse_lazy('subscribe_list')
+    success_url = reverse_lazy('admin:subscribe_list')
     login_url = '/admin/'
 
 class SubscribeListView(LoginRequiredMixin, ListView):
@@ -508,14 +508,14 @@ class SubscribeUpdateView(LoginRequiredMixin, UpdateView):
     model = Subscribe
     form_class = SubscribeForm
     template_name = 'admin/subscribe_update.html'
-    success_url = reverse_lazy('subscribe_list')
+    success_url = reverse_lazy('admin:subscribe_list')
     login_url = '/admin/'
 
 
 class SubscribeDeleteView(LoginRequiredMixin, DeleteView):
     model = Subscribe
     template_name = 'admin/subscribe_delete.html'
-    success_url = reverse_lazy('subscribe_list')
+    success_url = reverse_lazy('admin:subscribe_list')
     login_url = '/admin/'
 
 
@@ -523,7 +523,7 @@ class FooterCreateView(LoginRequiredMixin, CreateView):
     model = Footer
     form_class = FooterForm
     template_name = 'admin/footer_create.html'
-    success_url = reverse_lazy('subscribe_list')
+    success_url = reverse_lazy('admin:subscribe_list')
     login_url = '/admin/'
 
 
@@ -538,14 +538,14 @@ class FooterUpdateView(LoginRequiredMixin, UpdateView):
     model = Footer
     form_class = FooterForm
     template_name = 'admin/footer_update.html'
-    success_url = reverse_lazy('footer_list')
+    success_url = reverse_lazy('admin:footer_list')
     login_url = '/admin/'
 
 
 class FooterDeleteView(LoginRequiredMixin, DeleteView):
     model = Footer
     template_name = 'admin/footer_delete.html'
-    success_url = reverse_lazy('footer_list')
+    success_url = reverse_lazy('admin:footer_list')
     login_url = '/admin/'
 
 
@@ -566,7 +566,7 @@ class UserContactCreateView(LoginRequiredMixin, CreateView):
     model = UserContact
     form_class = UserContactForm
     template_name = 'admin/user_contact_create'
-    success_url = reverse_lazy('user_contact_list')
+    success_url = reverse_lazy('admin:user_contact_list')
     login_url = '/admin/'
 
 
@@ -574,7 +574,7 @@ def mark_as_read(request, contact_id):
     contact = get_object_or_404(UserContact, id=contact_id)
     contact.status = 'read'
     contact.save()
-    return redirect('user_contact_list')
+    return redirect('admin:user_contact_list')
 
 
 class UserContactListView(LoginRequiredMixin, ListView):
@@ -589,7 +589,7 @@ class UserContactUpdateView(LoginRequiredMixin, UpdateView):
     model = UserContact
     form_class = UserContactForm
     template_name = 'admin/user_contact_update.html'
-    success_url = reverse_lazy('user_contact_list')
+    success_url = reverse_lazy('admin:user_contact_list')
     login_url = '/admin/'
 
 
@@ -597,6 +597,6 @@ class UserContactDeleteView(LoginRequiredMixin, DeleteView):
     model = UserContact
     form_class = UserContactForm
     template_name = 'admin/user_contact_update.html'
-    success_url = reverse_lazy('user_contact_list')
+    success_url = reverse_lazy('admin:user_contact_list')
     login_url = '/admin/'
 

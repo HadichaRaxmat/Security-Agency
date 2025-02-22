@@ -20,8 +20,9 @@ from django.urls import path,include
 from blog.services import auth_service
 
 urlpatterns = [
-    path('admin/', auth_service.AdminLoginView, name='admin_login'),
-    path('', include('blog.urls'))
+    path('admin/', auth_service.AdminLoginView.as_view(), name='admin_login'),
+    path('', include('blog.urls')),
+    path('', include('blog.admin.admin_urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -8,12 +8,12 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete Header ID: {{ header.id }}?</h5>
         <div class="mt-5">
-            <form method="POST" action="{% url 'header_delete' header.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'header_list' %}">
+            <form method="POST" action="{% url 'admin:header_delete' header.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'header_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> Yes, Delete
                 </button>
-                <a href="{% url 'header_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:header_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Cancel
                 </a>
             </form>

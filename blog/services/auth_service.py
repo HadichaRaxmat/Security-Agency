@@ -12,7 +12,7 @@ from blog.forms import CustomUserCreationUserForm, CustomAuthenticationForm
 class AdminLoginView(FormView):
     template_name = 'admin/admin_signin.html'
     form_class = AdminUserAuthenticationForm
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('admin:dashboard')
 
     def form_valid(self, form):
         username_or_email = form.cleaned_data['username']

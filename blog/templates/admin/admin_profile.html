@@ -37,7 +37,7 @@
             </div>
 
             <!-- Данные профиля -->
-            <form method="POST" action="{% url 'admin_profile' %}" enctype="multipart/form-data" class="profile-form">
+            <form method="POST" action="{% url 'admin:admin_profile' %}" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
 
                 <div class="input-group">

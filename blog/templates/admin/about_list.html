@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of About Sections</h3>
-        <a href="{% url 'about_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:about_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Create New About
         </a>
     </div>
@@ -36,7 +36,7 @@
                         <a href="{% url 'about_update' about.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'about_delete' about.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:about_delete' about.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

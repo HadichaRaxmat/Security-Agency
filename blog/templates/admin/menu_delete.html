@@ -8,13 +8,13 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete menu ID: {{ menu.id }}?</h5>
         <div class="d-flex justify-content-between mt-5">
-            <form method="POST" action="{% url 'menu_delete' menu.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'menu_list' %}">
+            <form method="POST" action="{% url 'admin:menu_delete' menu.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'admin:menu_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> Yes, Delete
                 </button>
             </form>
-            <a href="{% url 'menu_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+            <a href="{% url 'admin:menu_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                 <i class="fas fa-arrow-left"></i> Cancel
             </a>
         </div>

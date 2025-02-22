@@ -1,4 +1,3 @@
-from django.contrib import messages
 from blog.admin.forms import AdminProfileUpdateForm, AvatarUpdateForm
 
 

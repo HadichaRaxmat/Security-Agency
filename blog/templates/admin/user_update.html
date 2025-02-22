@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Edit User</h3>
     </div>
     <div class="card-body">
-        <form method="POST" action="{% url 'user_update' user.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'user_list' %}">
+        <form method="POST" action="{% url 'admin:user_update' user.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'admin:user_list' %}">
             {% csrf_token %}
 
             <div class="mb-3">
@@ -23,7 +23,7 @@
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="fas fa-save"></i> Save Changes
                 </button>
-                <a href="{% url 'users' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:users' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>

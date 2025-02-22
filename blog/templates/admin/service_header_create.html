@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New Service Header</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'service_header_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'service_header_list' %}">
+        <form class="ajax-form" action="{% url 'admin:service_header_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'admin:service_header_list' %}">
             {% csrf_token %}
 
             <div class="mb-3">
@@ -23,7 +23,7 @@
                 <button type="submit" class="btn btn-success btn-sm">
                     <i class="fas fa-save"></i> Submit
                 </button>
-                <a href="{% url 'service_header_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:service_header_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>

@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Update Touch</h3>
     </div>
     <div class="card-body">
-        <form method="POST" action="{% url 'touch_update' touch.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'touch_list' %}">
+        <form method="POST" action="{% url 'admin:touch_update' touch.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'admin:touch_list' %}">
             {% csrf_token %}
 
             <div class="mb-3">
@@ -48,7 +48,7 @@
                 <button type="submit" class="btn btn-success btn-sm">
                     <i class="fas fa-save"></i> Submit
                 </button>
-                <a href="{% url 'touch_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:touch_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>

@@ -8,11 +8,11 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete Subscribe ID: {{ subscribe.id }}?</h5>
         <div class="d-flex justify-content-between">
-            <form method="POST" action="{% url 'subscribe_delete' subscribe.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'subscribe_list' %}">
+            <form method="POST" action="{% url 'admin:subscribe_delete' subscribe.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'admin:subscribe_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
-            <a href="{% url 'subscribe_list' %}" class="btn btn-light btn-sm text-dark">
+            <a href="{% url 'admin:subscribe_list' %}" class="btn btn-light btn-sm text-dark">
                 <i class="fas fa-arrow-left"></i> Cancel
             </a>
         </div>

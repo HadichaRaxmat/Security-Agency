@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Teams</h3>
-        <a href="{% url 'team_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:team_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Create New Team
         </a>
     </div>
@@ -23,10 +23,10 @@
                     <td>{{ team.id }}</td>
                     <td>{{ team.title }}</td>
                     <td class="text-center">
-                        <a href="{% url 'team_update' team.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:team_update' team.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'team_delete' team.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:team_delete' team.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

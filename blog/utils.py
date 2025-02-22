@@ -3,7 +3,7 @@ import re
 
 def count_imported_models():
     """Считает количество моделей, явно импортированных в views.py"""
-    views_path = os.path.join(os.path.dirname(__file__), "views.py")  # Путь к views.py
+    views_path = os.path.join(os.path.dirname(__file__), "admin", "admin_views.py")
 
     with open(views_path, "r", encoding="utf-8") as file:
         views_content = file.read()

@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Edit Slider</h3>
     </div>
     <div class="card-body">
-        <form method="POST" action="{% url 'slider_update' slider.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'slider_list' %}">
+        <form method="POST" action="{% url 'admin:slider_update' slider.id %}" enctype="multipart/form-data" class="ajax-form" data-redirect="{% url 'admin:slider_list' %}">
             {% csrf_token %}
 
             <!-- Поле Image -->
@@ -48,7 +48,7 @@
                 <button type="submit" class="btn btn-info btn-sm">
                     <i class="fas fa-save"></i> Save changes
                 </button>
-                <a href="{% url 'slider_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:slider_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>

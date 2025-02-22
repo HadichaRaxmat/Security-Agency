@@ -8,11 +8,11 @@
     <div class="card-body">
         <h5 class="text-danger">Are you sure you want to delete Info ID: {{ info.id }}?</h5>
         <div class="d-flex justify-content-between">
-            <form method="POST" action="{% url 'info_delete' info.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'info_list' %}">
+            <form method="POST" action="{% url 'admin:info_delete' info.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'admin:info_list' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
-            <a href="{% url 'info_list' %}" class="btn btn-light btn-sm text-dark">
+            <a href="{% url 'admin:info_list' %}" class="btn btn-light btn-sm text-dark">
                 <i class="fas fa-arrow-left"></i> Cancel
             </a>
         </div>

@@ -1,14 +1,16 @@
 from django.urls import path
 from blog.services import auth_service
 from blog.admin import admin_views
+app_name = 'admin'
 
 urlpatterns = [
     path('dashboard/', admin_views.admin_view, name='dashboard'),
-    path('profile/', admin_views.AdminProfileView, name='admin_profile'),
-    path('list/', admin_views.AdminListView, name='admin_list'),
-    path('create/', admin_views.AdminCreateView, name='admin_create'),
-    path('update/<int:user_id>/', admin_views.AdminUpdateView, name='admin_update'),
-    path('delete/<int:user_id>/', admin_views.AdminDeleteView, name='admin_delete'),
+    path('profile/', admin_views.AdminProfileView.as_view(), name='admin_profile'),
+
+    path('admin/list/', admin_views.AdminListView.as_view(), name='admin_list'),
+    path('admin/create/', admin_views.AdminCreateView.as_view(), name='admin_create'),
+    path('admin/update/<int:user_id>/', admin_views.AdminUpdateView.as_view(), name='admin_update'),
+    path('admin/delete/<int:user_id>/', admin_views.AdminDeleteView.as_view(), name='admin_delete'),
 
     path('logout/', auth_service.admin_logout, name='admin_logout'),
 

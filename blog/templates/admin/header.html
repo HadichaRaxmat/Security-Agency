@@ -150,12 +150,12 @@
                 <span class="dropdown-item dropdown-header">{{ unread_count }} Notifications</span>
                 <div class="dropdown-divider"></div>
                 {% for contact in unread_contacts %}
-                    <a href="{% url 'user_contact_update' contact.id %}" class="dropdown-item">
+                    <a href="{% url 'admin:user_contact_update' contact.id %}" class="dropdown-item">
                         <i class="fas fa-envelope mr-2"></i> {{ contact.message|truncatewords:5 }}
                         <span class="float-right text-muted text-sm">{{ contact.created_at|timesince }}</span>
                     </a>
                 {% endfor %}
-                <a href="{% url 'user_contact_list' %}" class="dropdown-item dropdown-footer">See All Notifications</a>
+                <a href="{% url 'admin:user_contact_list' %}" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
         </li>
 
@@ -170,7 +170,7 @@
         </a>
       </li>
       <li class="nav-item">
-          <form id="logout-form" action="{% url 'admin_logout' %}" method="POST">
+          <form id="logout-form" action="{% url 'admin:admin_logout' %}" method="POST">
               {% csrf_token %}
               <button type="submit" class="nav-link logout-btn">
                   <i class="fas fa-sign-out-alt"></i>

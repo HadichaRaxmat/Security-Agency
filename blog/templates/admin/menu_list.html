@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Menu</h3>
-        <a href="{% url 'menu_add' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:menu_add' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Add New Menu
         </a>
     </div>
@@ -26,10 +26,10 @@
                     <td>{{ m.menu }}</td>
                     <td>{{ m.title|truncatewords:5 }}</td>
                     <td class="text-center">
-                        <a href="{% url 'menu_update' m.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:menu_update' m.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'menu_delete' m.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:menu_delete' m.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

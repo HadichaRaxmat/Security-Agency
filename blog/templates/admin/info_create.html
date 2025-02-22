@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Create New Info</h3>
     </div>
     <div class="card-body">
-        <form class="ajax-form" action="{% url 'info_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'info_list' %}">
+        <form class="ajax-form" action="{% url 'admin:info_create' %}" method="POST" enctype="multipart/form-data" data-redirect="{% url 'admin:info_list' %}">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="id_title" class="form-label">Title</label>
@@ -32,7 +32,7 @@
                 <button type="submit" class="btn btn-success btn-sm">
                     <i class="fas fa-save"></i> Submit
                 </button>
-                <a href="{% url 'info_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
+                <a href="{% url 'admin:info_list' %}" class="btn btn-light btn-sm text-dark font-weight-bold">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>

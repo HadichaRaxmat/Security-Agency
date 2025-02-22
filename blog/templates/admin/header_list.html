@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Headers</h3>
-        <a href="{% url 'header_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:header_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Create New Header
         </a>
     </div>
@@ -23,10 +23,10 @@
                     <td>{{ header.id }}</td>
                     <td>{{ header.logo }}</td>
                     <td class="text-center">
-                        <a href="{% url 'header_update' header.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:header_update' header.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'header_delete' header.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:header_delete' header.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

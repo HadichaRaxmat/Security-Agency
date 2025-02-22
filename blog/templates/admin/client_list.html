@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Clients</h3>
-        <a href="{% url 'client_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:client_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Create New Client
         </a>
     </div>
@@ -35,10 +35,10 @@
                     <td>{{ client.title }}</td>
                     <td>{{ client.text|truncatewords:10 }}</td>
                     <td class="text-center">
-                        <a href="{% url 'client_update' client.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:client_update' client.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'client_delete' client.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:client_delete' client.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

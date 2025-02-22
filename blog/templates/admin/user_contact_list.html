@@ -4,7 +4,7 @@
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of User Contacts</h3>
-        <a href="{% url 'user_contact_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
+        <a href="{% url 'admin:user_contact_create' %}" class="btn btn-light btn-sm text-primary font-weight-bold">
             <i class="fas fa-plus"></i> Create New User Contact
         </a>
     </div>
@@ -38,14 +38,14 @@
                     </td>
                     <td class="text-center">
                         {% if contact.status == 'unread' %}
-                            <a href="{% url 'mark_as_read' contact.id %}" class="btn btn-sm btn-outline-success" title="Mark as Read">
+                            <a href="{% url 'admin:mark_as_read' contact.id %}" class="btn btn-sm btn-outline-success" title="Mark as Read">
                                 <i class="fas fa-check"></i>
                             </a>
                         {% endif %}
-                        <a href="{% url 'user_contact_update' contact.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:user_contact_update' contact.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'user_contact_delete' contact.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:user_contact_delete' contact.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
