@@ -33,7 +33,7 @@
                     <td>{{ about.title }}</td>
                     <td>{{ about.text|slice:":100" }}{% if about.text|length > 100 %}...{% endif %}</td>
                     <td class="text-center">
-                        <a href="{% url 'about_update' about.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                        <a href="{% url 'admin:about_update' about.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="{% url 'admin:about_delete' about.id %}" class="btn btn-sm btn-outline-danger" title="Delete">

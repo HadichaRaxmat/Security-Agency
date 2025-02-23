@@ -6,7 +6,7 @@
         <h3 class="card-title m-0">Delete User</h3>
     </div>
     <div class="card-body">
-        <h5 class="text-danger">Are you sure you want to delete User ID: {{ user.id }}?</h5>
+        <h5 class="text-danger">Are you sure you want to delete User ID: ?</h5>
         <div class="mt-5">
             <form method="POST" action="{% url 'admin:user_delete' user.id %}" class="ajax-form d-flex justify-content-between" data-redirect="{% url 'admin:user_list' %}">
                 {% csrf_token %}

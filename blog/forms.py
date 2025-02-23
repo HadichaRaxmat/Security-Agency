@@ -1,12 +1,11 @@
 from django import forms
-from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info, ContactUs, \
     Subscribe, Footer, UserContact, CustomUser
 
 
 
-class CustomUserCreationUserForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address'})
     )
@@ -24,8 +23,14 @@ class CustomUserCreationUserForm(UserCreationForm):
         exclude = ('username',)
 
 
+class CustomUserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('email' ,)
 
-class CustomAuthenticationForm(AuthenticationForm):
+
+
+class CustomUserAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address'})

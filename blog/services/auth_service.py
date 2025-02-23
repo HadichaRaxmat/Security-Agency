@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from blog.admin.forms import AdminUserAuthenticationForm
-from blog.forms import CustomUserCreationUserForm, CustomAuthenticationForm
+from blog.forms import CustomUserCreationForm, CustomUserAuthenticationForm
 
 
 class AdminLoginView(FormView):
@@ -43,11 +43,11 @@ class AuthView(FormView):
 
     def get_form_class(self):
         if self.request.path == reverse_lazy("signup"):
-            return CustomUserCreationUserForm
-        return CustomAuthenticationForm
+            return CustomUserCreationForm
+        return CustomUserAuthenticationForm
 
     def form_valid(self, form):
-        if isinstance(form, CustomUserCreationUserForm):
+        if isinstance(form, CustomUserCreationForm):
             user = form.save()
             login(self.request, user, backend="django.contrib.auth.backends.ModelBackend")
         else:  # Логин

@@ -14,7 +14,7 @@ urlpatterns = [
 
     path('logout/', auth_service.admin_logout, name='admin_logout'),
 
-    path('users/', admin_views.UsersListView.as_view(), name='users'),
+    path('users/', admin_views.UsersListView.as_view(), name='user_list'),
     path('user/update/<int:pk>/', admin_views.UserUpdateView.as_view(), name='user_update'),
     path('user/delete/<int:pk>/', admin_views.UserDeleteView.as_view(), name='user_delete'),
 
@@ -41,7 +41,7 @@ urlpatterns = [
     path('about/delete/<int:pk>/', admin_views.AboutDeleteView.as_view(), name='about_delete'),
 
     path('service-header/create/', admin_views.ServiceHeaderCreateView.as_view(), name='service_header_create'),
-    path('service-header/list/', admin_views. ServiceHeaderListView.as_view, name='service_header_list'),
+    path('service-header/list/', admin_views. ServiceHeaderListView.as_view(), name='service_header_list'),
     path('service-header/update/<int:pk>/', admin_views.ServiceHeaderUpdateView.as_view(), name='service_header_update'),
     path('service-header/delete/<int:pk>/', admin_views.ServiceHeaderDeleteView.as_view(), name='service_header_delete'),
 

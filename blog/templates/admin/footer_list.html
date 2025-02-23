@@ -28,7 +28,7 @@
                         </td>
                         <td>{{ footer.info }}</td>
                         <td class="text-center">
-                            <a href="{% url 'footer_update' footer.id %}" class="btn btn-sm btn-outline-info" title="Edit">
+                            <a href="{% url 'admin:footer_update' footer.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a href="{% url 'admin:footer_delete' footer.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
