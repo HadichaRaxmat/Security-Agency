@@ -5,12 +5,11 @@ from django.utils.timezone import now
 from django.urls import reverse
 CustomUser = get_user_model()
 from .models import CustomUser, UserContact
+from .utils import count_imported_models
 
 def user_count(request):
     return {'user_count': CustomUser.objects.filter(is_staff=False, is_superuser=False).count()}
 
-
-from .utils import count_imported_models
 
 def model_count(request):
     return count_imported_models()

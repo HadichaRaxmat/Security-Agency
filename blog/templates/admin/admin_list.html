@@ -1,6 +1,7 @@
 {% extends 'admin/index.html' %}
 
 {% block content %}
+{% load static %}
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Admins</h3>
@@ -60,7 +61,11 @@
                         <a href="{% url 'admin:admin_update' user.id %}" class="btn btn-sm btn-outline-info" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="{% url 'admin:admin_delete' user.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <a href="{% url 'admin:admin_delete' user.id %}"
+                           class="btn btn-sm btn-outline-danger delete-admin-btn"
+                           title="Delete"
+                           data-user-id="{{ user.id }}"
+                           data-user-role="{{ user.role }}">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
@@ -74,4 +79,6 @@
         </table>
     </div>
 </div>
+
+<script src="{% static 'admin/dist/js/super_user.js' %}"></script>
 {% endblock %}

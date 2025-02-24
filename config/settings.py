@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-@87@4(p6#i!ts5sz)*73($1z8*+mm3f%o&v3)1k4_%%j-i3oym
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SESSION_COOKIE_AGE = 1800
+LOGIN_URL = "/admin/"
+
+SESSION_COOKIE_AGE = 3600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
@@ -60,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "blog.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'

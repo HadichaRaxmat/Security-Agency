@@ -6,14 +6,17 @@ from django.contrib import messages
 from blog.admin.forms import AdminUserCreationForm, AdminUserUpdateForm
 from blog.services.admin_service import AdminService
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden, Http404
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+import logging
+logger = logging.getLogger(__name__)
 from blog.forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm,
                         TouchForm,
                         TeamForm, GuardForm, InfoForm, ContactUsForm, SubscribeForm, FooterForm, UserContactForm,
-                        CustomUserCreationForm, CustomUserUpdateForm)
+                        CustomUserUpdateForm)
 from blog.models import (Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info,
-                         ContactUs,
-                         Subscribe, Footer, UserContact, CustomUser)
+                         ContactUs, Subscribe, Footer, UserContact, CustomUser)
 
 
 
@@ -42,6 +45,7 @@ class AdminListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = CustomUser
     template_name = 'admin/admin_list.html'
     context_object_name = 'users'
+    login_url = '/admin/'
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -54,6 +58,7 @@ class AdminCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = AdminUserCreationForm
     template_name = 'admin/admin_create.html'
     success_url = reverse_lazy('admin:admin_list')
+    login_url = '/admin/'
 
     def test_func(self):
         return self.request.user.role in ['superuser', 'admin_manager']
@@ -75,6 +80,7 @@ class AdminUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = AdminUserUpdateForm
     template_name = 'admin/admin_update.html'
     success_url = reverse_lazy('admin:admin_list')
+    login_url = '/admin/'
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -90,14 +96,35 @@ class AdminUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class AdminDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CustomUser
     template_name = 'admin/admin_delete.html'
-    success_url = reverse_lazy('admin:admin_list')
-    login_url = '/admin/'
+    success_url = reverse_lazy('admin_list')
+    login_url = '/admin/login/'
 
     def test_func(self):
         return self.request.user.is_superuser
 
     def get_object(self):
-        return get_object_or_404(CustomUser, id=self.kwargs['user_id'])
+        """Получаем пользователя по user_id из URL."""
+        user_id = self.kwargs.get('user_id')  # 👈 Проверяем наличие user_id
+        if not user_id:
+            raise Http404("❌ Ошибка: user_id отсутствует в URL.")
+
+        return get_object_or_404(CustomUser, id=user_id)
+
+    def delete(self, request, *args, **kwargs):
+        user_to_delete = self.get_object()
+
+        try:
+            if AdminService.delete_admin(request.user, user_to_delete.id):
+                messages.success(request, f"✅ Администратор {user_to_delete.email} удалён.")
+                return super().delete(request, *args, **kwargs)
+            else:
+                messages.error(request, "❌ Удаление не удалось.")
+                return redirect('admin_list')
+        except PermissionDenied:
+            messages.error(request, "❌ У вас нет прав для удаления этого пользователя.")
+            return redirect('admin_list')
+        except CustomUser.DoesNotExist:
+            raise Http404("❌ Пользователь не найден.")
 
 
 
@@ -115,7 +142,7 @@ class UsersListView(LoginRequiredMixin, ListView):
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
-    form_class = CustomUserUpdateForm  # Используем форму для обновления
+    form_class = CustomUserUpdateForm
     template_name = 'admin/user_update.html'
     success_url = reverse_lazy('admin:user_list')
     login_url = '/admin/'
@@ -132,24 +159,26 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 
-class HeaderListView(ListView):
+class HeaderListView(LoginRequiredMixin, ListView):
     model = Header
     template_name = 'admin/header_list.html'
     context_object_name = 'headers'
+    login_url = '/admin/'
 
 
-class HeaderCreateView(CreateView):
+class HeaderCreateView(LoginRequiredMixin, CreateView):
     model = Header
     form_class = HeaderForm
     template_name = 'admin/header_create.html'
     success_url = reverse_lazy('admin:header_list')
+    login_url = '/admin/'
 
-
-class HeaderUpdateView(UpdateView):
+class HeaderUpdateView(LoginRequiredMixin, UpdateView):
     model = Header
     form_class = HeaderForm
     template_name = 'admin/header_update.html'
     success_url = reverse_lazy('admin:header_list')
+    login_url = '/admin/'
 
 
 class HeaderDeleteView(LoginRequiredMixin, DeleteView):
@@ -159,17 +188,19 @@ class HeaderDeleteView(LoginRequiredMixin, DeleteView):
     login_url = '/admin/'
 
 
-class MenuListView(ListView):
+class MenuListView(LoginRequiredMixin, ListView):
     model = Menu
     template_name = 'admin/menu_list.html'
     context_object_name = 'menu'
+    login_url = '/admin/'
 
 
-class MenuAddView(CreateView):
+class MenuAddView(LoginRequiredMixin, CreateView):
     model = Menu
     form_class = MenuForm
     template_name = 'admin/menu_add.html'
     success_url = reverse_lazy('admin:menu_list')
+    login_url = '/admin/'
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -177,19 +208,21 @@ class MenuAddView(CreateView):
         return response
 
 
-class MenuUpdateView(UpdateView):
+class MenuUpdateView(LoginRequiredMixin, UpdateView):
     model = Menu
     form_class = MenuForm
     template_name = 'admin/menu_create.html'
     success_url = reverse_lazy('admin:menu_list')
+    login_url = '/admin/'
 
 
-class MenuDeleteView(DeleteView):
+class MenuDeleteView(LoginRequiredMixin, DeleteView):
     model = Menu
     template_name = 'admin/menu_delete.html'
     success_url = reverse_lazy('admin:admin_list')
+    login_url = '/admin/'
 
-
+@login_required(login_url='/admin/')
 def menu_toggle_visibility(request, pk):
     menu = get_object_or_404(Menu, pk=pk)
     menu.is_active = not menu.is_active
@@ -197,56 +230,64 @@ def menu_toggle_visibility(request, pk):
     return redirect('menu_list')
 
 
-class SliderCreateView(CreateView):
+class SliderCreateView(LoginRequiredMixin, CreateView):
     model = Slider
     form_class = SliderForm
     template_name = 'admin/slider_create.html'
     success_url = reverse_lazy('admin:slider_list')
+    login_url = '/admin/'
 
 
-class SliderListView(ListView):
+class SliderListView(LoginRequiredMixin, ListView):
     model = Slider
     template_name = 'admin/slider_list.html'
     context_object_name = 'sliders'
+    login_url = '/admin/'
 
 
-class SliderUpdateView(UpdateView):
+class SliderUpdateView(LoginRequiredMixin, UpdateView):
     model = Slider
     form_class = SliderForm
     template_name = 'admin/slider_update.html'
     success_url = reverse_lazy('admin:slider_list')
+    login_url = '/admin/'
 
 
-class SliderDeleteView(DeleteView):
+class SliderDeleteView(LoginRequiredMixin, DeleteView):
     model = Slider
     template_name = 'admin/slider_delete.html'
     success_url = reverse_lazy('slider_list')
+    login_url = '/admin/'
 
 
-class AboutCreateView(CreateView):
+class AboutCreateView(LoginRequiredMixin, CreateView):
     model = About
     form_class = AboutForm
     template_name = 'admin/about_create.html'
     success_url = reverse_lazy('admin:about_list')
+    login_url = '/admin/'
 
 
-class AboutListView(ListView):
+class AboutListView(LoginRequiredMixin, ListView):
     model = About
     template_name = 'admin/about_list.html'
     context_object_name = 'abouts'
+    login_url = '/admin/'
 
 
-class AboutUpdateView(UpdateView):
+class AboutUpdateView(LoginRequiredMixin, UpdateView):
     model = About
     form_class = AboutForm
     template_name = 'admin/about_update.html'
     success_url = reverse_lazy('admin:about_list')
+    login_url = '/admin/'
 
 
-class AboutDeleteView(DeleteView):
+class AboutDeleteView(LoginRequiredMixin, DeleteView):
     model = About
     template_name = 'admin/about_delete.html'
     success_url = reverse_lazy('admin:about_list')
+    login_url = '/admin/'
 
 
 class ServiceHeaderCreateView(LoginRequiredMixin, CreateView):
@@ -564,7 +605,7 @@ def footer_bulk_delete(request):
 class UserContactCreateView(LoginRequiredMixin, CreateView):
     model = UserContact
     form_class = UserContactForm
-    template_name = 'admin/user_contact_create'
+    template_name = 'admin/user_contact_create.html'
     success_url = reverse_lazy('admin:user_contact_list')
     login_url = '/admin/'
 

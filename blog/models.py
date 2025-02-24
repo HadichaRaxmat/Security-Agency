@@ -41,6 +41,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='admin')
 
 

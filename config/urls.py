@@ -16,8 +16,14 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 from django.urls import path,include
 from blog.services import auth_service
+
+def session_expired(request, exception):
+    return redirect("admin:admin_login")
+
+handler403 = session_expired
 
 urlpatterns = [
     path('admin/', auth_service.AdminLoginView.as_view(), name='admin_login'),
