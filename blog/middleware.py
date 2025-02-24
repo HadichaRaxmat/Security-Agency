@@ -3,7 +3,7 @@ from django.utils.timezone import now
 from django.urls import reverse
 from datetime import datetime, timedelta
 
-SESSION_TIMEOUT_SECONDS =
+SESSION_TIMEOUT_SECONDS = 3600
 
 class SessionTimeoutMiddleware:
     def __init__(self, get_response):
