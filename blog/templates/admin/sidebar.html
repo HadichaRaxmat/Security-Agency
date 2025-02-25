@@ -37,163 +37,170 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link">
-                        <i class="far fa-dot-circle nav-icon"></i>
-                        <p>
-                            DataTables
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        {% if request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:admin_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Admin</p>
-                            </a>
-                        </li>
-                        {% endif %}
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>
+                        DataTables
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:admin_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Admin</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'user_contact' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:user_contact_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>User Contact</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:user_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
 
-                        {% if 'header' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:header_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Header</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'user_contact' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:user_contact_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>User Contact</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'menu' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:menu_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Menu</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'header' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:header_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Header</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'slider' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:slider_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Slider</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'menu' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:menu_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Menu</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'about' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:about_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>About</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'slider' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:slider_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Slider</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'service_header' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:service_header_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Service Header</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'about' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:about_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>About</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'service' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:service_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Service</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'service_header' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:service_header_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Service Header</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'client' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:client_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Client</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'service' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:service_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Service</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'touch' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:touch_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Touch</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'client' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:client_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Client</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'team' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:team_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Team</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'touch' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:touch_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Touch</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'guard' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:guard_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Guard</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'team' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:team_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Team</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'info' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:info_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Info</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'guard' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:guard_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Guard</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'contact_us' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:contactus_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Contact Us</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'info' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:info_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Info</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'subscribe' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:subscribe_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Subscribe</p>
-                            </a>
-                        </li>
-                        {% endif %}
+                    {% if 'contact_us' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:contactus_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Contact Us</p>
+                        </a>
+                    </li>
+                    {% endif %}
 
-                        {% if 'footer' in request.user.allowed_tables or request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a href="{% url 'admin:footer_list' %}" class="nav-link ajax-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>Footer</p>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+                    {% if 'subscribe' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:subscribe_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Subscribe</p>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'footer' in request.user.allowed_tables or request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:footer_list' %}" class="nav-link ajax-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>Footer</p>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+        </ul>
+    </nav>
 
       <!-- /.sidebar-menu -->
     </div>

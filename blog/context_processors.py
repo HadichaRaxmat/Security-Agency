@@ -23,6 +23,9 @@ def global_context(request):
     ]
 
     context = {model_name.lower(): apps.get_model("blog", model_name).objects.all() for model_name in model_names}
+
+    print("Menu items:", list(context["menu"]))  # Отладка
+
     context["contact_url"] = reverse("contact")
     context["current_url"] = request.path
 

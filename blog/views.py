@@ -41,5 +41,4 @@ class ContactFormView(FormView):
         return super().form_invalid(form)
 
 
-# API
 

@@ -45,7 +45,6 @@ class CustomUser(AbstractUser):
     allowed_tables = models.JSONField(default=list, blank=True)
 
     def can_access(self, table_name):
-        """ Проверяет, может ли пользователь управлять данной таблицей """
         return table_name in self.allowed_tables or self.is_superuser
 
 

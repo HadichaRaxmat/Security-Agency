@@ -25,6 +25,7 @@ def admin_view(request):
 class AdminProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'admin/admin_profile.html'
     success_url = reverse_lazy('admin:admin_profile')
+    login_url = '/admin/'
 
     def get_object(self):
         return self.request.user
@@ -212,7 +213,7 @@ class MenuUpdateView(LoginRequiredMixin, UpdateView):
 class MenuDeleteView(LoginRequiredMixin, DeleteView):
     model = Menu
     template_name = 'admin/menu_delete.html'
-    success_url = reverse_lazy('admin:admin_list')
+    success_url = reverse_lazy('admin:menu_list')
     login_url = '/admin/'
 
 
