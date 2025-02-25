@@ -49,7 +49,7 @@ class AdminService:
         if user_to_delete.is_superuser:
             messages.error(request, "❌ Нельзя удалить суперпользователя!")
             print("⛔ Попытка удалить суперпользователя! Операция запрещена.")
-            return False  # 🚨 Остановить удаление
+            return False
 
         if request_user == user_to_delete:
             messages.error(request, "❌ Вы не можете удалить самого себя!")
