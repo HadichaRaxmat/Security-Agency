@@ -60,3 +60,6 @@ volumes:
 #   docker-compose down -v  # Удалит все данные БД
 #   docker-compose up -d
 #   docker-compose  restart
+
+#  docker exec -it django_guarder python manage.py makemigrations blog
+#  docker exec -it django_guarder python manage.py migrate

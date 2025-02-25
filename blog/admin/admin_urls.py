@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/update/<int:user_id>/', admin_views.AdminUpdateView.as_view(), name='admin_update'),
     path('admin/delete/<int:user_id>/', admin_views.AdminDeleteView.as_view(), name='admin_delete'),
 
-    path('logout/', auth_service.admin_logout, name='admin_logout'),
+    path('admin/logout/', auth_service.admin_logout, name='admin_logout'),
 
     path('users/', admin_views.UsersListView.as_view(), name='user_list'),
     path('user/update/<int:pk>/', admin_views.UserUpdateView.as_view(), name='user_update'),
@@ -87,7 +87,7 @@ urlpatterns = [
 
     path('footer/create/', admin_views.FooterCreateView.as_view(), name='footer_create'),
     path('footer/list/', admin_views.FooterListView.as_view(), name='footer_list'),
-    path('footer/update/<int:pk>/', admin_views.FooterUpdateView.as_view, name='footer_update'),
+    path('footer/update/<int:pk>/', admin_views.FooterUpdateView.as_view(), name='footer_update'),
     path('footer/delete/<int:pk>/', admin_views.FooterDeleteView.as_view(), name='footer_delete'),
     path('footer/bulk-delete/', admin_views.footer_bulk_delete, name='footer_bulk_delete'),
 

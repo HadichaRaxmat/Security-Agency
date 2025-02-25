@@ -50,6 +50,26 @@ class AdminUserCreationForm(UserCreationForm):
         return user
 
 
+TABLE_CHOICES = [
+    ('user_contact', 'User Contact'),
+    ('header', 'Header'),
+    ('menu', 'Menu'),
+    ('header_touch', 'Header Touch'),
+    ('slider', 'Slider'),
+    ('about', 'About'),
+    ('service_header', 'Service Header'),
+    ('service', 'Service'),
+    ('client', 'Client'),
+    ('touch', 'Touch'),
+    ('team', 'Team'),
+    ('guard', 'Guard'),
+    ('info', 'Info'),
+    ('contact_us', 'Contact Us'),
+    ('subscribe', 'Subscribe'),
+    ('footer', 'Footer'),
+]
+
+
 
 class AdminUserUpdateForm(forms.ModelForm):
     password = forms.CharField(
@@ -58,17 +78,32 @@ class AdminUserUpdateForm(forms.ModelForm):
         label="New Password"
     )
 
+    allowed_tables = forms.MultipleChoiceField(
+        choices=TABLE_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Allowed Tables"
+    )
+
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password', 'allowed_tables']
 
     def save(self, commit=True):
         user = super().save(commit=False)
+
+        # Если указан новый пароль - устанавливаем его
         if self.cleaned_data['password']:
             user.set_password(self.cleaned_data['password'])
+
+        # Сохраняем список разрешённых таблиц
+        if isinstance(user.allowed_tables, list):
+            user.allowed_tables = ','.join(self.cleaned_data['allowed_tables'])  # Преобразуем в строку
+
         if commit:
             user.save()
         return user
+
 
 
 class AdminUserAuthenticationForm(forms.Form):  # Заменили AuthenticationForm на forms.Form
@@ -117,3 +152,6 @@ class AdminProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'avatar']
+
+
+

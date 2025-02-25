@@ -2,12 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
 from blog.admin.forms import AdminUserCreationForm, AdminUserUpdateForm
 from blog.services.admin_service import AdminService
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 import logging
 

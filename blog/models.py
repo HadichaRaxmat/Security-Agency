@@ -29,7 +29,6 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
-        ('superuser', 'Superuser'),
         ('admin_manager', 'Admin Manager'),
         ('moderator', 'Moderator'),
         ('editor', 'Editor'),
@@ -43,6 +42,11 @@ class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='admin')
+    allowed_tables = models.JSONField(default=list, blank=True)
+
+    def can_access(self, table_name):
+        """ Проверяет, может ли пользователь управлять данной таблицей """
+        return table_name in self.allowed_tables or self.is_superuser
 
 
     USERNAME_FIELD = 'email'
