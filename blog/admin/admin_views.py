@@ -6,10 +6,11 @@ from django.contrib import messages
 from blog.admin.forms import AdminUserCreationForm, AdminUserUpdateForm
 from blog.services.admin_service import AdminService
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 import logging
+
 logger = logging.getLogger(__name__)
 from blog.forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHeaderForm, ServiceForm, ClientForm,
                         TouchForm,
@@ -17,7 +18,6 @@ from blog.forms import (HeaderForm, MenuForm, SliderForm, AboutForm, ServiceHead
                         CustomUserUpdateForm)
 from blog.models import (Header, Menu, Slider, About, ServiceHeader, Service, Client, Touch, Team, Guard, Info,
                          ContactUs, Subscribe, Footer, UserContact, CustomUser)
-
 
 
 @login_required(login_url='/admin/')
@@ -65,7 +65,7 @@ class AdminCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         role = self.request.POST.get('role', 'admin')
-        user = AdminService.create_admin(form, role)
+        user = AdminService.create_admin(self.request.user, form, role)
 
         if not user:
             messages.error(self.request, "You do not have permission to assign this role.")
@@ -93,39 +93,39 @@ class AdminUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
 
 
+from django.contrib import messages
+
+
 class AdminDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CustomUser
     template_name = 'admin/admin_delete.html'
-    success_url = reverse_lazy('admin_list')
-    login_url = '/admin/login/'
+    success_url = reverse_lazy('admin:admin_list')
+    login_url = '/admin/'
+    pk_url_kwarg = 'user_id'
 
     def test_func(self):
         return self.request.user.is_superuser
 
-    def get_object(self):
-        """Получаем пользователя по user_id из URL."""
-        user_id = self.kwargs.get('user_id')  # 👈 Проверяем наличие user_id
-        if not user_id:
-            raise Http404("❌ Ошибка: user_id отсутствует в URL.")
+    def dispatch(self, request, *args, **kwargs):
+        user_id = self.kwargs.get('user_id')
+        user_to_delete = get_object_or_404(CustomUser, id=user_id)
 
-        return get_object_or_404(CustomUser, id=user_id)
+        if user_to_delete.is_superuser:
+            messages.error(request, "❌ Нельзя удалить суперпользователя!")
+            print("⛔ Попытка удаления суперпользователя. Операция запрещена.")
+            return redirect(self.success_url)
+
+        return super().dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        user_to_delete = self.get_object()
+        user_id = self.kwargs.get('user_id')
 
-        try:
-            if AdminService.delete_admin(request.user, user_to_delete.id):
-                messages.success(request, f"✅ Администратор {user_to_delete.email} удалён.")
-                return super().delete(request, *args, **kwargs)
-            else:
-                messages.error(request, "❌ Удаление не удалось.")
-                return redirect('admin_list')
-        except PermissionDenied:
-            messages.error(request, "❌ У вас нет прав для удаления этого пользователя.")
-            return redirect('admin_list')
-        except CustomUser.DoesNotExist:
-            raise Http404("❌ Пользователь не найден.")
+        if AdminService.delete_admin(request, request.user, user_id):
+            messages.success(request, "✅ Администратор удалён.")
+            return redirect(self.success_url)
 
+        messages.error(request, "❌ Удаление не удалось.")
+        return redirect(self.success_url)
 
 
 
@@ -139,7 +139,6 @@ class UsersListView(LoginRequiredMixin, ListView):
         return CustomUser.objects.filter(is_staff=False, is_superuser=False)
 
 
-
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserUpdateForm
@@ -148,15 +147,11 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/admin/'
 
 
-
-
-
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CustomUser
     template_name = 'admin/user_delete.html'
     success_url = reverse_lazy('admin:user_list')
     login_url = '/admin/'
-
 
 
 class HeaderListView(LoginRequiredMixin, ListView):
@@ -172,6 +167,7 @@ class HeaderCreateView(LoginRequiredMixin, CreateView):
     template_name = 'admin/header_create.html'
     success_url = reverse_lazy('admin:header_list')
     login_url = '/admin/'
+
 
 class HeaderUpdateView(LoginRequiredMixin, UpdateView):
     model = Header
@@ -221,6 +217,7 @@ class MenuDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'admin/menu_delete.html'
     success_url = reverse_lazy('admin:admin_list')
     login_url = '/admin/'
+
 
 @login_required(login_url='/admin/')
 def menu_toggle_visibility(request, pk):

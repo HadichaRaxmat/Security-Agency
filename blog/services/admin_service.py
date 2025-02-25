@@ -3,7 +3,10 @@ from django.http import Http404
 from blog.admin.forms import AdminProfileUpdateForm, AvatarUpdateForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
+from django.contrib import messages
+
 
 class AdminService:
 
@@ -30,29 +33,35 @@ class AdminService:
         user.save()
         return user
 
-
     @staticmethod
-    def delete_admin(current_user, user_id):
-        """Удаляет администратора, если у текущего пользователя есть права."""
-        from blog.models import CustomUser  # Избегаем циклического импорта
+    def delete_admin(request, request_user, user_id):
+        from blog.models import CustomUser
 
         try:
             user_to_delete = CustomUser.objects.get(id=user_id)
         except CustomUser.DoesNotExist:
-            raise Http404("Пользователь не найден.")
+            messages.error(request, "❌ Пользователь не найден.")
+            print("⛔ Ошибка: Пользователь не найден")
+            return False
 
-        # 🚨 1. Полный запрет на удаление суперпользователя
+        print(f"🔍 Проверка: {user_to_delete.email} (is_superuser={user_to_delete.is_superuser})")
+
         if user_to_delete.is_superuser:
-            raise PermissionDenied("❌ Нельзя удалить суперпользователя!")
+            messages.error(request, "❌ Нельзя удалить суперпользователя!")
+            print("⛔ Попытка удалить суперпользователя! Операция запрещена.")
+            return False  # 🚨 Остановить удаление
 
-        # 🚨 2. Запрещаем удалять себя
-        if current_user == user_to_delete:
-            raise PermissionDenied("❌ Вы не можете удалить самого себя!")
+        if request_user == user_to_delete:
+            messages.error(request, "❌ Вы не можете удалить самого себя!")
+            print("⛔ Пользователь пытался удалить сам себя")
+            return False
 
-        # ✅ 3. Разрешаем удаление только суперпользователю
-        if not current_user.is_superuser:
-            raise PermissionDenied("❌ Только суперпользователь может удалять администраторов.")
+        if not request_user.is_superuser:
+            messages.error(request, "❌ Только суперпользователь может удалять администраторов.")
+            print("⛔ Обычный администратор пытался удалить другого администратора")
+            return False
 
-        # ✅ 4. Удаление разрешено
+        print(f"✅ Удаление разрешено: {user_to_delete.email}")
         user_to_delete.delete()
+        messages.success(request, f"✅ Администратор {user_to_delete.email} удалён.")
         return True
