@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+
 <div class="card shadow-sm">
     <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
         <h3 class="card-title m-0">List of Admins</h3>
@@ -13,15 +14,16 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th><i class="fas fa-hashtag"></i> ID</th>
-                    <th><i class="fas fa-user"></i> Username</th>
-                    <th><i class="fas fa-envelope"></i> Email</th>
-                    <th><i class="fas fa-user"></i> First Name</th>
-                    <th><i class="fas fa-user"></i> Last Name</th>
-                    <th><i class="fas fa-user-shield"></i> Role</th>
-                    <th><i class="fas fa-user-shield"></i> Status</th>
-                    <th><i class="fas fa-image"></i> Avatar</th>
-                    <th><i class="fas fa-cogs"></i> Actions</th>
+                    <th># ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Allowed Tables</th>
+                    <th>Avatar</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +50,18 @@
                             <span class="badge badge-dark">Support</span>
                         {% else %}
                             <span class="badge badge-light">Unknown</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if user.role != "superuser" %}
+                            <button class="btn btn-outline-primary btn-sm view-tables-btn"
+                                    data-toggle="modal"
+                                    data-target="#allowedTablesModal"
+                                    data-tables="{{ user.allowed_tables }}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        {% else %}
+                            <span class="text-muted">-</span>
                         {% endif %}
                     </td>
                     <td>
@@ -80,5 +94,50 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="allowedTablesModal" tabindex="-1" role="dialog" aria-labelledby="allowedTablesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="allowedTablesModalLabel">Allowed Tables</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="allowedTablesList">
+                    <!-- Список таблиц будет вставляться динамически -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{% static 'admin/dist/js/super_user.js' %}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let modal = document.getElementById("allowedTablesModal");
+        let listContainer = document.getElementById("allowedTablesList");
+
+        document.querySelectorAll(".view-tables-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let tables = this.getAttribute("data-tables");
+                let tableArray = tables ? tables.split(",") : [];
+
+                listContainer.innerHTML = "";
+                if (tableArray.length > 0) {
+                    tableArray.forEach(table => {
+                        let li = document.createElement("li");
+                        li.textContent = table.trim();
+                        listContainer.appendChild(li);
+                    });
+                } else {
+                    listContainer.innerHTML = "<li class='text-muted'>No Tables Allowed</li>";
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}

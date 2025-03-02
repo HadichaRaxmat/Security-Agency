@@ -47,6 +47,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+
                     {% if request.user.is_superuser %}
                     <li class="nav-item">
                         <a href="{% url 'admin:admin_list' %}" class="nav-link ajax-link">
@@ -56,12 +57,14 @@
                     </li>
                     {% endif %}
 
+                    {% if 'users' in request.user.allowed_tables or request.user.is_superuser %}
                     <li class="nav-item">
                         <a href="{% url 'admin:user_list' %}" class="nav-link ajax-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>Users</p>
                         </a>
                     </li>
+                    {% endif %}
 
                     {% if 'user_contact' in request.user.allowed_tables or request.user.is_superuser %}
                     <li class="nav-item">
