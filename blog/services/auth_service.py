@@ -39,17 +39,22 @@ def admin_logout(request):
 
 class AuthView(FormView):
     template_name = "auth.html"
-    success_url = reverse_lazy("/")
 
     def get_form_class(self):
         if self.request.path == reverse_lazy("signup"):
             return CustomUserCreationForm
         return CustomUserAuthenticationForm
 
+    def get_success_url(self):
+        if isinstance(self.get_form_class(), CustomUserCreationForm):
+            return reverse_lazy("login")
+        return reverse_lazy("home")
+
     def form_valid(self, form):
         if isinstance(form, CustomUserCreationForm):
             user = form.save()
             login(self.request, user, backend="django.contrib.auth.backends.ModelBackend")
+            return redirect(reverse_lazy("login"))
         else:  # Логин
             user = authenticate(
                 self.request,
@@ -58,11 +63,13 @@ class AuthView(FormView):
             )
             if user:
                 login(self.request, user)
+                return redirect(reverse_lazy("home"))
             else:
                 form.add_error(None, "Invalid email or password")
                 return self.form_invalid(form)
 
         return super().form_valid(form)
+
 
 
 

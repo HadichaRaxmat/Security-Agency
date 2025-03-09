@@ -10,10 +10,12 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address'})
     )
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'})
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+        label = "Password"
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'})
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}),
+        label = "Confirm Password"
     )
 
 
